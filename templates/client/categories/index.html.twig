@@ -1,0 +1,7 @@
+{% extends 'base.html.twig' %}
+
+{% block title name | capitalize ~ " Posts" %}
+
+{% block body %}
+    {{ include('partials/_posts_template.html.twig') }}
+{% endblock %}

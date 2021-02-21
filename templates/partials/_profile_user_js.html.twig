@@ -1,0 +1,51 @@
+<script>
+    $(document).ready(() => {
+        $('.custom-file-label').each((i, ele) => {
+            $(ele).text('{{ app.user.imageName }}')
+        })
+
+        $('#add-image').hover(() => {
+            $('#add-image').addClass('show')
+        }, () => {
+            $('#add-image').removeClass('show')
+        })
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                let reader = new FileReader();
+
+                reader.onload = function(e) {
+                    let img = $('img#profile-pic_pre-js').length ? $('img#profile-pic_pre-js') : $('img#preview-image')
+                    if ( img.length ) {
+                        img.attr('src', e.target.result);
+                    }
+                    else {
+                        img.attr('src', e.target.result);
+                    }
+                    setTimeout(function () {
+                        $('.load-overlay').removeClass('show');
+                        setTimeout(function () {
+                            img.addClass('show')
+                        }, 500)
+                    }, 200)
+                }
+
+                reader.readAsDataURL(input.files[0]); // convert to base64 string
+            }
+        }
+
+        $('input[type=file]').on('change',function () {
+            $('.load-overlay').addClass('show')
+            $('#profile-pic_pre-js').removeClass('show')
+            readURL(this)
+        })
+
+        $('#add-image').click(() => {
+            $('input[type=file]').click()
+            $('#add-image').addClass('fade');
+            setTimeout(() => {
+                $('#add-image').addClass('show');
+            }, 200)
+        })
+    })
+</script>

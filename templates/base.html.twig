@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token('ajax') }}" />
+    <meta name="description"
+        content="A blog with the latest posts and images, here you can find a lot of interesting posts that may helped you.">
+    <!-- Fav Icon  -->
+    <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}">
+    {% block stylesheets %}
+        <!-- StyleSheets  -->
+        <link rel="stylesheet" href="{{ asset('assets/css/all.css') }}" async>
+        {{ encore_entry_link_tags('app') }}
+
+    {% endblock %}
+    <title>{% block title %}{{ APP_NAME }}{% endblock %}</title>
+    <style>
+        /* width */
+        ::-webkit-scrollbar {
+            width: 5px !important;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            border-radius: 10px !important;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #949494 !important;
+            border-radius: 10px !important;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6b6b6b !important;
+            width: 8px !important;
+        }
+    </style>
+</head>
+
+<body>
+    {% if __security.logoutSuspendedOrDeletedUser is not null and __security.logoutSuspendedOrDeletedUser %}
+    <span id="needToLogout" style="display:none;">
+        {{ logout_url(key = null) }}
+    </span>
+    {% endif %}
+{#    <div id="loading-page-home" class="d-flex justify-content-center vh-100 align-items-center fade" style="display: none">#}
+{#        <div class="spinner-border" role="status" style="height: 50px; width: 50px">#}
+{#            <span class="sr-only">Loading...</span>#}
+{#        </div>#}
+{#    </div>#}
+    <div class="nk-app-root w-100 overflow-hidden" id="main-content">
+        <!-- main @s -->
+        <div class="nk-main">
+            <!-- wrap @s -->
+            <div class="nk-wrap">
+                {% if notNavbar is not defined %}
+                <style>
+                    @media (min-width: 991px) {
+                        #mainSideBar {
+                            display: none;
+                        }
+                    }
+                </style>
+                {{ include('partials/_navbar.html.twig') }}
+                {% endif %}
+                {% block body %}{% endblock %}
+            </div>
+            <!-- content @e -->
+        </div>
+        <!-- main @e -->
+        {{ include('partials/modals/_profile_admin.html.twig') }}
+    </div>
+    <!-- app-root @e -->
+    <!-- JavaScript -->
+    <script src="{{ asset('assets/js/bundle.js') }}"></script>
+    {# <script src="{{ asset('assets/js/editors.js') }}"></script> #}
+    {# <script src="{{ asset('assets/js/example-chart.js') }}"></script> #}
+    {# <script src="{{ asset('assets/js/example-sweetalert.js') }}"></script> #}
+    {# <script src="{{ asset('assets/js/example-toastr.js') }}?ver=2.2.0"></script> #}
+    <script src="{{ asset('assets/js/scripts.js') }}?ver=2.2.0"></script>
+    <script src="{{ asset('assets/js/charts/gd-default.js') }}?ver=2.2.0"></script>
+    <script src="{{ asset('assets/js/apps/inbox.js') }}?ver=2.2.0"></script>
+    <script src="{{ asset('assets/js/libs/tagify.js') }}?ver=2.2.0"></script>
+    <script src="{{ asset('assets/js/apps/messages.js') }}?ver=2.2.0"></script>
+    {{ encore_entry_script_tags('app') }}
+    {{ include('partials/_message_flush.html.twig') }}
+    <script>
+        $(document).ready(() => {
+            let $input = $('input#user_form_isChangedToDisplay')
+            if ($input.length) {
+                $input.parent().removeClass('form-check');
+            }
+        })
+    </script>
+    {% block javascripts %}
+    {% endblock %}
+</body>
+
+</html>

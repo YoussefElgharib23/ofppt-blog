@@ -1,0 +1,9 @@
+{% if app.user and not app.user.verified %}
+    <div class="text-center alert alert-danger alert-fill mt-5">
+        <span>
+            For security purpose,
+            <br>
+            Check your mail box to verify your email !
+        </span>
+    </div>
+{% endif %}

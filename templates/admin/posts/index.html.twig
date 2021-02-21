@@ -1,0 +1,198 @@
+{% extends 'base.html.twig' %}
+
+{% block title APP_NAME ~ ' | Admin - All Posts' %}
+
+{% block body %}
+    {% set in_admin = true %}
+    <div class="nk-content">
+        <div class="container wide-xl">
+            <div class="nk-content-inner">
+                {{ include('partials/_sidebar.html.twig') }}
+                <div class="nk-content-body">
+                    <div class="nk-content-wrap">
+                        <div class="nk-block-head nk-block-head-sm">
+                            <div class="nk-block-head-content">
+                                <h3 class="nk-block-title page-title">List posts.</h3>
+                                <div class="text-soft">
+                                    <p>Here you can see, update or delete any post.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="nk-block">
+                            <div class="row g-gs">
+                                <div class="col-12">
+                                    <div class="card card-preview">
+                                        <div class="card-inner pb-0">
+                                            {{ include('partials/_filter_active.html.twig') }}
+                                        </div>
+                                        <div class="alert alert-fill alert-danger alert-icon mr-4 ml-4" id="not-found" style="display: none">
+                                            <em class="icon ni ni-cross-circle"></em>
+                                            Nothing found
+                                        </div>
+                                        <table class="table table-tranx table-data-js">
+                                            <thead>
+                                            <tr class="tb-tnx-head">
+                                                <th class="tb-tnx-id"><span class="">#</span></th>
+                                                <th class="tb-tnx-info">
+                                                    <span class="tb-tnx-desc d-none d-sm-inline-block">
+                                                        <span>Post title</span>
+                                                    </span>
+                                                    <span class="tb-tnx-date d-md-inline-block d-none">
+                                                        <span class="d-md-none">Date</span>
+                                                        <span class="d-none d-md-block">
+                                                            <span>Created at</span>
+                                                            <span>Last update</span>
+                                                        </span>
+                                                    </span>
+                                                </th>
+                                                <th class="tb-tnx-amount is-alt">
+                                                    <span class="tb-tnx-total">Category</span>
+                                                    <span class="tb-tnx-status d-none d-md-inline-block">Status</span>
+                                                </th>
+                                                <th class="tb-tnx-action">
+                                                    <span>&nbsp;</span>
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for post in posts %}
+                                                <tr class="tb-tnx-item"
+                                                    {% if post.status == 0 %}
+                                                        data-status="active"
+                                                    {% elseif post.status == 1 %}
+                                                        data-status="inactive"
+                                                    {% else %}
+                                                        data-status="deleted"
+                                                    {% endif %}
+                                                    data-id="{{ post.id }}" data-title="{{ post.title }}">
+                                                    <td class="tb-tnx-id">
+                                                        <a href="{{ path('app_show_post', {'id': post.id, 'slug': post.slugify(post.title)}) }}">
+                                                            <span>{{ post.id }}</span>
+                                                        </a>
+                                                    </td>
+                                                    <td class="tb-tnx-info">
+                                                        <div class="tb-tnx-desc">
+                                                            <span class="title">{{ post.title | u.truncate(30, '...') }}</span>
+                                                        </div>
+                                                        <div class="tb-tnx-date">
+                                                            <span class="date">{{ post.createdAt | date('d M, Y') }}</span>
+                                                            <span class="date">{{ post.updatedAt | date('d M, Y') }}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td class="tb-tnx-amount is-alt">
+                                                        <div class="tb-tnx-total">
+                                                            <span class="amount">{{ post.category.name }}</span>
+                                                        </div>
+                                                        <div class="tb-tnx-status">
+                                                            {% if post.status == 0 %}
+                                                                <span class="badge badge-dot badge-success">active</span>
+                                                            {% elseif post.status == 1 %}
+                                                                <span class="badge badge-dot badge-danger">Inactive</span>
+                                                            {% else %}
+                                                                <span class="badge badge-dot badge-warning">Deleted</span>
+                                                            {% endif %}
+                                                        </div>
+                                                    </td>
+                                                    <td class="tb-tnx-action">
+                                                        <div class="dropdown">
+                                                            <a class="text-soft dropdown-toggle btn btn-icon btn-trigger"
+                                                               data-toggle="dropdown" aria-expanded="false"><em
+                                                                        class="icon ni ni-more-h"></em></a>
+                                                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-xs"
+                                                                 style="">
+                                                                <ul class="link-list-plain">
+                                                                    <li>
+                                                                        <a href="{{ path('app_show_post', {'id': post.id, 'slug': post.slugify(post.title)}) }}">
+                                                                            View
+                                                                        </a>
+                                                                    </li>
+                                                                    {% if post.status == 0 or post.status == 1 %}
+                                                                        <li>
+                                                                            <a href="{{ path('app_admin_edit_post', {'id': post.id, 'slug': post.slugify(post.title)}) }}">
+                                                                                Edit
+                                                                            </a>
+                                                                        </li>
+                                                                    {% endif %}
+                                                                    <li>
+                                                                        {% if not post.deletedAt %}
+                                                                            <a href="{{ path('app_admin_remove_post', {'id': post.id}) }}">Remove</a>
+                                                                        {% else %}
+                                                                            <a href="{{ path('app_admin_restore_post', {'id': post.id}) }}">Restore</a>
+                                                                        {% endif %}
+                                                                    </li>
+                                                                    {% if post.status == 2 %}
+                                                                        <li>
+                                                                            <a href="#" onclick="agreeToDelete(this)" data-target="{{ post.id }}">
+                                                                                Delete
+                                                                            </a>
+                                                                            <form action="{{ path('app_admin_delete_post', {'id': post.id}) }}"
+                                                                                  id="delete-post-{{ post.id }}"
+                                                                                  method="POST">
+                                                                                <input type="hidden" name="_method" value="DELETE">
+                                                                                <input type="hidden" name="_token" value="{{ csrf_token('delete-post-' ~ post.id) }}">
+                                                                            </form>
+                                                                        </li>
+                                                                    {% endif %}
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="card-inner">
+                                        <div class="nk-block-between-md g-3">
+                                            <div class="g">
+                                                <ul class="pagination justify-content-center">
+                                                    {{ knp_pagination_render(posts, '@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig') }}
+                                                </ul>
+                                            </div>
+                                        </div><!-- .nk-block-between -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    
+    <script src="{{ asset('/assets/js/search.js') }}"></script>
+    
+    <script>
+    
+        $(document).ready(() => {
+            $('select').each((i, ele) => {
+                $(ele).select2();
+            })
+        })
+        
+        function agreeToDelete (element) {
+            let postId = $(element).data('target')
+            let form = $(element).parents('li').find('form#delete-post-' + postId)
+
+            Swal.fire({
+                title: 'Are you sure you wanna delete the post !',
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: `Yes`,
+                denyButtonText: `No`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    form.submit()
+                    
+                } else if (result.isDenied) {
+                    Swal.fire('The post was not deleted ', '', 'info')
+                }
+            })
+        }
+    </script>
+    
+{% endblock %}

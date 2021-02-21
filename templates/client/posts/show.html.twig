@@ -1,0 +1,409 @@
+{% extends 'base.html.twig' %}
+
+{% block title APP_NAME ~ ' | Show Post ' ~ post.title %}
+
+{% block body %}
+    <div class="nk-content ">
+        <div class="container wide-xl">
+            <div class="nk-content-inner">
+                {{ include('partials/_sidebar.html.twig') }}
+                <div class="nk-content-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="nk-content-wrap">
+                                <div class="nk-block">
+                                    <div class="card card-bordered">
+                                        <div class="card-inner">
+                                            <article class="entry">
+                                                <div class="alert alert-danger alert-fill fade" style="display:none;"
+                                                     id="error-panel-js"></div>
+                                                {% if post.status != 0 %}
+                                                    {% if post.status == 1 %}
+                                                        <div class="alert alert-fill alert-danger alert-icon">
+                                                            <em class="icon ni ni-cross-circle"></em>
+                                                            This is an inactive post !
+                                                            <strong>
+                                                                Click
+                                                                <a href="{{ path('app_admin_active_post', {'id': post.id}) }}"
+                                                                   style="text-decoration: underline">here</a>
+                                                                to activate it.
+                                                            </strong>
+                                                        </div>
+                                                    {% elseif post.status == 2 %}
+                                                        <div class="alert alert-fill alert-danger alert-icon">
+                                                            <em class="icon ni ni-cross-circle"></em>
+                                                            This post is removed
+                                                            <strong>
+                                                                Click
+                                                                <a href="{{ path('app_admin_restore_post', {'id': post.id}) }}"
+                                                                   style="text-decoration: underline">
+                                                                    here
+                                                                </a>
+                                                                to restore it.
+                                                            </strong>
+                                                        </div>
+                                                    {% endif %}
+                                                {% elseif not post.category.isActive %}
+                                                    <div class="alert alert-fill alert-danger alert-icon">
+                                                        <em class="icon ni ni-cross-circle"></em>
+                                                        This category is inactive !
+                                                        <strong>
+                                                            Click
+                                                            <a href="{{ path('app_admin_active_category', {'id': post.category.id}) }}"
+                                                               style="text-decoration: underline">
+                                                                here
+                                                            </a>
+                                                        </strong>
+                                                        active it.
+                                                    </div>
+                                                {% endif %}
+                                                <h3 class="d-flex flex-column">
+                                                    {{ post.title }}
+                                                    <small>
+                                                    <span class="mr-1">
+                                                        <a class="badge btn-dim btn-outline-secondary"
+                                                           href="{{ path('app_posts_category', {'slug': post.category.slug(post.category.name)}) }}">{{ post.category.name }}</a>
+                                                    </span>
+                                                        <span
+                                                                class="badge badge-dot badge-danger">{{ post.formattedCreatedAt }}</span>
+                                                    </small>
+                                                </h3>
+                                                <div class="my-1 d-flex align-items-center">
+                                                    {% if post.user.imageName %}
+                                                        <img class="rounded-circle author-user" height="25px"
+                                                             width="25px"
+                                                             src="{{ vich_uploader_asset(post.user, 'imageFile') | imagine_filter('profile_pic_min') }}"
+                                                             alt="">
+                                                    {% else %}
+                                                        <div class="user-avatar sm mr-1 "
+                                                             style="height: 25px; width: 25px">
+                                                            <em class="icon ni ni-user-alt"></em>
+                                                        </div>
+                                                    {% endif %}
+                                                    <div class="d-block ml-1">
+                                                        <p class="badge badge-dim badge-pill badge-dark">
+                                                            Created by {{ post.user.fullName }}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <img src="{{ vich_uploader_asset(post, 'imageFile') | imagine_filter('thumb') }}"
+                                                     alt="">
+                                                <div class="my-3 fa-lg d-flex">
+                                                    <div class="like-parts" {% if not app.user %} data-toggle="modal"
+                                                        data-target="#loginModal" {% endif %}>
+                                                        {% if app.user %}
+                                                            <a href="#" data-target="{{ post.id }}" id="like-post-js"
+                                                               data-toggle="tooltip" data-placement="top"
+                                                               title="Like the post">
+                                                                {% if post.isLikedByUser(app.user) %}
+                                                                    <i class="fas fa-thumbs-up"></i>
+                                                                {% else %}
+                                                                    <i class="fal fa-thumbs-up"></i>
+                                                                {% endif %}
+                                                            </a>
+                                                        {% else %}
+                                                            <span href="#" data-toggle="tooltip" data-placement="top"
+                                                                  title="Sign in to like the post">
+                                                        <i class="fal fa-thumbs-up"></i>
+                                                    </span>
+                                                        {% endif %}
+                                                        <small>
+                                                        <span
+                                                                id="likes-count">{{ post.getActiveUserLikes.count }}</span>
+                                                        </small>
+                                                    </div>
+                                                    <div class="dislike-parts ml-2" data-toggle="modal"
+                                                         data-target="#loginModal">
+                                                        {% if app.user %}
+                                                            <a class="mt-1" data-target="{{ post.id }}"
+                                                               id="dislike-post-js"
+                                                               href="#" data-toggle="tooltip" data-placement="top"
+                                                               title="Dislike the post">
+                                                                {% if post.isDislikedByUser(app.user) %}
+                                                                    <i class="fas fa-thumbs-down"></i>
+                                                                {% else %}
+                                                                    <i class="fal fa-thumbs-down"></i>
+                                                                {% endif %}
+                                                            </a>
+                                                        {% else %}
+                                                            <span class="mt-1" data-toggle="tooltip"
+                                                                  data-placement="top"
+                                                                  title="Sign in to dislike the post">
+                                                        <i class="fal fa-thumbs-down"></i>
+                                                    </span>
+                                                        {% endif %}
+                                                        <small>
+                                                        <span
+                                                                id="dislikes-count">{{ post.getActiveDislike.count }}</span>
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                                <div id="post_description_js" class="mb-2">
+                                                    {{ post.description | raw }}
+                                                </div>
+                                                {% if app.user() %}
+                                                    {{ form_start(formComment, {
+                                                        'attr': {
+                                                            'class': 'form-validate'
+                                                        }
+                                                    }) }}
+                                                    {{ form_row(formComment.comment, {
+                                                        label_attr: {
+                                                            'class': 'form-label',
+                                                        },
+                                                        label: 'Your comment',
+                                                        placeholder: 'Write your comment'
+                                                    }) }}
+                                                    <div class="form-group row">
+                                                        <div class="col-md-4 mx-auto">
+                                                            <button type="submit"
+                                                                    class="actions-submit btn-block btn btn-dim btn-primary">
+                                                                Post comment
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    {{ form_end(formComment) }}
+                                                {% else %}
+                                                    <div class="alert alert-danger">
+                                                        You should
+                                                        <a href="#" data-toggle="modal" data-target="#loginModal">
+                                                            sign in
+                                                        </a>
+                                                        to comment on this post !
+                                                    </div>
+                                                {% endif %}
+                                                {% if post.getActiveUserComments | length > 0 %}
+                                                    <div id="accordion-2" class="accordion accordion-s3">
+                                                        <div class="accordion-item">
+                                                            <a href="#" class="accordion-head" data-toggle="collapse"
+                                                               data-target="#comment-accordion">
+                                                                <h6 class="title">Post Comments</h6>
+                                                                <span class="accordion-icon"></span>
+                                                            </a>
+                                                            <div class="accordion-body collapse show"
+                                                                 id="comment-accordion"
+                                                                 data-parent="#accordion-2">
+                                                                <div class="accordion-inner rounded-lg pr-1 pl-1">
+                                                                    {% for i, comment in post.getActiveUserComments | reverse %}
+                                                                        {% if comment.user.isStatus %}
+                                                                            <div class="d-flex justify-content-between align-items-end {% if i > 0 %} mt-2 {% endif %}">
+                                                                                <div class="row w-100" style="width: 765px!important;">
+                                                                                    {% if comment.user.imageName %}
+                                                                                        <img src="{{ vich_uploader_asset(comment.user, 'imageFile') | imagine_filter('profile_pic_min') }}"
+                                                                                             class="img-fluid rounded-circle comment__auth d-n-lg"
+                                                                                             alt="">
+                                                                                    {% else %}
+                                                                                        <div class="user-avatar" style="margin-right: 10px">
+                                                                                            {{ comment.user.firstTowLatterName }}
+                                                                                        </div>
+                                                                                    {% endif %}
+                                                                                    <div class="col comment-container pt-1 rounded-lg"
+                                                                                         style="border-radius: 20px !important;">
+                                                                                        <div class="d-flex align-items-end">
+                                                                                            <span class="author badge badge-light mt-1">{{ comment.user.fullName }} commented:</span>
+                                                                                            {% if 'ROLE_ADMIN' in comment.user.roles %}
+                                                                                                <span class="badge badge-danger ml-1">Admin</span>
+                                                                                            {% endif %}
+                                                                                        </div>
+                                                                                        <p class="m-0 mt-1">
+                                                                                            {{ comment.comment }}
+                                                                                        </p>
+                                                                                        <div class="d-flex justify-content-between align-items-center"
+                                                                                             style="height: 30px;">
+                                                                                            <small class="text-center">{{ comment.createdAt | date('d M, Y') }}
+                                                                                                at {{ comment.createdAt | date('h:i a') }}</small>
+                                                                                            {% if is_granted('ROLE_ADMIN') %}
+                                                                                                <div class="dropdown">
+                                                                                                    <a class="text-soft dropdown-toggle btn btn-icon btn-trigger"
+                                                                                                       data-toggle="dropdown"
+                                                                                                       aria-expanded="false">
+                                                                                                        <em class="icon ni ni-more-h"></em>
+                                                                                                    </a>
+                                                                                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-xs"
+                                                                                                         style="">
+                                                                                                        <ul class="link-list-plain">
+                                                                                                            {% if comment.user != app.user %}
+                                                                                                                <li>
+                                                                                                                    <a href="{{ path('app_admin_suspend_user', {'id': comment.user.id}) }}">Suspend</a>
+                                                                                                                </li>
+                                                                                                            {% endif %}
+                                                                                                            <li>
+                                                                                                                <a href="#"
+                                                                                                                   class="remove_comment_js">Remove</a>
+                                                                                                                <form action="{{ path('app_admin_remove_comment', {'id': comment.id}) }}"
+                                                                                                                      method="POST">
+                                                                                                                    <input type="hidden"
+                                                                                                                           name="_token"
+                                                                                                                           value="{{ csrf_token('delete-comment-' ~ comment.id) }}">
+                                                                                                                    <input type="hidden"
+                                                                                                                           name="_method"
+                                                                                                                           value="DELETE">
+                                                                                                                </form>
+                                                                                                            </li>
+                                                                                                        </ul>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            {% endif %}
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                            </article>
+                                        </div>
+                                    </div>
+                                </div><!-- .nk-block -->
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="nk-content-wrap">
+                                <div class="nk-block">
+                                    <div class="card card-bordered">
+                                        <div class="card-inner">
+                                            {% if relatedPost is not null %}
+                                                <article class="entry">
+                                                    <div class="d-flex align-items-center justify-content-center"
+                                                         style="height: 70px;">
+                                                        <h3 class="text-center">Related post</h3>
+                                                    </div>
+                                                    <a
+                                                            href="{{ path('app_show_post', {id: relatedPost.id, slug: relatedPost.slugify(relatedPost.title)}) }}">
+                                                        <div class="rounded-lg mw-100 overflow-hidden">
+                                                            <img alt="" class="posts-images fade"
+                                                                 data-lazy="{{ vich_uploader_asset(relatedPost, 'imageFile') | imagine_filter('thumb') }}"
+                                                                 src="">
+                                                        </div>
+                                                    </a>
+                                                    <h5 class="d-flex flex-column m-1 font-25-lg">
+                                                        <a
+                                                                href="{{ path('app_show_post', {id: relatedPost.id, slug: relatedPost.slugify(relatedPost.title)}) }}">
+                                                            {{ relatedPost.title | u.truncate(20, '...') }}
+                                                        </a>
+                                                        <small class="mt-1">
+                                                            <a href="{{ path('app_posts_category', {'slug': relatedPost.category.slug(relatedPost.category.name)}) }}"
+                                                               class="btn btn-dim btn-outline-secondary p-0 pl-1 pr-1">
+                                                                {{ relatedPost.category.name }}
+                                                            </a>
+                                                            <span
+                                                                    class="badge badge-dot badge-danger">{{ relatedPost.formattedCreatedAt }}</span>
+                                                        </small>
+                                                    </h5>
+                                                </article>
+                                            {% endif %}
+                                            <div class="text-center py-4">
+                                                <h6 class="overline-title overline-title-sap">
+                                                    <span>YOU ALSO MAY LIKE</span>
+                                                </h6>
+                                            </div>
+                                            <div class="also-may-like">
+                                                {% for post in mayLikePosts %}
+                                                    <div class="row g-gs align-items-center">
+                                                        <div class="col-6">
+                                                            <div class="rounded-lg mw-100 overflow-hidden">
+                                                                <a
+                                                                        href="{{ path('app_show_post', {'id': post.id, 'slug': post.slugify(post.title)}) }}">
+                                                                    <img alt=""
+                                                                         class="posts-images img-fluid rounded-lg fade"
+                                                                         data-lazy="{{ vich_uploader_asset(post, 'imageFile') | imagine_filter('thumb') }}"
+                                                                         src="">
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-6" style="padding-left: 0 !important;">
+                                                            <h6>
+                                                                <a
+                                                                        href="{{ path('app_show_post', {'id': post.id, 'slug': post.slugify(post.title)}) }}">
+                                                                    {{ post.title | u.truncate(20, '...') }}
+                                                                </a>
+                                                            </h6>
+                                                            <div>
+                                                        <span
+                                                                class="badge badge-dot badge-danger">{{ post.category.name }}</span>
+                                                                <br>
+                                                                <span>{{ post.createdAt | date('d M, Y') }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- .nk-block -->
+                            </div>
+                            <div class="nk-content-wrap">
+                                <div class="nk-block">
+                                    <div class="card card-bordered">
+                                        <div class="card-inner">
+                                            <h5 class="text-center">Categories</h5>
+                                            <div class="categories">
+                                                {% for category in __categories.categories() %}
+                                                    <a href="{{ path('app_posts_category', {'slug': category.slugify(category.name)}) }}">
+                                                        <span class="btn btn-dim btn-outline-light badge badge-pill">{{ category.name }}</span>
+                                                    </a>
+                                                {% endfor %}
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- footer @s -->
+                    {{ include('partials/_footer.html.twig') }}
+                    <!-- footer @e -->
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if not app.user() %}
+        {{ include('partials/modals/_login_modal.html.twig') }}
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <script>
+            $(document).ready(function () {
+                NioApp.Toast(`{{ include("partials/security/_quick_actions-post.html.twig") }}`,
+                    'info',
+                    {timeOut: 0, extendedTimeOut: 0, progressBar: true}
+                )
+
+                $('.remove_comment_js').each((i, ele) => {
+                    $(ele).click((e) => {
+                        e.preventDefault()
+
+                        let form = $(ele).parent().find('form')
+
+                        if (form.length) {
+                            form.submit()
+                        }
+                    })
+                })
+
+                $('.suspend_user_js').each((i, ele) => {
+                    $(ele).click((e) => {
+                        e.preventDefault()
+                    })
+                })
+            })
+        </script>
+    {% endif %}
+    <script>
+        $(document).ready(() => {
+            $('img').each((i, ele) => {
+                if (!$(ele).hasClass('w-100') && !$(ele).hasClass('author-user')) {
+                    $(ele).css({'height': '', 'width': ''})
+                    $(ele).addClass('w-100')
+                }
+            })
+        })
+    </script>
+{% endblock %}

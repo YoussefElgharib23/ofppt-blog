@@ -1,0 +1,691 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% set in_admin = true %}
+    <div class="nk-content ">
+        <div class="container wide-xl">
+            <div class="nk-content-inner">
+                {{ include('partials/_sidebar.html.twig') }}
+                <div class="nk-content-body">
+                    <div class="nk-content-wrap">
+                        <div class="nk-block-head">
+                            <div class="nk-block-between">
+                                <div class="nk-block-head-content">
+                                    <h3 class="nk-block-title page-title">Users Lists</h3>
+                                    <div class="nk-block-des text-soft">
+                                        <p>You have total {{ users.getTotalItemCount }} users.</p>
+                                    </div>
+                                </div><!-- .nk-block-head-content -->
+                                <div class="nk-block-head-content">
+                                    <div class="toggle-wrap nk-block-tools-toggle">
+                                        <a href="#" class="btn btn-icon btn-trigger toggle-expand mr-n1"
+                                           data-target="pageMenu"><em class="icon ni ni-menu-alt-r"></em></a>
+                                        <div class="toggle-expand-content" data-content="pageMenu">
+                                            <ul class="nk-block-tools g-3">
+                                                <li><a href="#" class="btn btn-white btn-outline-light"><em
+                                                                class="icon ni ni-download-cloud"></em><span>Export</span></a>
+                                                </li>
+                                                <li class="nk-block-tools-opt">
+                                                    <div class="drodown">
+                                                        <a href="#" class="dropdown-toggle btn btn-icon btn-primary"
+                                                           data-toggle="dropdown"><em class="icon ni ni-plus"></em></a>
+                                                        <div class="dropdown-menu dropdown-menu-right">
+                                                            <ul class="link-list-opt no-bdr">
+                                                                <li>
+                                                                    <a href="{{ path('app_admin_create_user') }}"><span>Add User</span></a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div><!-- .toggle-wrap -->
+                                </div><!-- .nk-block-head-content -->
+                            </div><!-- .nk-block-between -->
+                        </div><!-- .nk-block-head -->
+                        <div class="nk-block">
+                            <div class="card card-bordered card-stretch">
+                                <div class="card-inner-group">
+                                    <div class="card-inner position-relative card-tools-toggle">
+                                        <div class="card-title-group">
+                                            <div class="card-tools">
+                                                <div class="form-inline flex-nowrap gx-3">
+                                                    <div class="form-wrap w-150px">
+                                                        <select class="form-select form-select-sm" id="options-select">
+                                                            <option value="" selected>Bulk Action</option>
+                                                            <option value="email">Send Email</option>
+                                                            <option value="active">Active user</option>
+                                                            <option value="suspend">Suspend User</option>
+                                                            <option value="delete">Delete User</option>
+                                                        </select>
+                                                        <span id="select-value-js" class="d-none"></span>
+                                                    </div>
+                                                    <div class="btn-wrap">
+                                                        <span class="d-none d-md-block">
+                                                            <button type="button"
+                                                                    class="btn btn-dim btn-outline-primary apply-btn-js">Apply</button>
+                                                        </span>
+                                                        <span class="d-md-none">
+                                                            <button class="btn btn-dim btn-outline-primary btn-icon apply-btn-js">
+                                                                <em class="icon ni ni-arrow-right"></em>
+                                                            </button>
+                                                        </span>
+                                                    </div>
+                                                </div><!-- .form-inline -->
+                                            </div><!-- .card-tools -->
+                                            <div class="card-tools mr-n1">
+                                                <ul class="btn-toolbar gx-1">
+                                                    <li>
+                                                        <a href="#" class="btn btn-icon search-toggle toggle-search"
+                                                           data-target="search"><em class="icon ni ni-search"></em></a>
+                                                    </li><!-- li -->
+                                                    <li class="btn-toolbar-sep"></li><!-- li -->
+                                                    <li>
+                                                        <div class="toggle-wrap">
+                                                            <a href="#" class="btn btn-icon btn-trigger toggle"
+                                                               data-target="cardTools"><em
+                                                                        class="icon ni ni-menu-right"></em></a>
+                                                            <div class="toggle-content" data-content="cardTools">
+                                                                <ul class="btn-toolbar gx-1">
+                                                                    <li class="toggle-close">
+                                                                        <a href="#"
+                                                                           class="btn btn-icon btn-trigger toggle"
+                                                                           data-target="cardTools"><em
+                                                                                    class="icon ni ni-arrow-left"></em></a>
+                                                                    </li><!-- li -->
+                                                                    <li>
+                                                                        <div class="dropdown">
+                                                                            <a href="#"
+                                                                               class="btn btn-trigger btn-icon dropdown-toggle"
+                                                                               data-toggle="dropdown">
+                                                                                <div class="dot dot-primary"></div>
+                                                                                <em class="icon ni ni-filter-alt"></em>
+                                                                            </a>
+                                                                            <div class="filter-wg dropdown-menu dropdown-menu-xl dropdown-menu-right">
+                                                                                <div class="dropdown-head">
+                                                                                    <span class="sub-title dropdown-title">Filter Users</span>
+                                                                                    <div class="dropdown">
+                                                                                        <a href="#"
+                                                                                           class="btn btn-sm btn-icon">
+                                                                                            <em class="icon ni ni-more-h"></em>
+                                                                                        </a>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="dropdown-body dropdown-body-rg">
+                                                                                    <div class="row gx-6 gy-3">
+                                                                                        <div class="col-6">
+                                                                                            <div class="custom-control custom-control-sm custom-checkbox">
+                                                                                                <input type="checkbox"
+                                                                                                       class="custom-control-input"
+                                                                                                       id="hasBalance">
+                                                                                                <label class="custom-control-label"
+                                                                                                       for="hasBalance">
+                                                                                                    Have Balance</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-6">
+                                                                                            <div class="custom-control custom-control-sm custom-checkbox">
+                                                                                                <input type="checkbox"
+                                                                                                       class="custom-control-input"
+                                                                                                       id="hasKYC">
+                                                                                                <label class="custom-control-label"
+                                                                                                       for="hasKYC"> KYC
+                                                                                                    Verified</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="overline-title overline-title-alt">Role</label>
+                                                                                                <select class="form-select form-select-sm"
+                                                                                                        id="select-user-role-js">
+                                                                                                    <option value="any">
+                                                                                                        Any Role
+                                                                                                    </option>
+                                                                                                    <option value="admin">
+                                                                                                        Admin
+                                                                                                    </option>
+                                                                                                    <option value="user">
+                                                                                                        User
+                                                                                                    </option>
+                                                                                                </select>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="overline-title overline-title-alt">Status</label>
+                                                                                                <select class="form-select form-select-sm"
+                                                                                                        id="status-user-js">
+                                                                                                    <option value="any">
+                                                                                                        Any Status
+                                                                                                    </option>
+                                                                                                    <option value="active">
+                                                                                                        Active
+                                                                                                    </option>
+                                                                                                    <option value="pending">
+                                                                                                        Pending
+                                                                                                    </option>
+                                                                                                    <option value="suspend">
+                                                                                                        Suspend
+                                                                                                    </option>
+                                                                                                    <option value="deleted">
+                                                                                                        Deleted
+                                                                                                    </option>
+                                                                                                </select>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-12">
+                                                                                            <div class="form-group">
+                                                                                                <button type="button"
+                                                                                                        id="filter-js"
+                                                                                                        class="btn btn-secondary">
+                                                                                                    Filter
+                                                                                                </button>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="dropdown-foot between">
+                                                                                    <a class="clickable" href="#"
+                                                                                       id="reset-filter-js">Reset
+                                                                                        Filter</a>
+                                                                                </div>
+                                                                            </div><!-- .filter-wg -->
+                                                                        </div><!-- .dropdown -->
+                                                                    </li><!-- li -->
+                                                                    <li>
+                                                                        <div class="dropdown">
+                                                                            <a href="#"
+                                                                               class="btn btn-trigger btn-icon dropdown-toggle"
+                                                                               data-toggle="dropdown">
+                                                                                <em class="icon ni ni-setting"></em>
+                                                                            </a>
+                                                                            <div class="dropdown-menu dropdown-menu-xs dropdown-menu-right">
+                                                                                <ul class="link-check">
+                                                                                    <li>
+                                                                                        <span>Show</span>
+                                                                                    </li>
+                                                                                    {% set queryCount = app.request.query.count %}
+                                                                                    {% if queryCount == 0 %}
+                                                                                        <li>
+                                                                                            <a href="{{ app.request.pathInfo }}?limit=10">10</a>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <a href="{{ app.request.pathInfo }}?limit=20">20</a>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <a href="{{ app.request.pathInfo }}?limit=50">50</a>
+                                                                                        </li>
+                                                                                    {% else %}
+                                                                                        {% set limit = app.request.get('limit', 10) %}
+                                                                                        {% if app.request.get('page') and app.request.get('order') %}
+                                                                                            <li {% if limit == 10 %} class="active" {% endif %}>
+                                                                                                <a href="{{ app.request.pathInfo }}?page={{ app.request.get('page') }}&order={{ app.request.get('order') }}&limit=10">10</a>
+                                                                                            </li>
+                                                                                            <li {% if limit == 20 %} class="active" {% endif %}>
+                                                                                                <a href="{{ app.request.pathInfo }}?page={{ app.request.get('page') }}&order={{ app.request.get('order') }}&limit=20">20</a>
+                                                                                            </li>
+                                                                                            <li {% if limit == 50 %} class="active" {% endif %}>
+                                                                                                <a href="{{ app.request.pathInfo }}?page={{ app.request.get('page') }}&order={{ app.request.get('order') }}&limit=50">50</a>
+                                                                                            </li>
+                                                                                        {% elseif app.request.get('page') %}
+                                                                                            <li {% if limit == 10 %} class="active" {% endif %}>
+                                                                                                <a href="{{ app.request.pathInfo }}?page={{ app.request.get('page') }}&limit=10">10</a>
+                                                                                            </li>
+                                                                                            <li {% if limit == 20 %} class="active" {% endif %}>
+                                                                                                <a href="{{ app.request.pathInfo }}?page={{ app.request.get('page') }}&limit=20">20</a>
+                                                                                            </li>
+                                                                                            <li {% if limit == 50 %} class="active" {% endif %}>
+                                                                                                <a href="{{ app.request.pathInfo }}?page={{ app.request.get('page') }}&limit=50">50</a>
+                                                                                            </li>
+                                                                                        {% elseif app.request.get('order') %}
+                                                                                            <li {% if limit == 10 %} class="active" {% endif %}>
+                                                                                                <a href="{{ app.request.pathInfo }}?order={{ app.request.get('order') }}&limit=10">10</a>
+                                                                                            </li>
+                                                                                            <li {% if limit == 20 %} class="active" {% endif %}>
+                                                                                                <a href="{{ app.request.pathInfo }}?order={{ app.request.get('order') }}&limit=20">20</a>
+                                                                                            </li>
+                                                                                            <li {% if limit == 50 %} class="active" {% endif %}>
+                                                                                                <a href="{{ app.request.pathInfo }}?order={{ app.request.get('order') }}&limit=50">50</a>
+                                                                                            </li>
+                                                                                        {% else %}
+                                                                                            <li {% if limit == 10 %} class="active" {% endif %}>
+                                                                                                <a href="{{ app.request.pathInfo }}?limit=10">10</a>
+                                                                                            </li>
+                                                                                            <li {% if limit == 20 %} class="active" {% endif %}>
+                                                                                                <a href="{{ app.request.pathInfo }}?limit=20">20</a>
+                                                                                            </li>
+                                                                                            <li {% if limit == 50 %} class="active" {% endif %}>
+                                                                                                <a href="{{ app.request.pathInfo }}?limit=50">50</a>
+                                                                                            </li>
+                                                                                        {% endif %}
+                                                                                    {% endif %}
+                                                                                </ul>
+                                                                                <ul class="link-check">
+                                                                                    <li><span>Order</span></li>
+                                                                                    {% if queryCount == 0 %}
+                                                                                        <li class="active">
+                                                                                            <a href="{{ app.request.pathInfo }}?order=asc">ASC</a>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <a href="{{ app.request.pathInfo }}?order=desc">DESC</a>
+                                                                                        </li>
+                                                                                    {% elseif queryCount > 0 %}
+                                                                                        {% set order = app.request.get('order', 'asc') %}
+                                                                                        {% if app.request.get('page') and app.request.get('limit') %}
+                                                                                            <li {% if order == 'asc' %} class="active" {% endif %}>
+                                                                                                <a href="{{ app.request.pathInfo }}?page={{ app.request.get('page') }}&limit={{ app.request.get('limit') }}&order=asc">ASC</a>
+                                                                                            </li>
+                                                                                            <li {% if order == 'desc' %} class="active" {% endif %}>
+                                                                                                <a href="{{ app.request.pathInfo }}?page={{ app.request.get('page') }}&limit={{ app.request.get('limit') }}&order=desc">DESC</a>
+                                                                                            </li>
+                                                                                        {% elseif app.request.get('page') %}
+                                                                                            <li {% if order == 'asc' %} class="active" {% endif %}>
+                                                                                                <a href="{{ app.request.pathInfo }}?page={{ app.request.get('page') }}&order=asc">ASC</a>
+                                                                                            </li>
+                                                                                            <li {% if order == 'desc' %} class="active" {% endif %}>
+                                                                                                <a href="{{ app.request.pathInfo }}?page={{ app.request.get('page') }}&order=desc">DESC</a>
+                                                                                            </li>
+                                                                                        {% elseif app.request.get('limit') %}
+                                                                                            <li {% if order == 'asc' %} class="active" {% endif %}>
+                                                                                                <a href="{{ app.request.pathInfo }}?limit={{ app.request.get('limit') }}&order=asc">ASC</a>
+                                                                                            </li>
+                                                                                            <li {% if order == 'desc' %} class="active" {% endif %}>
+                                                                                                <a href="{{ app.request.pathInfo }}?limit={{ app.request.get('limit') }}&order=desc">DESC</a>
+                                                                                            </li>
+                                                                                        {% else %}
+                                                                                            <li {% if order == 'asc' %} class="active" {% endif %}>
+                                                                                                <a href="{{ app.request.pathInfo }}?order=asc">ASC</a>
+                                                                                            </li>
+                                                                                            <li {% if order == 'desc' %} class="active" {% endif %}>
+                                                                                                <a href="{{ app.request.pathInfo }}?order=desc">DESC</a>
+                                                                                            </li>
+                                                                                        {% endif %}
+                                                                                    {% endif %}
+                                                                                </ul>
+                                                                            </div>
+                                                                        </div><!-- .dropdown -->
+                                                                    </li><!-- li -->
+                                                                </ul><!-- .btn-toolbar -->
+                                                            </div><!-- .toggle-content -->
+                                                        </div><!-- .toggle-wrap -->
+                                                    </li><!-- li -->
+                                                </ul><!-- .btn-toolbar -->
+                                            </div><!-- .card-tools -->
+                                        </div><!-- .card-title-group -->
+                                        <div class="card-search search-wrap" data-search="search">
+                                            <div class="card-body">
+                                                <div class="search-content">
+                                                    <a href="#" class="search-back btn btn-icon toggle-search"
+                                                       data-target="search"><em class="icon ni ni-arrow-left"></em></a>
+                                                    <form action="#" autocomplete="return false">
+                                                        <input type="email"
+                                                               class="form-control border-transparent form-focus-none"
+                                                               id="search-user-email-js"
+                                                               placeholder="Search by user or email">
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div><!-- .card-search -->
+                                    </div><!-- .card-inner -->
+                                    <div class="card-inner p-0">
+                                        <div class="nk-tb-list nk-tb-ulist">
+                                            <div class="nk-tb-item nk-tb-head">
+                                                <div class="nk-tb-col nk-tb-col-check">
+                                                    <div class="custom-control custom-control-sm custom-checkbox notext">
+                                                        <input type="checkbox" class="custom-control-input" id="uid">
+                                                        <label class="custom-control-label" for="uid"></label>
+                                                    </div>
+                                                </div>
+                                                <div class="nk-tb-col"><span class="sub-text">User</span></div>
+                                                <div class="nk-tb-col tb-col-mb"><span
+                                                            class="sub-text">Comment count</span></div>
+                                                <div class="nk-tb-col tb-col-md"><span class="sub-text">Phone</span>
+                                                </div>
+                                                <div class="nk-tb-col tb-col-xl"><span class="sub-text">Verified</span>
+                                                </div>
+                                                <div class="nk-tb-col tb-col-xl"><span class="sub-text">Joined at</span>
+                                                </div>
+                                                <div class="nk-tb-col tb-col-md"><span class="sub-text">Status</span>
+                                                </div>
+                                                <div class="nk-tb-col nk-tb-col-tools text-right">
+                                                    <div class="dropdown">
+                                                        <a href="#"
+                                                           class="btn btn-xs btn-outline-light btn-icon dropdown-toggle"
+                                                           data-toggle="dropdown" data-offset="0,5"><em
+                                                                    class="icon ni ni-plus"></em></a>
+                                                        <div class="dropdown-menu dropdown-menu-xs dropdown-menu-right">
+                                                            <ul class="link-tidy sm no-bdr">
+                                                                <li>
+                                                                    <div class="custom-control custom-control-sm custom-checkbox">
+                                                                        <input type="checkbox"
+                                                                               class="custom-control-input" checked=""
+                                                                               id="bl">
+                                                                        <label class="custom-control-label" for="bl">Balance</label>
+                                                                    </div>
+                                                                </li>
+                                                                <li>
+                                                                    <div class="custom-control custom-control-sm custom-checkbox">
+                                                                        <input type="checkbox"
+                                                                               class="custom-control-input" checked=""
+                                                                               id="ph">
+                                                                        <label class="custom-control-label" for="ph">Phone</label>
+                                                                    </div>
+                                                                </li>
+                                                                <li>
+                                                                    <div class="custom-control custom-control-sm custom-checkbox">
+                                                                        <input type="checkbox"
+                                                                               class="custom-control-input" id="vri">
+                                                                        <label class="custom-control-label" for="vri">Verified</label>
+                                                                    </div>
+                                                                </li>
+                                                                <li>
+                                                                    <div class="custom-control custom-control-sm custom-checkbox">
+                                                                        <input type="checkbox"
+                                                                               class="custom-control-input" id="st">
+                                                                        <label class="custom-control-label" for="st">Status</label>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div><!-- .nk-tb-item -->
+                                            {% for user in users %}
+                                                <div class="nk-tb-item user-list-js" data-target="{{ user.id }}">
+                                                    <div class="nk-tb-col nk-tb-col-check">
+                                                        <div class="custom-control custom-control-sm custom-checkbox notext">
+                                                            <input type="checkbox"
+                                                                   class="custom-control-input select-box-js"
+                                                                   id="uid{{ user.id }}">
+                                                            <label class="custom-control-label"
+                                                                   for="uid{{ user.id }}"></label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="nk-tb-col">
+                                                        <a href="{{ path('app_admin_details_user', {'id': user.id}) }}">
+                                                            <div class="user-card">
+                                                                <div class="user-avatar bg-primary">
+                                                                    {% if user.imageName %}
+                                                                        <img src="{{ vich_uploader_asset(user, 'imageFile') | imagine_filter('profile_pic_min_table') }}"
+                                                                             alt="">
+                                                                    {% else %}
+                                                                        <span>
+                                                                            {{ user.firstTowLatterName }}
+                                                                        </span>
+                                                                    {% endif %}
+                                                                </div>
+                                                                <div class="user-info"
+                                                                        {% if user.deletedAt is not null %}
+                                                                            data-status="deleted"
+                                                                        {% elseif user.status %}
+                                                                            data-status="active"
+                                                                        {% elseif user.status == 0 %}
+                                                                            data-status="suspend"
+                                                                        {% else %}
+                                                                            data-status="deleted"
+                                                                        {% endif %}
+
+                                                                        {% if 'ROLE_ADMIN' in user.roles %}
+                                                                    data-role="admin"
+                                                                {% else %}
+                                                                    data-role="user"
+                                                                        {% endif %}>
+                                                                    <span class="tb-lead">
+                                                                        {{ user.fullName }}
+                                                                        {% if user.deletedAt is not null %}
+                                                                            <span class="dot dot-danger d-md-none ml-1"></span>
+                                                                        {% elseif user.status %}
+                                                                            <span class="dot dot-success d-md-none ml-1"></span>
+                                                                        {% elseif not user.status %}
+                                                                            <span class="dot dot-warning d-md-none ml-1"></span>
+                                                                        {% endif %}
+                                                                    </span>
+                                                                    <span class="user-email"
+                                                                          data-value="{{ user.email }}">{{ user.email }}</span>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                    <div class="nk-tb-col tb-col-mb">
+                                                        <span class="tb-amount">{{ user.comments.count }} comments</span>
+                                                    </div>
+                                                    <div class="nk-tb-col tb-col-md">
+                                                        {% if user.phoneNumber %}
+                                                            <span>{{ user.phoneNumber }}</span>
+                                                        {% else %}
+                                                            <span>Not set</span>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="nk-tb-col tb-col-xl">
+                                                        <ul class="list-status">
+                                                            {% if 'ROLE_ADMIN' in user.roles %}
+                                                                <li>
+                                                                    <em class="icon text-success ni ni-check-circle"></em>
+                                                                    <span>Admin</span>
+                                                                </li>
+                                                            {% elseif user.isVerified %}
+                                                                <li>
+                                                                    <em class="icon text-success ni ni-check-circle"></em>
+                                                                    <span>Email</span>
+                                                                </li>
+                                                            {% else %}
+                                                                <li>
+                                                                    <em class="icon text-warning ni ni-alert-circle"></em><span>Not verified</span>
+                                                                </li>
+                                                            {% endif %}
+                                                        </ul>
+                                                    </div>
+                                                    <div class="nk-tb-col tb-col-xl">
+                                                        <span>
+                                                            {{ user.createdAt | date('d M Y') }}
+                                                        </span>
+                                                    </div>
+                                                    <div class="nk-tb-col tb-col-md">
+                                                        {% if user.deletedAt is not null %}
+                                                            <span class="tb-status text-danger">Deleted</span>
+                                                        {% elseif user.status %}
+                                                            <span class="tb-status text-success">Active</span>
+                                                        {% elseif not user.status %}
+                                                            <span class="tb-status text-warning">Suspended</span>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="nk-tb-col nk-tb-col-tools">
+                                                        <ul class="nk-tb-actions gx-1">
+                                                            {% if not ('ROLE_ADMIN' in user.roles) %}
+                                                                <li class="nk-tb-action-hidden">
+                                                                    {% if user.status %}
+                                                                        {# When the user clicks the link a model shows up #}
+                                                                        <a href="{{ path('app_admin_suspend_user', {'id': user.id}) }}"
+                                                                           class="btn btn-trigger btn-icon"
+                                                                           data-toggle="modal"
+                                                                           data-target="#modalDefault-{{ user.id }}"
+                                                                           data-placement="top" title="Suspend User"
+                                                                           data-original-title="Suspend">
+                                                                            <em class="icon ni ni-user-cross-fill"></em>
+                                                                        </a>
+                                                                    {% else %}
+                                                                        <a href="{{ path('app_admin_active_user', {'id': user.id}) }}"
+                                                                           class="btn btn-trigger btn-icon"
+                                                                           data-toggle="tooltip" data-placement="top"
+                                                                           title="Active User"
+                                                                           data-original-title="Active">
+                                                                            <em class="icon ni ni-user-check-fill"></em>
+                                                                        </a>
+                                                                    {% endif %}
+                                                                </li>
+                                                                <li class="nk-tb-action-hidden">
+                                                                    <a href="#"
+                                                                       class="btn btn-trigger btn-icon btn-delete-user"
+                                                                       data-toggle="tooltip" data-placement="top"
+                                                                       title="Delete User" data-original-title="Active">
+                                                                        <em class="icon ni ni-user-remove-fill"></em>
+                                                                    </a>
+                                                                    <form action="{{ path('app_admin_delete_user', {'id': user.id}) }}"
+                                                                          method="POST">
+                                                                        <input type="hidden" name="_token"
+                                                                               value="{{ csrf_token('delete-user') }}">
+                                                                        <input type="hidden" name="_method"
+                                                                               value="DELETE">
+                                                                    </form>
+                                                                </li>
+                                                            {% endif %}
+                                                            <li>
+                                                                <div class="drodown">
+                                                                    <a href="#"
+                                                                       class="dropdown-toggle btn btn-icon btn-trigger"
+                                                                       data-toggle="dropdown"><em
+                                                                                class="icon ni ni-more-h"></em></a>
+                                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                                        <ul class="link-list-opt no-bdr">
+                                                                            <li>
+                                                                                <a href="{{ path('app_admin_details_user', {'id': user.id}) }}">
+                                                                                    <em class="icon ni ni-eye"></em>
+                                                                                    <span>View User Details</span>
+                                                                                </a>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div><!-- .nk-tb-item -->
+                                            {% endfor %}
+                                        </div><!-- .nk-tb-list -->
+                                    </div><!-- .card-inner -->
+                                    <div class="card-inner">
+                                        <div class="nk-block-between-md g-3">
+                                            <div class="g">
+                                                <ul class="pagination justify-content-center">
+                                                    {{ knp_pagination_render(users, '@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig') }}
+                                                </ul>
+                                            </div>
+                                        </div><!-- .nk-block-between -->
+                                    </div><!-- .card-inner -->
+                                </div><!-- .card-inner-group -->
+                            </div><!-- .card -->
+                        </div><!-- .nk-block -->
+                    </div>
+                    <!-- footer @s -->
+                    <div class="nk-footer">
+                        <div class="container wide-xl">
+                            <div class="nk-footer-wrap g-2">
+                                <div class="nk-footer-copyright"> © 2020 DashLite. Template by <a href="#">Softnio</a>
+                                </div>
+                                <div class="nk-footer-links">
+                                    <ul class="nav nav-sm">
+                                        <li class="nav-item"><a class="nav-link" href="#">Terms</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="#">Privacy</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- footer @e -->
+                </div>
+            </div>
+        </div>
+    </div>
+    {% for user in users %}
+        <form action="{{ path('app_admin_suspend_user', {'id': user.id}) }}" method="post" class="d-n form-validate">
+            <input type="hidden" name="_method" value="DELETE">
+            <input type="hidden" name="_token" value="{{ csrf_token('suspend-user') }}">
+            <div class="modal zoom" tabindex="-1" id="modalDefault-{{ user.id }}">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <a href="#" class="close" data-dismiss="modal" aria-label="Close">
+                            <em class="icon ni ni-cross"></em>
+                        </a>
+                        <div class="modal-header">
+                            <h5 class="modal-title">Modal Title</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label class="form-label" for="default-02">Describe why you want suspend the user</label>
+                                <div class="form-control-wrap">
+                                    <textarea class="form-control" name="description" required
+                                              id="default-textarea" placeholder="Describe the problem ..."></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-outline-danger btn-block">Send the email</button>
+                            </div>
+                        </div>
+                        <div class="modal-footer bg-light">
+                            <span class="sub-text">Modal Footer Text</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    {% endfor %}
+
+{% endblock %}
+
+{% block javascripts %}
+
+    <script>
+        $(document).ready(function () {
+            $('.form-select').each((i, ele) => {
+                $(ele).select2();
+            });
+
+            $('input#uid').click(() => {
+                let $this = $('input#uid')
+                if ($this.is(':checked')) {
+                    $('input.select-box-js').each((i, ele) => {
+                        $(ele).prop('checked', 'checked')
+                    })
+                } else {
+                    $('input.select-box-js').each((i, ele) => {
+                        $(ele).prop('checked', false)
+                    })
+                }
+                getUserByCheck()
+            })
+        });
+
+        $('input.select-box-js').each((i, ele) => {
+            $(ele).click(() => {
+                getUserByCheck()
+            })
+        })
+
+        function getUserByCheck(status = null) {
+            $('.select-box-js').each((i, ele) => {
+                if ($(ele).is(':checked')) {
+                    console.log($(ele).parents('div.nk-tb-item').data('target'))
+                }
+            })
+        }
+    </script>
+
+    <script>
+        $(document).ready(() => {
+            $('.btn-delete-user').each((i, ele) => {
+                $(ele).click((e) => {
+                    e.preventDefault()
+
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then(function (result) {
+                        if (result.value) {
+                            Swal.fire('Deleted!', 'Your file has been deleted.', 'success')
+                            let $form = $(ele).parent().find('form')
+                            $form.submit()
+                        }
+                    });
+                })
+            })
+        })
+    </script>
+
+    <script src="{{ asset('assets/js/user.js') }}"></script>
+    <script src="{{ asset('assets/js/select2-val.js') }}"></script>
+
+{% endblock %}

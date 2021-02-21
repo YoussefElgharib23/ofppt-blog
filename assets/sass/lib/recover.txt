@@ -1,0 +1,46 @@
+console.log(response.data)
+                let message = response.data.message
+
+                // Get the description and the category
+                $('h4.title').html(message.description)
+                $('#category-msg').html(capitalize(message.category))
+                $('.user__name').each((i, ele) => {
+                    console.log(i)
+                    if (i === 0) {
+                        $(ele).html(message.twoLettersName)
+                    }
+                })
+
+                $('.user-name').each((i, ele) => {
+                    if (i === 0) {
+                        $(ele).html(message.fullName)
+                    }
+                })
+                $('.nk-reply-entry.entry').each((i, ele) => {
+                    if (i === 0) {
+                        $(ele).html(`<p>${message.details}</p>`)
+                    }
+                })
+                $('.date-time').each((i, ele) => {
+                    if (i === 0) {
+                        $(ele).html(message.formattedCreatedAt)
+                    }
+                })
+                $('.nb-attached-files').each((i, ele) => {
+                    if (i === 0) {
+                        $(ele).html('1');
+                    }
+                })
+                let attachedFiles = $('.attach-files')
+                if (message.imageName === null) {
+                    attachedFiles.addClass('d-n')
+                    return
+                }
+
+                attachedFiles.removeClass('d-n')
+                $('.download').each((i, ele) => {
+                    if (i === 0) {
+                        $('a.attach-download:first').attr('href', message.imgTargetPath)
+                        $(ele).attr('href', message.imgTargetPath)
+                    }
+                })

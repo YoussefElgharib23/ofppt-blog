@@ -1,0 +1,22 @@
+{% if post is defined %}
+    <div>
+        <h6>Quick admin actions</h6>
+        {% if post.status == 1 %}
+            <a href="{{ path('app_admin_active_post', {'id': post.id}) }}" class="btn btn-dim btn-outline-success">Active Post</a>
+        {% elseif post.status == 2 %}
+            <a href="{{ path('app_admin_restore_post', {'id': post.id}) }}" class="btn btn-dim btn-outline-success">Restore Post</a>
+            <form method="post" action="{{ path('app_admin_delete_post', {'id': post.id}) }}" id="{{ post.id }}" class="d-inline-flex">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete-post-' ~ post.id) }}">
+                <input type="submit" class="btn btn-outline-danger" value="Delete permanently">
+            </form>
+        {% else %}
+            <a href="{{ path('app_admin_remove_post', {'id': post.id}) }}" class="btn btn-dim btn-danger">
+                <em class="icon ni ni-trash"></em>
+            </a>
+        {% endif %}
+        <a href="{{ path('app_admin_edit_post', {'id': post.id, 'slug': post.slugify(post.title)}) }}" class="btn btn-dim btn-outline-primary">
+            <em class="icon ni ni-pen2" data-toggle="tooltip" data-placement="top" title="Edit the post"></em>
+        </a>
+    </div>
+{% endif %}

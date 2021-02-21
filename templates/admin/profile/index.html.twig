@@ -1,0 +1,159 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% set in_admin = true %}
+    <div class="nk-content">
+        <div class="container wide-xl">
+            <div class="nk-content-inner">
+                {{ include('partials/_sidebar.html.twig') }}
+                <div class="nk-content-body">
+                    <div class="nk-content-wrap">
+                        <div class="nk-block-head">
+                            <div class="nk-block-head-content">
+                                <h3 class="nk-block-title page-title">My Profile</h3>
+                                <div class="nk-block-des">
+                                    <p>You have full control to manage your own account setting.</p>
+                                </div>
+                            </div>
+                        </div><!-- .nk-block-head -->
+                        <div class="nk-block">
+                            <div class="card card-bordered">
+                                <ul class="nav nav-tabs nav-tabs-mb-icon nav-tabs-card">
+                                    <li class="nav-item active current-page">
+                                        <a class="nav-link active" href="{{ path('app_admin_index_profile') }}">
+                                            <em class="icon ni ni-user-fill-c"></em>
+                                            <span>Personal</span>
+                                        </a>
+                                    </li>
+                                </ul><!-- .nav-tabs -->
+                                <div class="card-inner card-inner-lg">
+                                    <div class="nk-block-head">
+                                        <div class="nk-block-head-content">
+                                            <h4 class="nk-block-title">Personal Information</h4>
+                                            <div class="nk-block-des">
+                                                <p>Basic info, like your name and address, that you use on Blogger.</p>
+                                            </div>
+                                        </div>
+                                    </div><!-- .nk-block-head -->
+                                    <div class="row gy-4">
+                                        <div class="col-md-6 mx-auto">
+                                            <div class="d-flex justify-content-center">
+                                                <div style="height: 200px; width: 200px;" class="rounded-circle position-relative" style="background-color: #e7e7e791 !important">
+                                                    {% if app.user.imageName is null %}
+                                                        <img src="{{ asset('images/no-image.png') }}" width="200px" height="200px" class="fade show rounded-circle" id="preview-image" alt="">
+                                                    {% elseif app.user.imageName is not null %}
+                                                        <img data-lazy="{{ vich_uploader_asset(app.user, 'imageFile') | imagine_filter('profile_pic') }}"
+                                                             class="posts-images rounded-circle posts-images fade"  alt="" width="200px" height="200px" id="profile-pic_pre-js" src="">
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{ form_start(formUpdateProfilePic) }}
+                                    <div class="row gy-4">
+                                        <div class="col-md-6 mx-auto">
+                                            <div class="form-group">
+                                                {{ form_row(formUpdateProfilePic.imageFile, {
+                                                    label_attr: {
+                                                        class: 'form-label'
+                                                    },
+                                                    attr: {
+                                                        class: 'form-control-lg'
+                                                    }
+                                                }) }}
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="submit" value="Save image"
+                                                       class="btn btn-dim btn-outline-primary btn-block">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{ form_end(formUpdateProfilePic) }}
+                                    {% if errorProfileUpdate is defined %}
+                                        <div class="alert alert-danger alert-icon alert-pro mt-3">
+                                            <em class="icon ni ni-alert-circle"></em>
+                                            An error has occurred ! Please try again
+                                        </div>
+                                    {% endif %}
+                                    <div class="nk-block">
+                                        <div class="nk-data data-list data-list-s2">
+                                            <div class="data-head">
+                                                <h6 class="overline-title">Basics</h6>
+                                            </div>
+                                            <div class="data-item" data-toggle="modal" data-target="#profile-edit">
+                                                <div class="data-col">
+                                                    <span class="data-label">Full Name</span>
+                                                    <span class="data-value">{{ app.user.fullName(false) }}</span>
+                                                </div>
+                                                <div class="data-col data-col-end"><span class="data-more"><em
+                                                                class="icon ni ni-forward-ios"></em></span></div>
+                                            </div><!-- data-item -->
+                                            <div class="data-item" data-toggle="modal" data-target="#profile-edit">
+                                                <div class="data-col">
+                                                    <span class="data-label">Display Name</span>
+                                                    {% if app.user.displayName == null %}
+                                                        <span class="data-value text-soft">Not add yet</span>
+                                                    {% else %}
+                                                        <span class="data-value">{{ app.user.displayName }}</span>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="data-col data-col-end"><span class="data-more"><em
+                                                                class="icon ni ni-forward-ios"></em></span></div>
+                                            </div><!-- data-item -->
+                                            <div class="data-item">
+                                                <div class="data-col">
+                                                    <span class="data-label">Email</span>
+                                                    <span class="data-value">
+                                                        {{ app.user.email }}
+                                                    </span>
+                                                </div>
+                                                <div class="data-col data-col-end"><span class="data-more disable"><em
+                                                                class="icon ni ni-lock-alt"></em></span></div>
+                                            </div><!-- data-item -->
+                                            <div class="data-item" data-toggle="modal" data-target="#profile-edit">
+                                                <div class="data-col">
+                                                    <span class="data-label">Phone Number</span>
+                                                    {% if app.user.phoneNumber == null %}
+                                                        <span class="data-value text-soft">Not add yet</span>
+                                                    {% else %}
+                                                        <span class="data-value">{{ app.user.phoneNumber }}</span>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="data-col data-col-end"><span class="data-more"><em
+                                                                class="icon ni ni-forward-ios"></em></span></div>
+                                            </div><!-- data-item -->
+                                        </div><!-- data-list -->
+                                    </div><!-- .nk-block -->
+                                </div><!-- .card-inner -->
+                            </div><!-- .card -->
+                        </div><!-- .nk-block -->
+                    </div>
+                    <!-- footer @s -->
+                    <div class="nk-footer">
+                        <div class="container wide-xl">
+                            <div class="nk-footer-wrap g-2">
+                                <div class="nk-footer-copyright"> © 2020 DashLite. Template by <a href="#">Softnio</a>
+                                </div>
+                                <div class="nk-footer-links">
+                                    <ul class="nav nav-sm">
+                                        <li class="nav-item"><a class="nav-link" href="#">Terms</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="#">Privacy</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- footer @e -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    
+    {{ include('partials/_profile_user_js.html.twig') }}
+
+{% endblock %}
+

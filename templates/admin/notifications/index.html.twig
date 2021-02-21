@@ -1,0 +1,144 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Notification | ' ~ APP_NAME %}
+
+{% block body %}
+    {% set in_admin = true %}
+    <div class="nk-content">
+        <div class="container wide-xl">
+            <div class="nk-content-inner">
+                <!-- ASIDE -->
+                {{ include('partials/_sidebar.html.twig') }}
+                <!-- ASIDE -->
+                <div class="nk-content-body">
+                    <div class="nk-block nk-block-lg">
+                        <div class="nk-block-head">
+                            <div class="nk-block-head-content">
+                                <h4 class="nk-block-title">Notifications - users activity, posts likes and comments</h4>
+                            </div>
+                        </div>
+                        {% if notifications | length > 0 %}
+                        <div class="card card-bordered card-preview">
+                            <table class="table table-orders">
+                                <thead class="tb-odr-head">
+                                <tr class="tb-odr-item">
+                                    <th class="tb-odr-info">
+                                        <span class="tb-odr-id">Notification ID</span>
+                                        <span class="tb-odr-date d-none d-md-inline-block">Date</span>
+                                    </th>
+                                    <th class="tb-odr-amount">
+                                        <span class="tb-odr-total">Content</span>
+                                    </th>
+                                    <th class="tb-odr-action">&nbsp;</th>
+                                </tr>
+                                </thead>
+                                <tbody class="tb-odr-body">
+                                {% for notification in notifications %}
+                                    <tr class="tb-odr-item">
+                                        <td class="tb-odr-info">
+                                            <span class="tb-odr-id"><a href="#">#{{ notification.id }}</a></span>
+                                            <span class="tb-odr-date">{{ notification.createdAt | date('d M Y, h:i a') }}</span>
+                                        </td>
+                                        <td class="tb-odr-amount">
+                                            <span class="tb-odr-total">
+                                                <span class="amount">
+                                                    {% if notification.type == 'register' %}
+                                                        A new user was registered in your blogs
+                                                    {% elseif notification.type == 'comment' %}
+                                                        <a href="{{ path('app_admin_details_user', {'id': notification.user.id}) }}" class="link">
+                                                        {{ notification.user.fullName }}
+                                                        </a> has commented to your post {{ notification.post.title | u.truncate(20, '...') }}
+                                                    {% endif %}
+                                                </span>
+                                            </span>
+                                        </td>
+                                        <td class="tb-odr-action">
+                                            <div class="tb-odr-btns d-none d-md-inline">
+                                                {% if notification.type == 'register' %}
+                                                    <a href="{{ path('app_admin_details_user', {'id': notification.user.id}) }}" class="btn btn-sm btn-primary">View User</a>
+                                                {% elseif notification.type == 'comment' %}
+                                                    <a href="{{ path('app_show_post', {'id': notification.post.id, 'slug': notification.post.slugify(notification.post.title)}) }}" class="btn btn-sm btn-primary">View Post</a>
+                                                {% endif %}
+                                            </div>
+                                            <div class="dropdown">
+                                                <a class="text-soft dropdown-toggle btn btn-icon btn-trigger"
+                                                   data-toggle="dropdown" data-offset="-8,0">
+                                                    <em class="icon ni ni-more-h"></em>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-xs">
+                                                    <ul class="link-list-plain">
+                                                        {% if notification.type == 'register' %}
+                                                            <a href="{{ path('app_admin_details_user', {'id': notification.user.id}) }}" class="text-primary">View User</a>
+                                                        {% elseif notification.type == 'comment' %}
+                                                            <a href="{{ path('app_show_post', {'id': notification.post.id, 'slug': notification.post.slugify(notification.post.title)}) }}" class="text-primary">View Post</a>
+                                                        {% endif %}
+                                                        <li>
+                                                            <a href="{{ path('app_admin_delete_notification', {'id': notification.id}) }}" class="text-danger rm-notification-js">Remove</a>
+                                                            <span class="id-notification-js d-n">
+                                                                {{ notification.id }}
+                                                            </span>
+                                                            <form action="{{ path('app_admin_delete_notification', {'id': notification.id}) }}" method="post" class="d-n rem-form-notif-{{ notification.id }}">
+                                                                <input type="hidden" value="{{ csrf_token('delete-notification-' ~ notification.id) }}" name="_token">
+                                                                <input type="hidden" value="DELETE" name="_method">
+                                                            </form>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div><!-- .card-preview -->
+                        {% else %}
+                            <div class="h-100px d-flex justify-content-center align-items-center">
+                                <div class="text-center">
+                                    <em class="fa-3x text-black-50 icon ni ni-clock-fill mb-2"></em>
+                                    <br>
+                                    <h3 class="text-black-50">
+                                        No notification !
+                                    </h3>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <!-- footer @s -->
+                    {{ include('partials/_footer.html.twig') }}
+                    <!-- footer @e -->
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    
+    <script>
+        $(document).ready(() => {
+            $('a.rm-notification-js').each((i, ele) => {
+                $(ele).click((e) => {
+                    'use-strict',
+                    e.preventDefault()
+                    
+                    let notificationId = $(ele).parent().find('span.id-notification-js').text().trim(),
+                        form = $(`form.rem-form-notif-${notificationId}`)
+                        Swal.fire({
+                            title: 'Are you sure?',
+                            text: "You won't be able to revert this!",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Yes, delete it!'
+                        })
+                    .then(function (result) {
+                        if (result.value) {
+                            form.submit()
+                            Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+                        }
+                    })
+                })
+            })
+        })
+    </script>
+    
+{% endblock %}

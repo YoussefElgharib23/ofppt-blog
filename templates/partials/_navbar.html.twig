@@ -1,0 +1,209 @@
+<div class="nk-header nk-header-fixed is-light">
+    <div class="container-lg wide-xl">
+        <div class="nk-header-wrap">
+            <div class="nk-header-brand">
+                <a href="{{ path('app_blog') }}" class="logo-link">
+                    <img class="logo-light logo-img" src="{{ asset('images/logo.png') }}" srcset="{{ asset('images/logo2x.png') }} 2x" alt="logo">
+                    <img class="logo-dark logo-img" src="{{ asset('images/logo.png') }}" srcset="{{ asset('images/logo2x.png')}} 2x"
+                         alt="logo-dark">
+                </a>
+            </div><!-- .nk-header-brand -->
+            <div class="nk-header-menu mobile-menu">
+                <ul class="nk-menu nk-menu-main">
+                    <li class="nk-menu-item active current-page">
+                        <a href="{{ path('app_blog') }}" class="nk-menu-link" data-original-title="" title="">
+                            <span class="nk-menu-text">Home</span>
+                        </a>
+                    </li><!-- .nk-menu-item -->
+                    {% if __categories.getCategories | length > 0 %}
+                        <li class="nk-menu-item has-sub">
+                            <a href="#" class="nk-menu-link nk-menu-toggle" data-original-title="" title="">
+                                <span class="nk-menu-text">Categories</span>
+                            </a>
+                            <ul class="nk-menu-sub overflow-auto" style="max-height: 500px">
+                                {% for category in __categories.getCategories %}
+                                    <li class="nk-menu-item">
+                                        <a href="{{ path('app_posts_category', {'slug': category.slug}) }}" class="nk-menu-link" data-original-title="" title="">
+                                            <span class="nk-menu-text">{{ category.name | capitalize }}</span>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul><!-- .nk-menu-sub -->
+                        </li>
+                    {% endif %}
+                    <li class="nk-menu-item">
+                        <a href="{{ path('app_contact_us') }}" class="nk-menu-link">
+                            <span class="nk-menu-text">Contact Us</span>
+                        </a>
+                    </li>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="nk-menu-item"><a href="{{ path('app_admin_index') }}" class="nk-menu-link">
+                                <span class="nk-menu-text">Admin</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul><!-- .nk-menu -->
+            </div><!-- .nk-header-menu -->
+            <div class="nk-header-tools">
+                <ul class="nk-quick-nav">
+                    {% if app.user %}
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li class="dropdown notification-dropdown">
+                                <a href="#" class="dropdown-toggle nk-quick-nav-icon" data-toggle="dropdown"
+                                   aria-expanded="false">
+                                    <div class="icon-status icon-status-info" id="notification-status">
+                                        <em class="icon ni ni-bell"></em>
+                                    </div>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-xl dropdown-menu-right dropdown-menu-s1" style="">
+                                    <div class="dropdown-head">
+                                        <span class="sub-title nk-dropdown-title">Notifications</span>
+                                        <a href="#" id="mark-all-read">Mark All as Read</a>
+                                    </div>
+                                    <div class="dropdown-body">
+                                        <div class="nk-notification">
+                                            {% for notif in __notifications.getNotifications %}
+                                                <div class="nk-notification-item dropdown-inner">
+                                                    <div class="nk-notification-icon">
+                                                        <em class="icon icon-circle bg-warning-dim ni ni-curve-down-right"></em>
+                                                    </div>
+                                                    <div class="nk-notification-content">
+                                                        <div class="nk-notification-text">
+                                                            <span>
+                                                                {% if notif.type == 'register' %}
+                                                                    A new user was registered in your system !
+                                                                {% elseif notif.type == "emailConfirm" %}
+                                                                    {{ notif.user.fullName(false) }} has confirmed his email address
+                                                                {% else %}
+                                                                    {{ notif.user.fullName(false) }} commented on post {{ notif.post.title | u.truncate(10, '...') }}
+                                                                {% endif %}
+                                                            </span>
+                                                            <small class="mt-0">
+                                                                {% if notif.type == "register" %}
+                                                                    <a href="{{ path('app_admin_details_user', {'id': notif.user.id}) }}">
+                                                                        Click to see the user
+                                                                    </a>
+                                                                {% elseif notif.type == "emailConfirm" %}
+                                                                    <a href="{{ path('app_admin_details_user', {'id': notif.user.id}) }}">
+                                                                        Click to see the user
+                                                                    </a>
+                                                                {% else %}
+                                                                    <a href="{{ path('app_show_post', {
+                                                                        'id': notif.post.id,
+                                                                        'slug': notif.post.slugify(notif.post.title),
+                                                                    }) }}">
+                                                                        Click to see the post
+                                                                    </a>
+                                                                {% endif %}
+                                                            </small>
+                                                        </div>
+                                                        <div class="nk-notification-time">
+                                                            {{ date_difference(notif.createdAt) }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% else %}
+                                                <div class="nk-notification-item dropdown-inner">
+                                                    <div class="nk-notification-content text-center w-100">
+                                                        <div class="nk-notification-text text-danger">
+                                                            No new notifications
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div><!-- .nk-notification -->
+                                    </div><!-- .nk-dropdown-body -->
+                                    <div class="dropdown-foot center">
+                                        <a href="{{ path('app_admin_notification') }}">View All</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <!-- .dropdown -->
+                        {% endif %}
+                        <li class="dropdown user-dropdown">
+                            <a href="#" class="dropdown-toggle mr-lg-n1" data-toggle="dropdown" aria-expanded="false">
+                                <div class="user-toggle">
+                                    <div class="user-avatar sm">
+                                        {% if app.user.imageName is not null %}
+                                            <div class="user-avatar">
+                                                <img src="{{ vich_uploader_asset(app.user, 'imageFile') | imagine_filter('profile_pic_min') }}" alt="">
+                                            </div>
+                                        {% else %}
+                                            <em class="icon ni ni-user-alt"></em>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-md dropdown-menu-right dropdown-menu-s1" style="">
+                                <div class="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
+                                    <div class="user-card">
+                                        <div class="user-avatar">
+                                            {% if app.user.imageName %}
+                                                <img class="posts-images" data-lazy="{{ vich_uploader_asset(app.user, 'imageFile') | imagine_filter('profile_pic_min') }}" src="" alt="">
+                                            {% else %}
+                                                <span>{{ app.user.firstTowLatterName }}</span>
+                                            {% endif %}
+                                        </div>
+                                        <div class="user-info">
+                                            <span class="lead-text">{{ app.user.fullName }}</span>
+                                            <span class="sub-text">{{ app.user.email | u.truncate('15', '...') }}</span>
+                                        </div>
+                                        <div class="user-action">
+                                            <a class="btn btn-icon mr-n2" href="{{ path('app_admin_index_profile') }}">
+                                                <em class="icon ni ni-setting"></em>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dropdown-inner">
+                                    <ul class="link-list">
+                                        <li>
+                                            <a {% if 'ROLE_ADMIN' in app.user.roles %} href="{{ path('app_admin_index_profile') }}" {% else %} href="{{ path('app_client_profile') }}" {% endif %}>
+                                                <em class="icon ni ni-user-alt"></em>
+                                                <span>View Profile</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="html/user-profile-setting.html">
+                                                <em class="icon ni ni-setting-alt"></em>
+                                                <span>Account Setting</span>
+                                            </a>
+                                        </li>
+                                        <li><a class="dark-switch" href="#">
+                                                <em class="icon ni ni-moon"></em>
+                                                <span>Dark Mode</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="dropdown-inner">
+                                    <ul class="link-list">
+                                        <li>
+                                            <a href="{{ path('app_logout') }}">
+                                                <em class="icon ni ni-signout"></em>
+                                                <span>Sign out</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a class="nk-quick-nav-icon" data-placement="left" data-toggle="tooltip"
+                               href="{{ path('app_login') }}" title="Log in to your account">
+                                <i class="fal fa-sign-in-alt"></i>
+                            </a>
+                        </li>
+                    {% endif %}
+                    <!-- .dropdown -->
+                    <li class="d-lg-none">
+                        <a href="#" class="toggle nk-quick-nav-icon mr-n1" data-target="sideNav">
+                            <em class="icon ni ni-menu"></em>
+                        </a>
+                    </li>
+                </ul><!-- .nk-quick-nav -->
+            </div><!-- .nk-header-tools -->
+        </div><!-- .nk-header-wrap -->
+    </div><!-- .container-fluid -->
+</div>

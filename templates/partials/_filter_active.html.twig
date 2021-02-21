@@ -1,0 +1,27 @@
+<div class="row justify-between g-2" style="margin-bottom: 10px !important;">
+    <div class="col-6 col-sm-6 text-left">
+        <div class="form-group">
+            <div class="form-control-wrap">
+                <div class="form-icon form-icon-right">
+                    <em class="icon ni ni-search"></em>
+                </div>
+                <input class="form-control form-control-md form-control-outlined"
+                       id="search-input-js"
+                       type="text">
+                <label class="form-label-outlined" for="outlined-right-icon">Search for {{ name ?? 'post' }}</label>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-sm-6 text-left">
+        <div class="form-group">
+            <div class="form-control-wrap">
+                <select class="form-control" id="select-status">
+                    <option value="all">All</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                    <option value="deleted">Deleted</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>

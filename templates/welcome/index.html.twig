@@ -1,0 +1,104 @@
+{% set notNavbar = true %}
+
+{% extends "base.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <style>
+        .nk-wrap {
+            background: linear-gradient(270deg, #e1f5fe, #b3e5fc);
+            background-size: 400% 400%;
+
+            -webkit-animation: AnimationName 30s ease infinite;
+            -moz-animation: AnimationName 30s ease infinite;
+            animation: AnimationName 30s ease infinite;
+        }
+
+        @-webkit-keyframes AnimationName {
+            0% {
+                background-position: 0% 50%
+            }
+            50% {
+                background-position: 100% 50%
+            }
+            100% {
+                background-position: 0% 50%
+            }
+        }
+
+        @-moz-keyframes AnimationName {
+            0% {
+                background-position: 0% 50%
+            }
+            50% {
+                background-position: 100% 50%
+            }
+            100% {
+                background-position: 0% 50%
+            }
+        }
+
+        @keyframes AnimationName {
+            0% {
+                background-position: 0% 50%
+            }
+            50% {
+                background-position: 100% 50%
+            }
+            100% {
+                background-position: 0% 50%
+            }
+        }
+
+        .overline-title-sap:after, .overline-title-sap:before {
+            background: black !important;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container vh-100 w-100 bg-white d-flex flex-column align-items-center justify-content-around mh-100 overflow-auto"
+         style="background: inherit">
+        <img src="{{ asset('images/logo.png') }}">
+        <div class="row align-items-center-lg my-5">
+            <div class="col-lg-6 d-flex flex-column align-items-center ">
+                <img src="{{ asset('images/welcome.png') }}" class="d-block-lg" width="500" alt="">
+                <h1>Welcome to my new website Youssef Blog</h1>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus facere iste laborum molestias
+                    officiis optio quos? Delectus iste necessitatibus, nesciunt perferendis sapiente similique vitae?
+                    Corporis inventore magnam maiores repellat sunt?
+                </p>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. A at cum distinctio dolore doloremque
+                </p>
+                <a href="{{ path('app_blog') }}" class="btn btn-dark btn-block">Visit it right now !</a>
+            </div>
+            <div class="col-lg-6 d-flex justify-content-center d-n-lg">
+                <img src="{{ asset('images/welcome.png') }}" alt="">
+            </div>
+        </div>
+        <div class="fa-2x mb-3">
+            <h5 class="text-center">Follow Us On: </h5>
+            <a href="#" class="text-dark">
+                <em class="icon ni ni-facebook-f"></em>
+            </a>
+            <a href="#" class="text-dark">
+                <em class="icon ni ni-instagram"></em>
+            </a>
+            <a href="#" class="text-dark">
+                <em class="icon ni ni-twitter"></em>
+            </a>
+            <a href="#" class="text-dark">
+                <em class="icon ni ni-tumblr"></em>
+            </a>
+            <a href="#" class="text-dark">
+                <em class="icon ni ni-telegram"></em>
+            </a>
+            <a href="#" class="text-dark">
+                <em class="icon ni ni-snapchat"></em>
+            </a>
+        </div>
+    </div>
+{% endblock %}

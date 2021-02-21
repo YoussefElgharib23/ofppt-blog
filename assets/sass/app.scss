@@ -1,0 +1,149 @@
+@import "./lib/loading";
+@import './../styles/css/dashlite.css';
+@import './../styles/css/theme.css';
+
+.posts .overline-title-sap:after, .posts .overline-title-sap:before {
+    width: 100% !important;
+}
+
+.posts .overline-title {
+    font-size: 15px;
+}
+
+.posts-images-link {
+    transition: box-shadow .2s ease-in-out;
+}
+
+.posts-images {
+    transition: opacity 0.15s linear, transform .2s ease-in-out !important
+}
+
+.posts-images:hover {
+    transform: scale(1.05);
+}
+
+.image-container {
+    transition: box-shadow .2s ease-in-out;
+}
+
+.image-container:hover {
+    box-shadow: 0 1rem 3rem rgba(43,55,72,.25) !important;
+}
+
+@media (max-width: 576px) {
+    .font-25 {
+        font-size: 25px;
+    }
+}
+
+.d-block-lg {
+    transition: .4s all ease-in-out;
+    display: none;
+}
+
+.align-items-center-lg {
+    align-items: center;
+}
+
+
+#welcome {
+    background: linear-gradient(270deg, #8db8ff, #dabaff);
+    background-size: 400% 400%;
+
+    -webkit-animation: AnimationName 30s ease infinite;
+    -moz-animation: AnimationName 30s ease infinite;
+    animation: AnimationName 30s ease infinite;
+}
+
+@-webkit-keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+@-moz-keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+@keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+
+@media (max-width: 991px) {
+    .font-25-lg {
+        font-size: 25px;
+    }
+
+    .d-n-lg {
+        display: none !important;
+    }
+
+    .align-items-center-lg {
+        align-items: initial;
+    }
+
+    .d-block-lg {
+        transition: .4s all ease-in-out;
+        display: block;
+    }
+}
+
+.load-overlay {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.d-n {
+    display: none;
+}
+
+.__comment-div {
+    background: #f4f4f4;
+    border-radius: 50px;
+}
+
+.dislike-parts, .like-parts {
+    cursor: pointer;
+}
+
+.list-no-style {
+    all: revert !important;
+}
+
+.social-media-icon {
+    transition: .2s ease-in all;
+}
+
+.social-media-icon:hover {
+    transform: scale(1.20) !important;
+    cursor: pointer !important;
+}
+
+.u-c-c {
+    background-color: #efefef;
+    color: white;
+    border-radius: 127px;
+    padding: 5px 25px 5px 10px;
+}
+
+.comment-container {
+    background-color: #f7f7f7;
+    border: 1px solid #dcdcdc;
+}
+
+img.comment__auth {
+    width: 40px !important;
+    height: 40px !important;
+    margin-right: 10px;
+}
+
+.comment-container p {
+    max-height: 40px;
+    overflow: auto;
+}

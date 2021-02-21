@@ -1,0 +1,127 @@
+{% extends 'base.html.twig' %}
+
+{% block title APP_NAME ~ ' | Admin - New Post' %}
+
+{% block body %}
+    {% set in_admin = true %}
+    <div class="nk-content">
+        <div class="container wide-xl">
+            <div class="nk-content-inner">
+                {{ include('partials/_sidebar.html.twig') }}
+                <div class="nk-content-body">
+                    <div class="nk-content-wrap">
+                        <div class="nk-block-head nk-block-head-sm">
+                            <div class="nk-block-head-content">
+                                <h3 class="nk-block-title page-title">Create new post</h3>
+                                <div class="text-soft">
+                                    <p>Create your new post.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="nk-block">
+                            <div class="row g-gs">
+                                <div class="col-xl-12 mx-auto">
+                                    <div class="card card-bordered h-100">
+                                        <div class="col-md-8 mx-auto card-inner">
+                                            <div class="card-title">
+                                                <div class="card-title text-center">
+                                                    <h3>Create new post</h3>
+                                                </div>
+                                                {% if categoriesCount == 0 %}
+                                                    <div class="alert alert-icon alert-primary" role="alert">
+                                                        <em class="icon ni ni-alert-circle"></em>
+                                                        Add one category at least to your category list
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                            {{ form_start(form, {
+                                                attr: {
+                                                    'class': 'form-validate'
+                                                }
+                                            }) }}
+                                            <div class="form-group">
+                                                {{ form_row(form.title, {
+                                                    label_attr: {
+                                                        'class': 'form-label'
+                                                    },
+                                                    attr: {
+                                                        'class': 'form-control'
+                                                    }
+                                                }) }}
+                                            </div>
+                                            <div class="form-group">
+                                                {{ form_row(form.imageFile, {
+                                                    label_attr: {
+                                                        'class': 'form-label'
+                                                    }
+                                                }) }}
+                                            </div>
+                                            <div class="form-group">
+                                                {{ form_row(form.status, {
+                                                    label_attr: {
+                                                        'class': 'form-label'
+                                                    },
+                                                    attr: {
+                                                        'class': 'form-control'
+                                                    }
+                                                }) }}
+                                            </div>
+                                            <div class="form-group">
+                                                {{ form_row(form.minDescription, {
+                                                    label_attr: {
+                                                        'class': 'form-label'
+                                                    },
+                                                    attr: {
+                                                        'class': 'form-control'
+                                                    }
+                                                }) }}
+                                            </div>
+                                            <div class="form-group">
+                                                {{ form_row(form.description, {
+                                                    label_attr: {
+                                                        'class': 'form-label'
+                                                    },
+                                                    attr: {
+                                                        'class': 'form-control'
+                                                    }
+                                                }) }}
+                                            </div>
+                                            <div class="form-group">
+                                                {{ form_row(form.category, {
+                                                    label_attr: {
+                                                        'class': 'form-label'
+                                                    },
+                                                    attr: {
+                                                        'class': 'form-control'
+                                                    }
+                                                }) }}
+                                            </div>
+                                            <button type="submit" class="actions-submit btn btn-dim btn-block btn-outline-dark">
+                                                <em class="icon ni ni-plus-sm position-relative" style="top: -1px"></em>
+                                                Save Post
+                                            </button>
+                                            {{ form_end(form) }}
+                                        </div>
+                                    </div>
+                                </div><!-- .col -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    
+    <script>
+        
+        $('select').each((i, ele) => {
+            $(ele).select2()
+        });
+        
+    </script>
+    
+    <script src="{{ asset('assets/js/form-submit/app.js') }}"></script>
+{% endblock %}

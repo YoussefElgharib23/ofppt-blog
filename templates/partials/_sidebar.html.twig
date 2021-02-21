@@ -1,0 +1,206 @@
+<div {% if in_admin is not defined %} id="mainSideBar" {% endif %} class="nk-aside toggle-screen-lg mobile-menu"
+                                                                   data-content="sideNav" data-toggle-body="true"
+                                                                   data-toggle-overlay="true" data-toggle-screen="lg">
+    <div class="nk-sidebar-menu" data-simplebar="init">
+        <div class="simplebar-wrapper" style="margin: 0px 0px -40px;">
+            <div class="simplebar-height-auto-observer-wrapper">
+                <div class="simplebar-height-auto-observer"></div>
+            </div>
+            <div class="simplebar-mask">
+                <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+                    <div class="simplebar-content-wrapper" style="height: auto; overflow: hidden scroll;">
+                        <div class="simplebar-content" style="padding: 0px 0px 40px;">
+                            <ul class="nk-menu nk-menu-main">
+                                <li class="nk-menu-item current-page">
+                                    <a href="{{ path('app_blog') }}" class="nk-menu-link" data-original-title=""
+                                       title="">
+                                        <span class="nk-menu-text">Home</span>
+                                    </a>
+                                </li><!-- .nk-menu-item -->
+                                <li class="nk-menu-item has-sub">
+                                    <a href="#" class="nk-menu-link nk-menu-toggle" data-original-title="" title="">
+                                        <span class="nk-menu-text">Categories</span>
+                                    </a>
+                                    <ul class="nk-menu-sub">
+                                        {% for category in __categories.getCategories %}
+                                            <li class="nk-menu-item">
+                                                <a href="{{ path('app_posts_category', {'slug': category.slug(category.name)}) }}" class="nk-menu-link"
+                                                   data-original-title="" title="">
+                                                    <span class="nk-menu-text">{{ category.name }}</span>
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul><!-- .nk-menu-sub -->
+                                </li>
+                                <li class="nk-menu-item">
+                                    <a href="{{ path('app_contact_us') }}" class="nk-menu-link" data-original-title="" title="">
+                                        <span class="nk-menu-text">Contact Us</span>
+                                    </a>
+                                </li>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <li class="nk-menu-item">
+                                        <a href="{{ path('app_admin_index') }}" class="nk-menu-link">
+                                            <span class="nk-menu-text">Admin</span>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul><!-- .nk-menu -->
+                            {% if is_granted('ROLE_ADMIN') and in_admin is defined %}
+                                <ul class="nk-menu">
+                                    <li class="nk-menu-heading">
+                                        <h6 class="overline-title text-primary-alt">Admin actions</h6>
+                                    </li><!-- .nk-menu-heading -->
+                                    <li class="nk-menu-item has-sub">
+                                        <a href="#" class="nk-menu-link nk-menu-toggle" data-original-title="" title="">
+                                            <span class="nk-menu-icon">
+                                                <em class="icon ni ni-blogger"></em>
+                                            </span>
+                                            <span class="nk-menu-text">Posts</span>
+                                        </a>
+                                        <ul class="nk-menu-sub" style="display: none;">
+                                            <li class="nk-menu-item">
+                                                <a class="nk-menu-link" data-placement="right"
+                                                   data-toggle="tooltip" href="{{ path('app_admin_index_post') }}"
+                                                   title="List all the posts">
+                                                    <span class="nk-menu-icon">
+                                                        <em class="icon ni ni-list-thumb"></em>
+                                                    </span>
+                                                    <span class="nk-menu-text">
+                                                        List posts
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <li class="nk-menu-item">
+                                                <a class="nk-menu-link" data-placement="right"
+                                                   data-toggle="tooltip" href="{{ path('app_admin_create_post') }}"
+                                                   title="Create new post">
+                                                    <span class="nk-menu-icon">
+                                                        <em class="icon ni ni-plus"></em>
+                                                    </span>
+                                                    <span class="nk-menu-text">
+                                                        Create new post
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        </ul><!-- .nk-menu-sub -->
+                                    </li><!-- .nk-menu-item -->
+                                    <li class="nk-menu-item has-sub">
+                                        <a href="#" class="nk-menu-link nk-menu-toggle">
+                                            <span class="nk-menu-icon">
+                                                <em class="icon ni ni-list"></em>
+                                            </span>
+                                            <span class="nk-menu-text">
+                                                Categories
+                                            </span>
+                                        </a>
+                                        <ul class="nk-menu-sub" style="display:none;">
+                                            <li class="nk-menu-item">
+                                                <a class="nk-menu-link" data-toggle="tooltip"
+                                                   href="{{ path('app_admin_index_category') }}"
+                                                   title="List all the categories">
+                                                    <span class="nk-menu-icon">
+                                                        <em class="icon ni ni-list-thumb"></em>
+                                                    </span>
+                                                    <span class="nk-menu-text">List categories</span>
+                                                </a>
+                                            </li>
+                                            <li class="nk-menu-item">
+                                                <a href="{{ path('app_admin_create_category') }}" class="nk-menu-link">
+                                                    <span class="nk-menu-icon">
+                                                        <em class="icon ni ni-plus-sm"></em>
+                                                    </span>
+                                                    <span class="nk-menu-text">Add new category</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="nk-menu-item has-sub">
+                                        <a href="#" class="nk-menu-link nk-menu-toggle" data-toggle="tooltip"
+                                           data-placement="right" title="Show all the users">
+                                            <span class="nk-menu-icon">
+                                                <em class="icon ni ni-user-fill"></em>
+                                                </span>
+                                            <span class="nk-menu-text">Users</span>
+                                        </a>
+                                        <ul class="nk-menu-sub">
+                                            <li class="nk-menu-item">
+                                                <a href="{{ path('app_admin_index_user') }}" class="nk-menu-link"
+                                                   data-toggle="tooltip" data-placement="right" title="Show list users">
+                                                    <span class="nk-menu-icon">
+                                                        <em class="icon ni ni-users-fill"></em>
+                                                    </span>
+                                                    <span class="nk-menu-text">List users</span>
+                                                </a>
+                                            </li>
+                                            <li class="nk-menu-item">
+                                                <a href="{{ path('app_admin_create_user') }}" class="nk-menu-link"
+                                                   data-toggle="tooltip" data-placement="right" title="Add a user">
+                                                    <span class="nk-menu-icon">
+                                                        <em class="icon ni ni-user-add-fill"></em>
+                                                    </span>
+                                                    <span class="nk-menu-text">Add a new user</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="nk-menu-item">
+                                        <a href="{{ path('app_admin_index_comments') }}" class="nk-menu-link">
+                                            <span class="nk-menu-icon">
+                                                <em class="icon ni ni-comments"></em>
+                                            </span>
+                                            <span class="nk-menu-text">
+                                                Comments
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="nk-menu-item">
+                                        <a href="{{ path('app_admin_notification') }}" class="nk-menu-link" data-toggle="tooltip" data-placement="right"
+                                           title="Show all the notifications">
+                                            <span class="nk-menu-icon">
+                                                <em class="icon ni ni-bell-fill"></em>
+                                            </span>
+                                            <span class="nk-menu-text">Notifications</span>
+                                        </a>
+                                    </li>
+                                    <li class="nk-menu-item">
+                                        <a href="{{ path('app_admin_index_reports') }}" class="nk-menu-link" data-toggle="tooltip" data-placement="right"
+                                           title="Show all the reports">
+                                            <span class="nk-menu-icon">
+                                                <em class="icon ni ni-reports"></em>
+                                            </span>
+                                            <span class="nk-menu-text">Admin Reports</span>
+                                        </a>
+                                    </li><!-- .nk-menu-item -->
+                                    {#
+                                    <li class="nk-menu-item">
+                                        <a href="{{ path('app_admin_index_images') }}" class="nk-menu-link"
+                                           data-toggle="tooltip" data-placement="right"
+                                           title="Show all the notifications">
+                                            <span class="nk-menu-icon">
+                                                <em class="icon ni ni-bell-fill"></em>
+                                            </span>
+                                            <span class="nk-menu-text">Images</span>
+                                        </a>
+                                    </li>
+                                    <!-- .nk-menu-item -->
+                                    #}
+                                </ul><!-- .nk-menu -->
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="simplebar-placeholder" style="width: auto; height: 500px;"></div>
+        </div>
+        <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
+            <div class="simplebar-scrollbar" style="width: 0px; display: none;"></div>
+        </div>
+        <div class="simplebar-track simplebar-vertical" style="visibility: visible;">
+            <div class="simplebar-scrollbar"
+                 style="height: 411px; display: block; transform: translate3d(0px, 0px, 0px);"></div>
+        </div>
+    </div><!-- .nk-sidebar-menu -->
+    <div class="nk-aside-close">
+        <a href="#" class="toggle" data-target="sideNav"><em class="icon ni ni-cross"></em></a>
+    </div><!-- .nk-aside-close -->
+</div><!-- .nk-aside -->

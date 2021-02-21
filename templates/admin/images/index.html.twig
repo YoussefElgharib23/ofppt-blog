@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+
+{% block title APP_NAME ~ ' | Images List' %}
+
+{% block body %}
+    {% set in_admin = true %}
+    <div class="nk-content mw-100 overflow-hidden">
+        <div class="container wide-xl">
+            <div class="nk-content-inner">
+                <!-- ASIDE -->
+                {{ include('partials/_sidebar.html.twig') }}
+                <!-- ASIDE -->
+                <div class="nk-content-body">
+                    {% if images | length == 0 %}
+                        <div class="alert alert-danger text-center">
+                            <p>No Image</p>
+                            <strong>
+                                <a href="#" id="upload-image-js">
+                                    Upload new one
+                                </a>
+                            </strong>
+                        </div>
+                    {% else %}
+                        <div class="nk-content-wrap">
+                            <div class="nk-block-head nk-block-head-sm">
+                                <div class="nk-block-between">
+                                    <div class="nk-block-head-content">
+                                        <h3 class="nk-block-title page-title">Images list</h3>
+                                    </div><!-- .nk-block-head-content -->
+                                    <div class="nk-block-head-content">
+                                        <a class="dropdown-toggle btn btn-icon btn-primary" data-toggle="dropdown"
+                                           href="#" id="upload-image-js">
+                                            <em class="icon ni ni-plus"></em>
+                                        </a>
+                                    </div>
+                                </div><!-- .nk-block-between -->
+                            </div><!-- .nk-block-head -->
+                            <div class="nk-block">
+                                <div class="row g-gs">
+                                    {% for image in images %}
+                                        <div class="col-lg-3 col-md-4 col-sm-6">
+                                            <div class="rounded-lg mw-100 overflow-hidden">
+                                                <a href="{{ image.imageName }}">
+                                                    <div class="load-overlay d-flex justify-content-center align-items-center fade"
+                                                         style="background: none !important;">
+                                                        <div class="spinner-border" role="status">
+                                                            <span class="sr-only">Loading...</span>
+                                                        </div>
+                                                    </div>
+                                                    <img alt=""
+                                                         class="img-fluid rounded-lg posts-images fade"
+                                                         data-lazy="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('thumb') }}"
+                                                         src="">
+                                                </a>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div><!-- .card -->
+                        </div>
+                    {% endif %}
+                    <!-- footer @s -->
+                    {{ include('partials/_footer.html.twig') }}
+                    <!-- footer @e -->
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form_start(form, {
+        attr: {
+            class: 'fade form-validate d-n',
+        }
+    }) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+
+{% endblock %}
+
+{% block javascripts %}
+    
+    <script>
+        $(document).ready(() => {
+            $('#upload-image-js').click((e) => {
+                e.preventDefault()
+                $('input[type=file]').click()
+            })
+        })
+
+        $('input[type=file]').on('change',function () {
+            readURL(this);
+        })
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    $('form[name=image_form]').submit()
+                }
+
+                reader.readAsDataURL(input.files[0]); // convert to base64 string
+            }
+        }
+    </script>
+    
+{% endblock %}

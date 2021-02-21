@@ -1,0 +1,190 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    
+    {% set in_admin = true %}
+    <div class="nk-content">
+        <div class="container wide-xl">
+            <div class="nk-content-inner">
+                <!-- ASIDE -->
+                {{ include('partials/_sidebar.html.twig') }}
+                <!-- ASIDE -->
+                <div class="nk-content-body">
+                    <div class="nk-block nk-block-lg">
+                        <div class="nk-block-head">
+                            <div class="nk-block-head-content">
+                                <h4 class="nk-block-title">User Reports</h4>
+                            </div>
+                        </div>
+                        {% if reports | length > 0 %}
+                            <div class="card card-bordered card-preview">
+                                <table class="table table-tranx">
+                                    <thead>
+                                    <tr class="tb-tnx-head">
+                                        <th class="tb-tnx-id"><span class="">#</span></th>
+                                        <th class="tb-tnx-info">
+                                        <span class="tb-tnx-desc d-none d-sm-inline-block">
+                                            <span>Report</span>
+                                        </span>
+                                            <span class="tb-tnx-date d-md-inline-block d-none">
+                                            <span class="d-md-none">Date</span>
+                                            <span class="d-none d-md-block">
+                                                <span>Reported At</span>
+                                            </span>
+                                        </span>
+                                        </th>
+                                        <th class="tb-tnx-amount is-alt">
+                                            <span class="tb-tnx-total">User</span>
+                                            <span class="tb-tnx-status d-none d-md-inline-block">Status User</span>
+                                        </th>
+                                        <th class="tb-tnx-action">
+                                            <span>&nbsp;</span>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for report in reports %}
+                                        <tr class="tb-tnx-item">
+                                            <td class="tb-tnx-id">
+                                                <a href="#">
+                                                    <span>{{ report.id }}</span>
+                                                </a>
+                                            </td>
+                                            <td class="tb-tnx-info">
+                                                <div class="tb-tnx-desc">
+                                                    <span class="title">
+                                                        <a href="#" data-toggle="modal" data-target="#commentModal-{{ report.id }}">
+                                                            {{ report.description | u.truncate(50, '...') }}
+                                                        </a>
+                                                    </span>
+                                                </div>
+                                                <div class="tb-tnx-date">
+                                                    <span class="date">
+                                                        {{ report.createdAt | date('d-m-Y h:i a') }}
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td class="tb-tnx-amount is-alt">
+                                                <div class="tb-tnx-total">
+                                                    <span class="amount">
+                                                        {% if report.user.isDeleted %}
+                                                            {{ report.user.fullName(false) }}
+                                                        {% else %}
+                                                            <a href="{{ path('app_admin_details_user', {id: report.user.id}) }}">
+                                                                {{ report.user.fullName(false) }}
+                                                            </a>
+                                                        {% endif %}
+                                                    </span>
+                                                </div>
+                                                <div class="tb-tnx-status">
+                                                    {% if report.user.status and not report.user.isDeleted  %}
+                                                        <span class="badge badge-dot badge-warning">Suspended</span>
+                                                    {% elseif report.user.isDeleted %}
+                                                        <span class="badge badge-dot badge-danger">Deleted</span>
+                                                    {% else %}
+                                                        <span class="badge badge-dot badge-success">Active</span>
+                                                    {% endif %}
+                                                </div>
+                                            </td>
+                                            <td class="tb-tnx-action">
+                                                <div class="dropdown">
+                                                    <a class="text-soft dropdown-toggle btn btn-icon btn-trigger" data-toggle="dropdown" aria-expanded="false">
+                                                        <em class="icon ni ni-more-h"></em>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-xs" style="">
+                                                        <ul class="link-list-plain" style="width: 200px">
+                                                            <li>
+                                                                <a href="#" data-toggle="modal" data-target="#commentModal-{{ report.id }}">View Report</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#" data-target="report-remove-{{ report.id }}" class="report-remove-js">Remove Report</a>
+                                                                <form action="{{ path('app_admin_remove_report', {'id': report.id}) }}" method="post" class="d-n" id="report-remove-{{ report.id }}">
+                                                                    <input type="hidden" name="_method" value="delete">
+                                                                    <input type="hidden" name="_token" value="{{ csrf_token('report-remove-' ~ report.id) }}">
+                                                                </form>
+                                                            </li>
+                                                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                                                <li>
+                                                                    <a href="{{ path('app_admin_details_user', {'id': report.user.id}) }}">View User</a>
+                                                                </li>
+                                                            {% endif %}
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div><!-- .card-preview -->
+                        {% else %}
+                            <div class="h-100px d-flex align-items-center text-black-50 flex-column">
+                                <em class="icon ni ni-reports fa-4x"></em>
+                                <h2 class="text-black-50">No Reports !</h2>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <!-- footer @s -->
+                    {{ include('partials/_footer.html.twig') }}
+                    <!-- footer @e -->
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if reports | length > 0 %}
+        {% for report in reports %}
+            <div class="modal fade" tabindex="-1" id="commentModal-{{ report.id }}">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <a href="#" class="close" data-dismiss="modal" aria-label="Close">
+                            <em class="icon ni ni-cross"></em>
+                        </a>
+                        <div class="modal-header">
+                            <h5 class="modal-title">Reported at {{ report.createdAt | date ('d M, Y') }}</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p id="modal-p-comment">{{ report.description }}</p>
+                        </div>
+                        <div class="modal-footer bg-light">
+                            <span class="sub-text">Report to {{ report.user.fullName(false) }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+    
+{% endblock %}
+
+{% block javascripts %}
+    
+    <script>
+        $(document).ready(() => {
+            'use-strict'
+            
+            $('.report-remove-js').each((i, ele) => {
+                $(ele).click((e) => {
+                    e.preventDefault()
+
+                    let formTarget = $(`form#${$(ele).data('target')}`)
+                    if (formTarget) {
+                        if (formTarget) {
+                            Swal.fire({
+                                title: 'Are you sure?',
+                                text: "You can't restore this report after the action!",
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonText: 'Yes, delete it!'
+                            }).then(function (result) {
+                                if (result.value) {
+                                    formTarget.submit()
+                                }
+                            });
+                        }
+                    }
+                })
+            })
+        })
+    </script>
+    
+{% endblock %}

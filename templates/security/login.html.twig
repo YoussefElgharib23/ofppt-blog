@@ -1,0 +1,35 @@
+{% set notNavbar = true %}
+
+{% extends 'base.html.twig' %}
+
+{% block title 'Login to your account | ' ~ APP_NAME %}
+
+{% block body %}
+<div class="nk-app-root">
+	<!-- main @s -->
+	<div class="nk-main ">
+		<!-- wrap @s -->
+		<div class="nk-wrap nk-wrap-nosidebar">
+			<!-- content @s -->
+			<div class="nk-content ">
+				<div class="nk-block nk-block-middle nk-auth-body  wide-xs">
+					<div class="brand-logo pb-4 text-center">
+						<a href="{{ path('app_home') }}" class="logo-link">
+							<img class="logo-light logo-img logo-img-lg" src="{{ asset("images/logo.png") }}"
+								srcset="{{ asset('images/logo2x.png') }} 2x" alt="logo">
+							<img class="logo-dark logo-img logo-img-lg" src="{{ asset('images/logo-dark.png') }}"
+								srcset="{{ asset('images/logo-dark2x.png') }} 2x" alt="logo-dark">
+						</a>
+					</div>
+					<div class="card card-bordered">
+						{{ include('partials/security/_login.html.twig') }}
+					</div>
+				</div>
+			</div>
+			<!-- wrap @e -->
+		</div>
+		<!-- content @e -->
+	</div>
+	<!-- main @e -->
+</div>
+{% endblock %}

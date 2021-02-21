@@ -1,0 +1,163 @@
+{% extends 'base.html.twig' %}
+
+{% block title APP_NAME ~ ' | Admin - Edit Post' %}
+
+{% block body %}
+    {% set in_admin = true %}
+    <div class="nk-content">
+        <div class="container wide-xl">
+            <div class="nk-content-inner">
+                {{ include('partials/_sidebar.html.twig') }}
+                <div class="nk-content-body">
+                    <div class="nk-content-wrap">
+                        <div class="nk-block-head nk-block-head-sm">
+                            <div class="nk-block-head-content">
+                                <h3 class="nk-block-title page-title">Edit post</h3>
+                                <div class="text-soft">
+                                    <p>Edit the post.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="nk-block">
+                            <div class="row g-gs">
+                                <div class="col-xl-12 mx-auto">
+                                    <div class="card card-bordered h-100">
+                                        <div class="col-md-8 mx-auto card-inner">
+                                            <div class="card-title">
+                                                <div class="card-title text-center">
+                                                    <h3>Edit post {{ post.title | u.truncate(20, '...') }}</h3>
+                                                </div>
+                                                {% if categoriesCount == 0 %}
+                                                    <div class="alert alert-icon alert-primary" role="alert">
+                                                        <em class="icon ni ni-alert-circle"></em>
+                                                        Add one category at least to your category list
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="img-fluid rounded-lg mw-100 overflow-hidden my-2 position-relative">
+                                                <div class="load-overlay fade">
+                                                    <div class="spinner-border" role="status">
+                                                        <span class="sr-only">Loading...</span>
+                                                    </div>
+                                                </div>
+                                                <img alt=""
+                                                     class="posts-images fade img-fluid"
+                                                     data-lazy="{{ vich_uploader_asset(post, 'imageFile') | imagine_filter('thumb') }}" src="">
+                                            </div>
+                                            {{ form_start(form, {
+                                                attr: {
+                                                    'class': 'form-validate'
+                                                }
+                                            }) }}
+                                            <div class="form-group">
+                                                {{ form_row(form.title, {
+                                                    label_attr: {
+                                                        'class': 'form-label'
+                                                    },
+                                                    attr: {
+                                                        'class': 'form-control'
+                                                    }
+                                                }) }}
+                                            </div>
+                                            <div class="form-group">
+                                                {{ form_row(form.status, {
+                                                    label_attr: {
+                                                        'class': 'form-label'
+                                                    },
+                                                    attr: {
+                                                        'class': 'form-control'
+                                                    }
+                                                }) }}
+                                            </div>
+                                            <div class="form-group">
+                                                {{ form_row(form.imageFile, {
+                                                    label_attr: {
+                                                        'class': 'form-label'
+                                                    }
+                                                }) }}
+                                            </div>
+                                            <div class="form-group">
+                                                {{ form_row(form.minDescription, {
+                                                    label_attr: {
+                                                        'class': 'form-label'
+                                                    }
+                                                }) }}
+                                            </div>
+                                            <div class="form-group">
+                                                {{ form_row(form.description, {
+                                                    label_attr: {
+                                                        'class': 'form-label'
+                                                    },
+                                                    attr: {
+                                                        'class': 'form-control'
+                                                    }
+                                                }) }}
+                                            </div>
+                                            <div class="form-group">
+                                                {{ form_row(form.category, {
+                                                    label_attr: {
+                                                        'class': 'form-label'
+                                                    },
+                                                    attr: {
+                                                        'class': 'form-control'
+                                                    }
+                                                }) }}
+                                            </div>
+                                            <button type="submit" class="btn btn-dim btn-block btn-outline-dark actions-submit">
+                                                <em class="icon ni ni-plus-sm position-relative" style="top: -1px"></em>
+                                                Save Post
+                                            </button>
+                                            {{ form_end(form) }}
+                                        </div>
+                                    </div>
+                                </div><!-- .col -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    
+    <script>
+        $(document).ready(() => {
+            let fileName = '{{ post.imageName }}'
+
+            $('input[type=file]').parent().find('label').text(fileName)
+            
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    let reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        $('img.posts-images').attr('src', e.target.result);
+                        setTimeout(function () {
+                            $('.load-overlay').removeClass('show');
+                            setTimeout(function () {
+                                $('img.posts-images').addClass('show')
+                            }, 500)
+                        }, 200)
+                    }
+
+                    reader.readAsDataURL(input.files[0]); // convert to base64 string
+                }
+            }
+            
+            $('input[type=file]').on('change',function () {
+                $('.load-overlay').addClass('show')
+                $('img.posts-images').removeClass('show')
+                readURL(this);
+            })
+            
+            $('select').each((i, ele) => {
+                $(ele).select2()
+            })
+
+            $(`input[type=file]`).removeAttr('required');
+        })
+    </script>
+
+{% endblock %}

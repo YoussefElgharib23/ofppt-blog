@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'User Profile | ' ~ APP_NAME %}
+
+{% block body %}
+    {{ include('partials/_profile_user.html.twig') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ include('partials/_profile_user_js.html.twig') }}
+{% endblock %}

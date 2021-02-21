@@ -1,0 +1,166 @@
+{% set notNavbar = true %}
+
+{% extends 'base.html.twig' %}
+
+{% block title 'Create new account | ' ~ APP_NAME %}
+
+{% block body %}
+<!-- content @s -->
+<div class="nk-content ">
+    <div class="nk-block nk-block-middle nk-auth-body wide-xs">
+        <div class="brand-logo pb-4 text-center">
+            <a href="{{ path('app_home') }}" class="logo-link">
+                <img class="logo-light logo-img logo-img-lg" src="{{ asset("images/logo.png") }}"
+                    srcset="{{ asset('images/logo2x.png') }} 2x" alt="logo">
+                <img class="logo-dark logo-img logo-img-lg" src="{{ asset('images/logo-dark.png') }}"
+                    srcset="{{ asset('images/logo-dark2x.png') }} 2x" alt="logo-dark">
+            </a>
+        </div>
+        <div class="card card-bordered">
+            <div class="card-inner card-inner-lg">
+                <div class="nk-block-head">
+                    <div class="nk-block-head-content">
+                        <h4 class="nk-block-title">Register</h4>
+                        <div class="nk-block-des">
+                            <p>Create New Dashlite Account</p>
+                        </div>
+                    </div>
+                </div>
+                {% for flashError in app.flashes('verify_email_error') %}
+                <div class="alert alert-danger alert-dismissible alert-icon" role="alert">
+                    <em class="icon ni ni-alert-circle"></em>
+                    {{ flashError }}
+                    <button class="close" data-dismiss="alert"></button>
+                </div>
+                {% endfor %}
+                <div class="alert alert-danger alert-dismissible alert-icon" role="alert" style="display: none">
+                    <em class="icon ni ni-alert-circle"></em>
+                    <span id="message-alert-js"></span>
+                </div>
+                {{ form_start(registrationForm, {
+                    'attr': {
+                        'class': 'form-validate',
+                        'novalidate': 'off',
+                        'id': 'form-register'
+                    }
+                }) }}
+                <div class="row form-group">
+                    <div class="col-6">
+                        <div class="form-group">
+                            {{ form_row(registrationForm.firstName, {
+                                    'label_attr': {
+                                        'class': 'form-label'
+                                    },
+                                    'attr': {
+                                        'placeholder': 'Ex. Jhon',
+                                        'class': 'form-control'
+                                    }
+                                }) }}
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            {{ form_row(registrationForm.lastName, {
+                                    'label_attr': {
+                                        'class': 'form-label'
+                                    },
+                                    'attr': {
+                                        'placeholder': 'Ex. Doe',
+                                        'class': 'form-control'
+                                    }
+                                }) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form_row(registrationForm.username, {
+                            'label_attr': {
+                                'class': 'form-label'
+                            },
+                            'attr': {
+                                'placeholder': 'Ex. Jhon'  ~ "now" | date('Y') ~ 'Doe',
+                                'class': 'form-control',
+                                'data-target': 'ajax-check'
+                            }
+                        }) }}
+                </div>
+                <div class="form-group">
+                    {{ form_row(registrationForm.gender, {
+                        label_attr: {
+                            class: 'form-label'
+                        }
+                    }) }}
+                </div>
+                <div class="form-group">
+                    {{ form_row(registrationForm.email, {
+                            'label_attr': {
+                                'class': 'form-label'
+                            },
+                            'attr': {
+                                'placeholder': 'Ex. username@domain.com',
+                                'class': 'form-control',
+                                'data-target': 'ajax-check'
+                            }
+                        }) }}
+                </div>
+                <div class="form-group">
+                    {{ form_row(registrationForm.plainPassword, {
+                            'label': 'Password',
+                            'label_attr': {
+                                'class': 'form-label'
+                            },
+                            'attr': {
+                                'placeholder': 'Your password',
+                                'class': 'form-control'
+                            }
+                        }) }}
+                </div>
+                <div class="form-group">
+                    <div class="custom-control custom-checkbox" style="padding-left: 15px">
+                        {{ form_row(registrationForm.agreeTerms, {
+                            'label': 'I have read and agree to the Privacy Policy',
+                            'label_attr': {
+                                'class': 'custom-control-label'
+                            },
+                            'attr': {
+                                'class': 'custom-control-input'
+                            }
+                        }) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" id="submit-btn-form-js" class="btn btn-block btn-outline-primary">
+                        Create new account
+                    </button>
+                </div>
+                <div class="form-note-s2 text-center">
+                    <span>Please read the our private policy before you create the account</span>
+                    <a href="#">
+                        <strong>Privacy Policy</strong>
+                    </a>
+                </div>
+                {{ form_end(registrationForm) }}
+                <div class="form-note-s2 text-center pt-4"> Already have an account?
+                    <a href="{{ path('app_login') }}">
+                        <strong>Sign in instead</strong>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- wrap @e -->
+{% endblock %}
+
+{% block javascripts %}
+
+    <script>
+
+        $(document).ready(() => {
+            $('select').select2()
+        })
+
+    </script>
+
+{% endblock %}

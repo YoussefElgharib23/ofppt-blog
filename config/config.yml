@@ -1,0 +1,4 @@
+enqueue:
+    default:
+        transport: "amqp:"
+        client: ~

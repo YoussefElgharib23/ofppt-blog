@@ -1,0 +1,349 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="nk-content">
+        <div class="container wide-xl">
+            <div class="nk-content-inner">
+                {{ include('partials/_sidebar.html.twig') }}
+                <div class="nk-content-body">
+                    <div class="nk-content-wrap">
+                        <div class="nk-block-head nk-block-head-md">
+                            <div class="nk-block-between">
+                                <div class="nk-block-head-content">
+                                    <h3 class="nk-block-title page-title">Support Tickits</h3>
+                                </div><!-- .nk-block-head-content -->
+                                <div class="nk-block-head-content">
+                                    <a href="{{ path('app_admin_index') }}" class="back-to">
+                                        <em class="icon ni ni-arrow-left"></em>
+                                        <span>
+                                            <span class="d-none d-sm-inline-block">Back to</span> Dashboard
+                                        </span>
+                                    </a>
+                                </div><!-- .nk-block-head-content -->
+                            </div><!-- .nk-block-between -->
+                        </div><!-- .nk-block-head -->
+                        {% if messages | length > 0 %}
+                            <div class="nk-msg nk-msg-boxed">
+                                <div class="nk-msg-aside">
+                                    <div class="nk-msg-nav">
+                                        <ul class="nk-msg-menu">
+                                            <li class="nk-msg-menu-item active">
+                                                <a href="">Active</a>
+                                            </li>
+                                            <li class="nk-msg-menu-item">
+                                                <a href="">Closed</a>
+                                            </li>
+                                            <li class="nk-msg-menu-item">
+                                                <a href="">Stared</a>
+                                            </li>
+                                            <li class="nk-msg-menu-item">
+                                                <a href="">All</a>
+                                            </li>
+                                            <li class="nk-msg-menu-item ml-auto">
+                                                <a href=""
+                                                   class="search-toggle toggle-search"
+                                                   data-target="search">
+                                                    <em class="icon ni ni-search"></em>
+                                                </a>
+                                            </li>
+                                        </ul><!-- .nk-msg-menu -->
+                                        <div class="search-wrap" data-search="search">
+                                            <div class="search-content">
+                                                <a href="#" class="search-back btn btn-icon toggle-search"
+                                                   data-target="search"><em class="icon ni ni-arrow-left"></em></a>
+                                                <input type="text" class="form-control border-transparent form-focus-none"
+                                                       placeholder="Search by user or message">
+                                                <button class="search-submit btn btn-icon"><em
+                                                            class="icon ni ni-search"></em></button>
+                                            </div>
+                                        </div><!-- .search-wrap -->
+                                    </div><!-- .nk-msg-nav -->
+                                    <div class="nk-msg-list" data-simplebar="init">
+                                        <div class="simplebar-wrapper" style="margin: 0px;">
+                                            <div class="simplebar-height-auto-observer-wrapper">
+                                                <div class="simplebar-height-auto-observer"></div>
+                                            </div>
+                                            <div class="simplebar-mask">
+                                                <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+                                                    <div class="simplebar-content-wrapper"
+                                                         style="height: 100%; overflow: hidden scroll;">
+                                                        <div class="simplebar-content" style="padding: 0px;">
+                                                            {% set index = app.session.get('msg-id') ?? 0 %}
+                                                            {% for i, message in messages %}
+                                                                <div class="nk-msg-item {% if app.session.get('msg-id') is null %} {% if i == 0 %} current {% endif %} {% elseif i == app.session.get('msg-id') %} current {% endif %}"
+                                                                     data-msg-id="{{ message.id }}">
+                                                                    <div class="nk-msg-media user-avatar">
+                                                                        <span>{{ message.getTwoLettersName }}</span>
+                                                                    </div>
+                                                                    <div class="nk-msg-info">
+                                                                        <div class="nk-msg-from">
+                                                                            <div class="nk-msg-sender">
+                                                                                <div class="name">{{ message.getFullName }}</div>
+                                                                                <div class="lable-tag dot bg-pink"></div>
+                                                                            </div>
+                                                                            <div class="nk-msg-meta">
+                                                                                <div class="attchment">
+                                                                                    {% if message.imageName %}
+                                                                                        <em class="icon ni ni-clip-h"></em>
+                                                                                    {% endif %}
+                                                                                </div>
+                                                                                <div class="date">{{ message.createdAt | date('d M') }}</div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="nk-msg-context">
+                                                                            <div class="nk-msg-text">
+                                                                                <h6 class="title">
+                                                                                    {{ message.description }}
+                                                                                </h6>
+                                                                                <p>
+                                                                                    {{ message.details }}
+                                                                                </p>
+                                                                            </div>
+                                                                            <div class="nk-msg-lables">
+                                                                                <div class="asterisk">
+                                                                                    <a href="#">
+                                                                                        <em class="asterisk-off icon ni ni-star"></em>
+                                                                                        <em class="asterisk-on icon ni ni-star-fill"></em>
+                                                                                    </a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div><!-- .nk-msg-item -->
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="simplebar-placeholder" style="width: auto; height: 1390px;"></div>
+                                        </div>
+                                        <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
+                                            <div class="simplebar-scrollbar" style="width: 0px; display: none;"></div>
+                                        </div>
+                                        <div class="simplebar-track simplebar-vertical" style="visibility: visible;">
+                                            <div class="simplebar-scrollbar"
+                                                 style="height: 158px; transform: translate3d(0px, 0px, 0px); display: block;"></div>
+                                        </div>
+                                    </div><!-- .nk-msg-list -->
+                                </div>
+                                <!-- .nk-msg-aside -->
+                                <div class="nk-msg-body bg-white">
+                                    <div class="nk-msg-head">
+                                        <h4 class="title d-none d-lg-block">{{ messages[index].description }}</h4>
+                                        <div class="nk-msg-head-meta">
+                                            <div class="d-none d-lg-block">
+                                                <ul class="nk-msg-tags">
+                                                    <li>
+                                                    <span class="label-tag">
+                                                        <em class="icon ni ni-flag-fill"></em>
+                                                        <span id="category-msg">{{ messages[index].category | capitalize }}</span>
+                                                    </span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="d-lg-none">
+                                                <a href="#" class="btn btn-icon btn-trigger nk-msg-hide ml-n1">
+                                                    <em class="icon ni ni-arrow-left"></em>
+                                                </a>
+                                            </div>
+                                            <ul class="nk-msg-actions">
+                                                <li><a href="{{ path('app_admin_delete_contact-us', {'id': messages[index].id}) }}" class="btn btn-dim btn-sm btn-outline-light">
+                                                        <em class="icon ni ni-trash"></em>
+                                                        <span>Delete</span>
+                                                    </a>
+                                                </li>
+                                                <!-- <li><span class="badge badge-dim badge-success badge-sm"><em class="icon ni ni-check"></em><span>Closed</span></span></li> -->
+                                                <li class="d-lg-none">
+                                                    <a href="#" class="btn btn-icon btn-sm btn-white btn-light profile-toggle">
+                                                        <em class="icon ni ni-info-i"></em>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div><!-- .nk-msg-head -->
+                                    <div class="nk-msg-reply nk-reply" data-simplebar="init">
+                                        <div class="simplebar-wrapper" style="margin: 0px;">
+                                            <div class="simplebar-height-auto-observer-wrapper">
+                                                <div class="simplebar-height-auto-observer"></div>
+                                            </div>
+                                            <div class="simplebar-mask">
+                                                <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+                                                    <div class="simplebar-content-wrapper" style="height: 100%; overflow: hidden scroll;">
+                                                        <div class="simplebar-content" style="padding: 0px;"
+                                                             id="content-msg">
+                                                            <div class="nk-msg-head py-4 d-lg-none">
+                                                                <h4 class="title">{{ messages[index].description }}</h4>
+                                                                <ul class="nk-msg-tags">
+                                                                    <li>
+                                                                    <span class="label-tag">
+                                                                        <em class="icon ni ni-flag-fill"></em>
+                                                                        <span id="category-msg">{{ messages[index].category }}</span>
+                                                                    </span>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="nk-reply-item">
+                                                                <div class="nk-reply-header">
+                                                                    <div class="user-card">
+                                                                        <div class="user-avatar sm bg-blue">
+                                                                            <span class="user__name">{{ messages[index].twoLettersName }}</span>
+                                                                        </div>
+                                                                        <div class="user-name">
+                                                                            {{ messages[index].fullName }}
+                                                                            <br>
+                                                                            <small class="email text-black-50">{{ messages[index].email }}</small>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="date-time">{{ messages[index].createdAt | date('d M, Y') }}</div>
+                                                                </div>
+                                                                <div class="nk-reply-body">
+                                                                    <div class="nk-reply-entry entry">
+                                                                        <p>
+                                                                            {{ messages[index].details }}
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="attach-files {% if messages[index].imageName is null %} d-n {% endif %}">
+                                                                        <ul class="attach-list">
+                                                                            <li class="attach-item">
+                                                                                {% set href = messages[index].imageName is not null ? vich_uploader_asset(messages[index], 'imageFile') | imagine_filter('thumb') : '' %}
+                                                                                <a class="download" {% if messages[index].imageName is null %} href="{{ href }}" {% endif %}
+                                                                                   target="_blank">
+                                                                                    <em class="icon ni ni-img"></em>
+                                                                                    <span>{{ messages[index].imageName }}</span>
+                                                                                </a>
+                                                                            </li>
+                                                                        </ul>
+                                                                        <div class="attach-foot">
+                                                                        <span class="attach-info">
+                                                                            <span class="nb-attached-files">1</span> file attached
+                                                                        </span>
+                                                                            <a class="attach-download link" {% if messages[index].imageName is null %} href="{{ href }}" {% endif %}
+                                                                               download>
+                                                                                <em class="icon ni ni-download"></em>
+                                                                                <span>Download All</span></a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div><!-- .nk-reply-item -->
+                                                            {% if messages[index].replyContactUs is not null %}
+                                                                <div class="nk-reply-meta user-meta">
+                                                                    <div class="nk-reply-meta-info">
+                                                                        <span class="who">{{ messages[index].replyContactUs.user.fullName() }}</span>
+                                                                        replies
+                                                                        at {{ messages[index].replyContactUs.createdAt | date('d M Y h:i A') }}
+                                                                    </div>
+                                                                </div>
+                                                                <!-- .nk-reply-meta -->
+                                                                <div class="nk-reply-item user-reply">
+                                                                    <div class="nk-reply-header">
+                                                                        <div class="user-card">
+                                                                            <div class="user-avatar sm bg-blue">
+                                                                                <span class="user__name">{{ messages[index].replyContactUs.user.firstTowLatterName() }}</span>
+                                                                            </div>
+                                                                            <div class="user-name">{{ messages[index].replyContactUs.user.fullName }}</div>
+                                                                        </div>
+                                                                        <div class="date-time">{{ messages[index].replyContactUs.createdAt | date('d M, Y') }}</div>
+                                                                    </div>
+                                                                    <div class="nk-reply-body">
+                                                                        <div class="nk-reply-entry entry">
+                                                                            <p>
+                                                                                {{ messages[index].replyContactUs.content }}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div><!-- .nk-reply-item -->
+                                                            {% endif %}
+                                                            <div class="nk-reply-form {% if messages[index].hasReply %} d-n {% endif %}">
+                                                                {% if not messages[index].hasReply %}
+                                                                    <div class="nk-reply-form-header">
+                                                                        <ul class="nav nav-tabs-s2 nav-tabs nav-tabs-sm">
+                                                                            <li class="nav-item">
+                                                                                <a class="nav-link active" data-toggle="tab"
+                                                                                   href="#reply-form">Reply</a>
+                                                                            </li>
+                                                                        </ul>
+                                                                        <div class="nk-reply-form-title">
+                                                                            <div class="title">Reply as:</div>
+                                                                            <div class="user-avatar xs bg-purple">
+                                                                                <span>{{ app.user.firstTowLatterName }}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="tab-content">
+                                                                        <div class="tab-pane active" id="reply-form">
+                                                                            <div class="nk-reply-form-editor">
+                                                                                <form action="{% if messages[index].hasReply %} {{ app.request.uri }} {% endif %}"
+                                                                                      class="form-validate" method="POST">
+                                                                                    <input type="hidden" name="_token"
+                                                                                           value="{{ csrf_token('reply') }}">
+                                                                                    <input type="hidden" name="_msg-id"
+                                                                                           value="{{ messages[index].id }}">
+                                                                                    <div class="nk-reply-form-field">
+                                                                                <textarea
+                                                                                        class="form-control form-control-simple no-resize"
+                                                                                        name="reply"
+                                                                                        placeholder="Hello"></textarea>
+                                                                                    </div>
+                                                                                    <div class="nk-reply-form-tools">
+                                                                                        <ul class="nk-reply-form-actions g-1">
+                                                                                            <li class="mr-2">
+                                                                                                <button class="btn btn-primary"
+                                                                                                        type="submit">Reply
+                                                                                                </button>
+                                                                                            </li>
+                                                                                        </ul>
+                                                                                    </div><!-- .nk-reply-form-tools -->
+                                                                                </form>
+                                                                            </div><!-- .nk-reply-form-editor -->
+                                                                        </div>
+                                                                    </div>
+                                                                {% endif %}
+                                                            </div><!-- .nk-reply-form -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="simplebar-placeholder" style="width: auto; height: 1373px;"></div>
+                                        </div>
+                                        <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
+                                            <div class="simplebar-scrollbar" style="width: 0px; display: none;"></div>
+                                        </div>
+                                        <div class="simplebar-track simplebar-vertical" style="visibility: visible;">
+                                            <div class="simplebar-scrollbar"
+                                                 style="height: 257px; transform: translate3d(0px, 0px, 0px); display: block;"></div>
+                                        </div>
+                                    </div><!-- .nk-reply -->
+                                </div>
+                            </div><!-- .nk-msg -->
+                        {% else %}
+                            <div class="w-100" style="height: 400px">
+                                <h2 class="d-flex flex-column align-items-center">
+                                    <em class="icon ni ni-chat-circle fa-1x"></em>
+                                    <span class="text-black-50">No messages !</span>
+                                </h2>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <!-- footer @s -->
+                    <div class="nk-footer">
+                        <div class="container wide-xl">
+                            <div class="nk-footer-wrap g-2">
+                                <div class="nk-footer-copyright"> © 2020 DashLite. Template by <a href="#">Softnio</a>
+                                </div>
+                                <div class="nk-footer-links">
+                                    <ul class="nav nav-sm">
+                                        <li class="nav-item"><a class="nav-link" href="#">Terms</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="#">Privacy</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- footer @e -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <span id="reply-csrf" class="d-n">{{ csrf_token('reply') }}</span>
+    {{ app.session.clear }}
+{% endblock %}

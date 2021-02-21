@@ -1,0 +1,297 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% set in_admin = true %}
+    <div class="nk-content">
+        <div class="container wide-xl">
+            <div class="nk-content-inner">
+                <!-- ASIDE -->
+                {{ include('partials/_sidebar.html.twig') }}
+                <!-- ASIDE -->
+                <div class="nk-content-body">
+                    <div class="nk-block nk-block-lg">
+                        <div class="nk-block-head">
+                            <div class="nk-block-head-content">
+                                <h4 class="nk-block-title">User Comments</h4>
+                            </div>
+                        </div>
+                        {% if comments | length > 0 %}
+                            <div class="card card-bordered card-preview">
+                                <div class="card-inner pb-0">
+                                    <div class="row justify-between g-2" style="margin-bottom: 10px !important;">
+                                        <div class="col-6 col-sm-6 text-left">
+                                            <div class="form-group">
+                                                <div class="form-control-wrap">
+                                                    <div class="form-icon form-icon-right">
+                                                        <em class="icon ni ni-search"></em>
+                                                    </div>
+                                                    <input class="form-control form-control-md form-control-outlined" id="comment-search" type="text">
+                                                    <label class="form-label-outlined" for="comment-search">Search For Comment</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-sm-6 text-left">
+                                            <div class="form-group">
+                                                <div class="form-control-wrap">
+                                                    <select id="select-status" data-target="#selected-value">
+                                                        <option value="all" class="option-select-status">All</option>
+                                                        <option value="posted" class="option-select-status">Posted</option>
+                                                        <option value="deleted" class="option-select-status">Deleted</option>
+                                                    </select>
+                                                    <input type="hidden" id="selected-value" value="all">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <table class="table table-tranx">
+                                    <thead>
+                                    <tr class="tb-tnx-head">
+                                        <th class="tb-tnx-id"><span class="">#</span></th>
+                                        <th class="tb-tnx-info">
+                                        <span class="tb-tnx-desc d-none d-sm-inline-block">
+                                            <span>Comment</span>
+                                        </span>
+                                            <span class="tb-tnx-date d-md-inline-block d-none">
+                                            <span class="d-md-none">Date</span>
+                                            <span class="d-none d-md-block">
+                                                <span>Posted At</span>
+                                                <span>Post</span>
+                                            </span>
+                                        </span>
+                                        </th>
+                                        <th class="tb-tnx-amount is-alt">
+                                            <span class="tb-tnx-total">User</span>
+                                            <span class="tb-tnx-status d-none d-md-inline-block">Status</span>
+                                        </th>
+                                        <th class="tb-tnx-action">
+                                            <span>&nbsp;</span>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for comment in comments %}
+                                        <tr class="tb-tnx-item item-comment" data-content="{{ comment.comment }}" data-status="{{ comment.isDeleted ? 'deleted' : 'posted' }}">
+                                            <td class="tb-tnx-id">
+                                                <a href="#">
+                                                    <span>{{ comment.id }}</span>
+                                                </a>
+                                            </td>
+                                            <td class="tb-tnx-info">
+                                                <div class="tb-tnx-desc">
+                                                <span class="title">
+                                                    {{ comment.comment }}
+                                                </span>
+                                                </div>
+                                                <div class="tb-tnx-date">
+                                                <span class="date">
+                                                    {{ comment.createdAt | date('d-m-Y') }}
+                                                </span>
+                                                    <span class="date" style="color: black !important;">
+                                                    <a href="{{ path('app_show_post', {'id': comment.post.id, 'slug': comment.post.slugify(comment.post.title)}) }}">
+                                                        {{ comment.post.title | u.truncate(15, '...') }}
+                                                    </a>
+                                                </span>
+                                                </div>
+                                            </td>
+                                            <td class="tb-tnx-amount is-alt">
+                                                <div class="tb-tnx-total">
+                                                <span class="amount">
+                                                    {{ comment.user.fullName() }}
+                                                </span>
+                                                </div>
+                                                <div class="tb-tnx-status">
+                                                    {% if comment.isDeleted %}
+                                                        <span class="badge badge-dot badge-warning">Deleted</span>
+                                                    {% else %}
+                                                        <span class="badge badge-dot badge-success">Posted</span>
+                                                    {% endif %}
+                                                </div>
+                                            </td>
+                                            <td class="tb-tnx-action">
+                                                <div class="dropdown">
+                                                    <a class="text-soft dropdown-toggle btn btn-icon btn-trigger" data-toggle="dropdown" aria-expanded="false"><em class="icon ni ni-more-h"></em></a>
+                                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-xs" style="">
+                                                        <ul class="link-list-plain">
+                                                            <li>
+                                                                <a href="#" data-toggle="modal" data-target="#commentModal-{{ comment.id }}">View Comment</a>
+                                                            </li>
+                                                            {% if comment.isDeleted %}
+                                                                <li>
+                                                                    <a href="{{ path('app_admin_restore_comment', {'id': comment.id}) }}">
+                                                                        Restore Comment
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="#" class="comment-delete-js" data-target="form-remove-comment-{{ comment.id }}">Delete Permanently</a>
+                                                                    <form action="{{ path('app_admin_delete_comment', {'id': comment.id}) }}" method="post" id="form-remove-comment-{{ comment.id }}">
+                                                                        <input type="hidden" name="_token" value="{{ csrf_token('delete-comment-' ~ comment.id) }}">
+                                                                        <input type="hidden" name="_method" value="delete">
+                                                                    </form>
+                                                                </li>
+                                                            {% else %}
+                                                                <li>
+                                                                    <a href="#" class="comment-delete-js" data-target="form-remove-comment-{{ comment.id }}">Remove</a>
+                                                                    <form action="{{ path('app_admin_remove_comment', {'id': comment.id}) }}" id="form-remove-comment-{{ comment.id }}" method="post">
+                                                                        <input type="hidden" name="_token" value="{{ csrf_token('delete-comment-' ~ comment.id) }}">
+                                                                        <input type="hidden" name="_method" value="delete">
+                                                                    </form>
+                                                                </li>
+                                                            {% endif %}
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div><!-- .card-preview -->
+                        {% else %}
+                            <div class="h-100px d-flex align-items-center text-black-50 flex-column">
+                                <em class="icon ni ni-comments fa-2x"></em>
+                                <h4 class="text-black-50">No Comments !</h4>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <!-- footer @s -->
+                    {{ include('partials/_footer.html.twig') }}
+                    <!-- footer @e -->
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if comments | length > 0 %}
+        {% for comment in comments %}
+            <div class="modal fade" tabindex="-1" id="commentModal-{{ comment.id }}">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <a href="#" class="close" data-dismiss="modal" aria-label="Close">
+                            <em class="icon ni ni-cross"></em>
+                        </a>
+                        <div class="modal-header">
+                            <h5 class="modal-title">Commented on <a href="{{ path('app_show_post', {'id': comment.post.id, 'slug': comment.post.slugify(comment.post.title)}) }}">{{ comment.post.title }}</a></h5>
+                        </div>
+                        <div class="modal-body">
+                            <p id="modal-p-comment">{{ comment.comment }}</p>
+                        </div>
+                        <div class="modal-footer bg-light">
+                            <span class="sub-text">Commented by <a href="{{ path('app_admin_details_user', {'id': comment.user.id}) }}">{{ comment.user.fullName }}</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    
+    <script>
+        const clearedString = str => str.trim().toLowerCase()
+        
+        $(document).ready(() => {
+            const showToast = () => {
+                let hasClassDn = false
+                if ($('.item-comment').length === $('.item-comment.d-n').length) {
+                    NioApp.Toast('No Comments !!', 'error')
+                }
+            }
+            
+            let $select = $('select'),
+                $items = $('.item-comment'),
+                status = 'all',
+                searchedValue = ''
+
+            $select.select2()
+
+            const searchElementByValue = (e) => {
+                searchedValue = clearedString(e.target.value)
+                
+                $items.each((i, ele) => {
+                    $(ele).addClass('d-n')
+                    
+                    if (status === 'all') {
+                        if (searchedValue !== '') {
+                            if (clearedString($(ele).data('content')).indexOf(searchedValue) > -1) {
+                                $(ele).removeClass('d-n')
+                            }
+                        }
+                        else {
+                            $(ele).removeClass('d-n')
+                        }
+                    }
+                    else {
+                        if (searchedValue !== '') {
+                            if (
+                                clearedString($(ele).data('content')).indexOf(searchedValue) > -1
+                                && clearedString($(ele).data('status')) === status
+                            ) {
+                                $(ele).removeClass('d-n')
+                            }
+                        }
+                        else if (clearedString($(ele).data('status')) === status) {
+                            $(ele).removeClass('d-n')
+                        }
+                    }
+                })
+
+                showToast()
+            }
+            
+            const searchElementByStatus = (e) => {
+                status = clearedString(e.params.data.text)
+                
+                $items.each((i, ele) => {
+                    
+                    $(ele).addClass('d-n')
+                    
+                    if (searchedValue === '') {
+                        if (status !== 'all') {
+                            if (status === clearedString($(ele).data('status'))) {
+                                $(ele).removeClass('d-n')
+                            }
+                        }
+                        else {
+                            $(ele).removeClass('d-n')
+                        }
+                    }
+                    else {
+                        if (status !== 'all' && clearedString($(ele).data('content')).indexOf(searchedValue) > -1) {
+                            if (status === clearedString($(ele).data('status'))) {
+                                $(ele).removeClass('d-n')
+                            }
+                        }
+                        else if (clearedString($(ele).data('content')).indexOf(searchedValue) > -1) {
+                            $(ele).removeClass('d-n')
+                        }
+                    }
+                })
+
+                showToast()
+            }
+            
+            $select.on('select2:select', searchElementByStatus)
+            $('#comment-search').keyup(searchElementByValue)
+            
+            $('.comment-delete-js').click(function (e) {
+
+                e.preventDefault();
+                let targetForm = $(this).data('target')
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete it!'
+                }).then(function (result) {
+                    if (result.value) {
+                        let form = $(`form#${targetForm}`)
+                        form.submit()
+                    }
+                })
+            })
+        })
+    </script>
+    
+{% endblock %}

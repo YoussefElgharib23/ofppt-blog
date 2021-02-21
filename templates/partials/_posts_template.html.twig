@@ -1,0 +1,150 @@
+{% if posts | length > 0 %}
+    {% set latestPost = posts[0] %}
+{% endif %}
+<div class="nk-content">
+    <div class="container wide-xl">
+        <div class="nk-content-inner">
+            <!-- ASIDE -->
+            {{ include('partials/_sidebar.html.twig') }}
+            <!-- ASIDE -->
+            <div class="nk-content-body">
+                {% if posts | length == 0 %}
+                    <div class="alert alert-danger text-center">
+                        <p>No posts</p>
+                    </div>
+                {% else %}
+                    <div class="nk-content-wrap">
+                        <div class="nk-block-head nk-block-head-sm">
+                            <div class="nk-block-between">
+                                <div class="nk-block-head-content">
+                                    <h3 class="nk-block-title page-title">Latest Post</h3>
+                                    <div class="nk-block-des text-soft">
+                                        <p>
+                                            <span class="badge badge-primary">
+                                                {{ latestPost.category.name }}
+                                            </span>
+                                            <span class="badge badge-dot badge-secondary">{{ latestPost.formattedCreatedAt }}</span>
+                                        </p>
+                                    </div>
+                                </div><!-- .nk-block-head-content -->
+                            </div><!-- .nk-block-between -->
+                        </div><!-- .nk-block-head -->
+                        <div class="nk-block">
+                            <div class="row g-gs">
+                                <div class="col-12">
+                                    <div class="card card-bordered card-full rounded-lg">
+                                        <div class="card-inner">
+                                            <article class="entry">
+                                                <div class="row">
+                                                    <div class="col-lg-6 my-2">
+                                                        <div class="image-container mw-100 rounded-lg overflow-hidden position-relative" style="min-height: 386px">
+                                                            <a href="{{ path('app_show_post', {'id': latestPost.id, 'slug': latestPost.slugify(latestPost.title)}) }}"
+                                                               class="posts-images-link">
+                                                                <div class="load-overlay">
+                                                                    <div class="spinner-border" role="status">
+                                                                        <span class="sr-only">Loading...</span>
+                                                                    </div>
+                                                                </div>
+                                                                <img alt=""
+                                                                     class="rounded-lg posts-images fade img-fluid"
+                                                                     data-lazy="{{ vich_uploader_asset(latestPost, 'imageFile') | imagine_filter('thumb') }}"
+                                                                     src="">
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 my-lg-5 d-flex flex-column">
+                                                        <div>
+                                                            <h3>
+                                                                <a class="link-posts-show"
+                                                                   href="{{ path('app_show_post', {'id': latestPost.id, 'slug': latestPost.slugify(latestPost.title)}) }}">
+                                                                    {{ latestPost.title | u.truncate(40, '...') }}
+                                                                </a>
+                                                            </h3>
+                                                            <div class="mb-2">
+                                                                <small class="d-flex align-items-center">
+                                                                    <a class="mr-1 rounded-lg btn btn-sm btn-outline-primary category-badges-link p-0 pr-1 pl-1"
+                                                                       data-placement="right" data-toggle="tooltip"
+                                                                       href="{{ path('app_posts_category', {'slug': latestPost.category.slug(latestPost.category.name)}) }}"
+                                                                       title="Browse category posts">
+                                                                        {{ latestPost.category.name }}
+                                                                    </a>
+                                                                    <span class="badge badge-dot badge-secondary">{{ latestPost.formattedCreatedAt }}</span>
+                                                                </small>
+                                                            </div>
+                                                            <p style="font-size: 16px; font-weight: 400">
+                                                                {{ latestPost.minDescription | u.truncate(300, '...') }}
+                                                            </p>
+                                                        </div>
+                                                        <a href="{{ path('app_show_post', {id: latestPost.id, slug: latestPost.slugify(latestPost.title)}) }}"
+                                                           class="mt-auto btn btn-icon btn-dim btn-outline-info btn-block">
+                                                            <span>Read More</span>
+                                                            <em class="icon ni ni-arrow-long-right"></em>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </article>
+                                            {% if posts | length > 1 %}
+                                                <div class="posts text-center py-3 mw-100 overflow-hidden">
+                                                    <h4 class="overline-title overline-title-sap">
+                                                        <span>Recent posts</span>
+                                                    </h4>
+                                                </div>
+                                                <div class="row" id="recent-posts">
+                                                    {% for post in posts | exceptTheLatestPost %}
+                                                        <div class="col-lg-3 col-md-4 col-sm-6 d-flex flex-column justify-content-between mb-2" data-toggle="tooltip"
+                                                             data-placement="top" title="{{ post.minDescription }}">
+                                                            <section>
+                                                                <div class="image-container mw-100 rounded-lg overflow-hidden position-relative" style="min-height: 161.7px;">
+                                                                    <a href="{{ path('app_show_post', {'id': post.id, 'slug': post.slugify(post.title)}) }}" class="posts-images-link">
+                                                                        <div class="load-overlay fade">
+                                                                            <div class="spinner-border" role="status">
+                                                                                <span class="sr-only">Loading...</span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <img alt=""
+                                                                             class="rounded-lg posts-images fade img-fluid"
+                                                                             data-lazy="{{ vich_uploader_asset(post, 'imageFile') | imagine_filter('thumb') }}"
+                                                                             src="">
+                                                                    </a>
+                                                                </div>
+                                                                <div class="mt-2">
+                                                                    <a class="btn-link"
+                                                                       href="{{ path('app_show_post', {'id': post.id, 'slug': post.slugify(post.title)}) }}">
+                                                                        <h6 class="font-25 m-0 text-wrap">{{ post.title | u.truncate(40, '...') }}</h6>
+                                                                    </a>
+                                                                    <div>
+                                                                        <span class="badge badge-primary">{{ post.category.name }}</span>
+                                                                        <span class="badge badge-dot badge-secondary">{{ post.createdAt | date('d M, Y') }}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </section>
+                                                        </div>
+                                                    {% endfor %}
+                                                    <span data-latest-id="{{ latestPostId(posts) }}" id="post-id" style="display:none;"></span>
+                                                </div>
+                                                {% if count > 15 %}
+                                                    <div class="row my-2" id="div-button-display">
+                                                        <div class="col-md-6 mx-auto">
+                                                            <button type="button"
+                                                                    class="btn btn-dim btn-outline-primary btn-icon pl-2 btn-block"
+                                                                    id="button-load-more-js">
+                                                                Load more<em class="icon ni ni-chevron-down"></em>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                            {% endif %}
+                                        </div>
+                                    </div><!-- .card -->
+                                </div><!-- .col -->
+                            </div><!-- .row -->
+                        </div><!-- .nk-block -->
+                    </div>
+                {% endif %}
+                <!-- footer @s -->
+                {{ include('partials/_footer.html.twig') }}
+                <!-- footer @e -->
+            </div>
+        </div>
+    </div>
+</div>

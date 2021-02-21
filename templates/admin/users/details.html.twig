@@ -1,0 +1,318 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'User Details | ' ~ APP_NAME %}
+
+{% block body %}
+    {% set in_admin = true %}
+    <div class="nk-content ">
+        <div class="container wide-xl">
+            <div class="nk-content-inner">
+                {{ include('partials/_sidebar.html.twig') }}
+                <div class="nk-content-body">
+                    <div class="nk-content-wrap">
+                        <div class="nk-block-head">
+                            <div class="nk-block-between g-3">
+                                <div class="nk-block-head-content">
+                                    <h3 class="nk-block-title page-title">Users /
+                                        <strong class="text-primary small">{{ user.fullName(false) }}</strong>
+                                        {% if user.status %}
+                                            <span class="badge badge-dot badge-success">Active</span>
+                                        {% elseif user.status == 0 %}
+                                            <span class="badge badge-dot badge-warning">Suspended</span>
+                                        {% else %}
+                                            <span class="badge badge-dot badge-danger">Deleted</span>
+                                        {% endif %}
+                                    </h3>
+                                    <div class="nk-block-des text-soft">
+                                        <ul class="list-inline">
+                                            <li>
+                                                User ID: <span class="text-base">{{ user.id }}</span></li>
+                                            <li>
+                                                <span>
+                                                    Last Login: {{ user.getLastLogin is not null ? user.getLastLogin.lastLogin | date('d-M-Y h:i A') : '<span class="text-black-50">Never logged in !</span>' }}
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="nk-block-head-content">
+                                    <a href="{{ backRoute }}" class="btn btn-outline-light bg-white d-none d-sm-inline-flex"><em class="icon ni ni-arrow-left"></em><span>Back</span></a>
+                                    <a href="{{ backRoute }}" class="btn btn-icon btn-outline-light bg-white d-inline-flex d-sm-none"><em class="icon ni ni-arrow-left"></em></a>
+                                </div>
+                            </div>
+                        </div><!-- .nk-block-head -->
+                        <div class="nk-block">
+                            <div class="card card-bordered">
+                                <ul class="nav nav-tabs nav-tabs-mb-icon nav-tabs-card">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" href=""><em class="icon ni ni-user-circle"></em><span>Personal</span></a>
+                                    </li>
+                                </ul><!-- .nav-tabs -->
+                                <div class="card-inner">
+                                    <div class="nk-block">
+                                        <div class="nk-block-head">
+                                            <h5 class="title">Personal Information</h5>
+                                            <p>Basic info, like your name and address, that you use on {{ APP_NAME }}.</p>
+                                        </div><!-- .nk-block-head -->
+                                        <div class="profile-ud-list">
+                                            <div class="profile-ud-item w-100 d-flex justify-content-center my-2">
+                                                {% if user.imageName %}
+                                                    <img src="" height="200px" width="200px" data-lazy="{{ vich_uploader_asset(user, 'imageFile') | imagine_filter('profile_pic') }}" class="rounded-circle posts-images fade" alt="">
+                                                {% else %}
+                                                    <div class="user-avatar bg-primary" style="height: 200px; width: 200px">
+                                                        <span style="font-size: 60px">{{ user.firstTowLatterName }}</span>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="profile-ud-item">
+                                                <div class="profile-ud wider">
+                                                    <span class="profile-ud-label">Title</span>
+                                                    <span class="profile-ud-value">
+                                                        {{ getUserTitle(user.gender) }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="profile-ud-item">
+                                                <div class="profile-ud wider">
+                                                    <span class="profile-ud-label">Full Name</span>
+                                                    <span class="profile-ud-value">
+                                                        {{ user.fullName(false) }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="profile-ud-item">
+                                                <div class="profile-ud wider">
+                                                    <span class="profile-ud-label">User Name</span>
+                                                    <span class="profile-ud-value">
+                                                        {{ user.username }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="profile-ud-item">
+                                                <div class="profile-ud wider">
+                                                    <span class="profile-ud-label">Date of Birth</span>
+                                                    <span class="profile-ud-value">
+                                                        {{ user.birthDate | date('d M, Y')}}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="profile-ud-item">
+                                                <div class="profile-ud wider">
+                                                    <span class="profile-ud-label">Surname</span>
+                                                    <span class="profile-ud-value">
+                                                        {{ user.displayName ?? 'Not set' }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="profile-ud-item">
+                                                <div class="profile-ud wider">
+                                                    <span class="profile-ud-label">Mobile Number</span>
+                                                    <span class="profile-ud-value">
+                                                        {{ user.phoneNumber ?? 'Not set' }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="profile-ud-item">
+                                                <div class="profile-ud wider">
+                                                    <span class="profile-ud-label">Email Address</span>
+                                                    <span class="profile-ud-value">
+                                                        {{ user.email }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="profile-ud-item">
+                                                <div class="profile-ud wider">
+                                                    <span class="profile-ud-label">User Role</span>
+                                                    <span class="profile-ud-value">
+                                                        {% if 'ROLE_ADMIN' in user.roles %}
+                                                            Admin
+                                                        {% else %}
+                                                            User
+                                                        {% endif %}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="profile-ud-item">
+                                                <div class="profile-ud wider">
+                                                    <span class="profile-ud-label">Is Verified</span>
+                                                    <span class="profile-ud-value">
+                                                        {% if user.isVerified %}
+                                                            <span class="text-success">
+                                                                <em class="icon text-success ni ni-check-circle"></em> <span>Verified</span>
+                                                            </span>
+                                                        {% else %}
+                                                            <span class="text-warning">
+                                                                <em class="icon text-warning ni ni-alert-circle"></em> <span>Not Verified</span>
+                                                            </span>
+                                                        {% endif %}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div><!-- .profile-ud-list -->
+                                    </div><!-- .nk-block -->
+                                    <div class="nk-block">
+                                        <div class="nk-block-head nk-block-head-line">
+                                            <h6 class="title overline-title text-base">Additional Information</h6>
+                                        </div><!-- .nk-block-head -->
+                                        <div class="profile-ud-list">
+                                            <div class="profile-ud-item">
+                                                <div class="profile-ud wider">
+                                                    <span class="profile-ud-label">Joining Date</span>
+                                                    <span class="profile-ud-value">
+                                                        {{ user.createdAt | date('d-m-y h:iA') }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="profile-ud-item">
+                                                <div class="profile-ud wider">
+                                                    <span class="profile-ud-label">Reg Method</span>
+                                                    <span class="profile-ud-value">Email</span>
+                                                </div>
+                                            </div>
+                                            <div class="profile-ud-item">
+                                                <div class="profile-ud wider">
+                                                    <span class="profile-ud-label">Country</span>
+                                                    <span class="profile-ud-value">
+                                                        {{ user.country ?? '<div class="text-black-50">Not set</div>' }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="profile-ud-item">
+                                                <div class="profile-ud wider">
+                                                    <span class="profile-ud-label">Nationality</span>
+                                                    <span class="profile-ud-value">
+                                                        {{ user.country ?? '<div class="text-black-50">Not set</div>' }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="profile-ud-item">
+                                                <div class="profile-ud wider">
+                                                    <span class="profile-ud-label">Join Method</span>
+                                                    <span class="profile-ud-value">
+                                                        {{ user.isCreatedByAdmin ? 'By Admin' : 'Himself' }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div><!-- .profile-ud-list -->
+                                    </div><!-- .nk-block -->
+                                    <div class="reports-container">
+                                        <div class="nk-divider divider md"></div>
+                                        <div class="nk-block">
+                                            <div class="nk-block-head nk-block-head-sm nk-block-between">
+                                                <h5 class="title">Admin Reports</h5>
+                                                <a href="#" class="link link-sm" data-toggle="modal" data-target="#report-user-modal">+ Add Report</a>
+                                            </div><!-- .nk-block-head -->
+                                            <div class="bq-note">
+                                                {% for report in user.getActiveAdminReports %}
+                                                    <div class="bq-note-item">
+                                                        <div class="bq-note-text">
+                                                            <p>{{ report.description }}</p>
+                                                        </div>
+                                                        <div class="bq-note-meta">
+                                                            <span class="bq-note-added">Added on <span class="date">{{ report.createdAt | date('M d, Y') }}</span> at <span class="time">{{ report.createdAt | date('h:i a') }}</span></span>
+                                                            <span class="bq-note-sep sep">|</span>
+                                                            <span class="bq-note-by">By <span>{{ report.adminUsername }}</span></span>
+                                                            <a href="#" class="link link-sm link-danger remove-report-js" data-target="{{ report.id }}">Delete Note</a>
+                                                        </div>
+                                                    </div><!-- .bq-note-item -->
+                                                {% endfor %}
+                                            </div><!-- .bq-note -->
+                                        </div><!-- .nk-block -->
+                                    </div>
+                                </div><!-- .card-inner -->
+                            </div><!-- .card -->
+                        </div><!-- .nk-block -->
+                    </div>
+                    <!-- footer @s -->
+                    {{ include('partials/_footer.html.twig') }}
+                    <!-- footer @e -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" tabindex="-1" id="report-user-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <a href="#" class="close" data-dismiss="modal" aria-label="Close">
+                    <em class="icon ni ni-cross"></em>
+                </a>
+                <div class="modal-header">
+                    <h5 class="modal-title">Report User {{ user.fullName(false) }}</h5>
+                </div>
+                <div class="modal-body">
+                    {{ form_start(form, {
+                        attr: {
+                            class: 'form-validate '
+                        }
+                    }) }}
+                    <div class="form-group">
+                        {{ form_row(form.description, {
+                            label_attr: { class: 'form-label'},
+                        }) }}
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-control-sm custom-checkbox">
+                            {{ form_row(form.needToReceive, {
+                                label_attr: {
+                                    class: 'custom-control-label'
+                                },
+                                attr: {
+                                    class: 'custom-control-input'
+                                }
+                            }) }}
+                        </div>
+                    </div>
+                    <input type="submit" class="btn btn-outline-primary btn-dim btn-block" value="Send">
+                    {{ form_end(form) }}
+                </div>
+                <div class="modal-footer bg-light">
+                    <span class="sub-text">Modal Footer Text</span>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    
+    <script>
+        $(document).ready(() => {
+            $('.form-check').each((i, ele) => {
+                $(ele).removeClass('form-check')
+            })
+            
+            $('.remove-report-js').each((i, ele) => {
+                $(ele).click((e) => {
+                    e.preventDefault()
+
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You can't restore this report after the action !",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then(function (result) {
+                        if (result.value) {
+                            $(ele).parents(`div.bq-note-item`).slideUp()
+                            setTimeout(() => {
+                                $(ele).parents(`div.bq-note-item`).remove();
+                            }, 400)
+                            
+                            let url = window.location.origin + '/ajax/admin/reports/delete',
+                                reportId = $(ele).data('target')
+                            
+                            axios.post(url, {reportId: reportId})
+                            .then((response) => {
+                                if (response.data.message === 'success') {
+                                    NioApp.Toast('The report was successfully deleted !', 'info');
+                                }
+                            })
+                            .catch((error) => { NioApp.Toast('An error has occurred while the action !', 'error'); })
+                        }
+                    })
+                })
+            })
+        })
+    </script>
+
+{% endblock %}

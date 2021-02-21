@@ -1,0 +1,157 @@
+{% if profileForm is defined %}
+    <div class="modal fade" tabindex="-1" id="profile-edit" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <a href="#" class="close" data-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
+                <div class="modal-body modal-body-lg">
+                    <h5 class="title">Update Profile</h5>
+                    {% if errorProfileUpdate is defined %}
+                        <div class="alert alert-danger alert-icon mt-3">
+                            <em class="icon ni ni-alert-circle"></em>
+                            An error has occurred ! Please try again
+                        </div>
+                    {% endif %}
+                    <ul class="nk-nav nav nav-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#personal">Personal</a>
+                        </li>
+                    </ul><!-- .nav-tabs -->
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="personal">
+                            {{ form_start(profileForm, {
+                                attr: {
+                                    class: 'form-validate'
+                                }
+                            }) }}
+                            <div class="row gy-4">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ form_row(profileForm.firstName, {
+                                            label_attr: {
+                                                class: 'form-label'
+                                            },
+                                            attr: {
+                                                class: 'form-control-lg'
+                                            }
+                                        }) }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ form_row(profileForm.lastName, {
+                                            label_attr: {
+                                                class: 'form-label'
+                                            },
+                                            attr: {
+                                                class: 'form-control-lg'
+                                            }
+                                        }) }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ form_row(profileForm.displayName, {
+                                            label_attr: {
+                                                class: 'form-label'
+                                            },
+                                            attr: {
+                                                class: 'form-control-lg',
+                                                placeholder: 'Your display name here'
+                                            }
+                                        }) }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ form_row(profileForm.phoneNumber, {
+                                            label_attr: {
+                                                class: 'form-label'
+                                            },
+                                            attr: {
+                                                class: 'form-control-lg',
+                                                placeholder: 'Your phone number'
+                                            }
+                                        }) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row gy-4">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        {{ form_row(profileForm.email, {
+                                            label_attr: {
+                                                class: 'form-label'
+                                            },
+                                            attr: {
+                                                class: 'form-control-lg',
+                                                placeholder: 'Your phone number'
+                                            }
+                                        }) }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ form_row(profileForm.username, {
+                                            label_attr: {
+                                                class: 'form-label'
+                                            },
+                                            attr: {
+                                                class: 'form-control-lg',
+                                                placeholder: 'Your username'
+                                            }
+                                        }) }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ form_row(profileForm.birthDate, {
+                                            label: 'Date of birth',
+                                            label_attr: {
+                                                class: 'form-label'
+                                            },
+                                            attr: {
+                                                class: 'form-control-lg date-picker',
+                                                placeholder: 'Select your birthday'
+                                            }
+                                        }) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row gy-4">
+                                <div class="col-12">
+                                    <div class="custom-control custom-switch">
+                                        <div class="p-0">
+                                            {{ form_row(profileForm.isChangedToDisplay, {
+                                                label: 'Use full name to display',
+                                                label_attr: {
+                                                    class: 'custom-control-label'
+                                                },
+                                                attr: {
+                                                    class: 'custom-control-input',
+                                                    placeholder: 'Select your birthday'
+                                                }
+                                            }) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row gy-4">
+                                <div class="col-12">
+                                    <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
+                                        <li>
+                                            <button type="submit" class="btn btn-lg btn-primary">Update Profile</button>
+                                        </li>
+                                        <li>
+                                            <a href="#" data-dismiss="modal" class="link link-light">Cancel</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            {{ form_end(profileForm) }}
+                        </div><!-- .tab-pane -->
+                    </div><!-- .tab-content -->
+                </div><!-- .modal-body -->
+            </div><!-- .modal-content -->
+        </div><!-- .modal-dialog -->
+    </div>
+{% endif %}

@@ -1,0 +1,159 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    
+    <div class="nk-content ">
+        <div class="container wide-xl">
+            <div class="nk-content-inner">
+                {{ include('partials/_sidebar.html.twig') }}
+                <div class="nk-content-body">
+                    <div class="nk-content-wrap">
+                        <div class="nk-block-head nk-block-head-lg">
+                            <div class="nk-block-head-sub"><a href="support.html" class="text-soft"><span>Contact</span></a>
+                            </div>
+                            <div class="nk-block-head-content">
+                                <h2 class="nk-block-title fw-normal">How can we help?</h2>
+                                <div class="nk-block-des">
+                                    <p>You can find all of the questions and answers abour secure your account</p>
+                                </div>
+                            </div>
+                        </div><!-- .nk-block-head -->
+                        <div class="nk-block mb-3">
+                            <div class="card card-bordered">
+                                <div class="card-inner">
+                                    {{ form_start(form, {
+                                        attr: {
+                                            class: 'form-validate'
+                                        }
+                                    }) }}
+                                    <div class="row g-4">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                {% if app.user %}
+                                                    {{ form_row(form.email, {
+                                                        label_attr: {
+                                                            class: 'form-label'
+                                                        },
+                                                        attr: {
+                                                            disabled: 'disabled',
+                                                            value: app.user.email
+                                                        }
+                                                    }) }}
+                                                {% else %}
+                                                    {{ form_row(form.email, {
+                                                        label_attr: {
+                                                            class: 'form-label'
+                                                        },
+                                                    }) }}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row g-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{ form_row(form.firstName, {
+                                                    label_attr: {
+                                                        class: 'form-label'
+                                                    }
+                                                }) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{ form_row(form.lastName, {
+                                                    label_attr: {
+                                                        class: 'form-label'
+                                                    }
+                                                }) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row g-4">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                {{ form_row(form.type, {
+                                                    label_attr: {
+                                                        class: 'form-label'
+                                                    }
+                                                }) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                {{ form_row(form.category, {
+                                                    label_attr: {
+                                                        class: 'form-label'
+                                                    }
+                                                }) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                {{ form_row(form.priority, {
+                                                    label_attr: {
+                                                        class: 'form-label'
+                                                    }
+                                                }) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row g-4">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                {{ form_row(form.description, {
+                                                    label_attr: {
+                                                        class: 'form-label'
+                                                    },
+                                                    attr: {
+                                                        placeholder: 'Write your problem...'
+                                                    }
+                                                }) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                {{ form_row(form.details, {
+                                                    label_attr: {
+                                                        class: 'form-label'
+                                                    },
+                                                    attr: {
+                                                        placeholder: 'Write your message'
+                                                    }
+                                                }) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                {{ form_row(form.imageFile, {
+                                                    label_attr: {
+                                                        class: 'form-label'
+                                                    },
+                                                }) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row g-4">
+                                        <div class="col-md-4 mx-auto">
+                                            <input type="submit" value="Contact Us" class="btn btn-dim btn-outline-primary btn-block">
+                                        </div>
+                                    </div>
+                                    {{ form_end(form) }}
+                                </div><!-- .card-inner -->
+                            </div><!-- .card -->
+                        </div><!-- .nk-block -->
+                    </div>
+                    {{ include('partials/_footer.html.twig') }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(() => {
+            $('select').select2()
+        })
+    </script>
+{% endblock %}
