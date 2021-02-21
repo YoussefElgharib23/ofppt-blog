@@ -112,27 +112,22 @@ class AdminPostController extends AbstractController
      */
     public function createPost(Request $request, ProducerInterface $producer): Response
     {
+        $this->denyAccessUnlessGranted('create', (new Post()));
         $form = $categoriesCount = null;
         try {
             $categoriesCount = $this->categoryRepository->count([]);
             /** @var User $user */
             $user = $this->getUser();
-            $post = (new Post())->setUser($user);
+            $post = new Post();
+            $post->setUser($user);
             $form = $this->createForm(PostFormType::class, $post);
-
-            $this->denyAccessUnlessGranted('create', $post);
 
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
                 $this->entityManager->persist($post);
-                $resolvedPath = $this->cacheManager->getBrowserPath(parse_url($this->uploaderHelper->asset($post, 'imageFile'), PHP_URL_PATH), 'thumb');
-                $post->setImageNameCached($resolvedPath);
-                $this->entityManager->persist($post);
                 $this->entityManager->flush();
                 
-                $producer->sendCommand(Commands::RESOLVE_CACHE, new ResolveCache($this->uploaderHelper->asset($post, 'imageFile'), array('thumb')), true);
-
                 $this->addFlash('success', 'The post was created with success !');
 
                 return $this->redirectToRoute('app_admin_create_post');

@@ -53,15 +53,9 @@ class PostFormType extends AbstractType
             ))
             ->add('imageFile', FileType::class, [
                 'required' => true,
-                'constraints' => [
-                    new NotBlank()
-                ]
             ])
             ->add('status', ChoiceType::class, [
                 'choices' => $this->status(),
-                'constraints' => [
-                    new NotBlank()
-                ]
             ])
             ->add('category', EntityType::class, [
                 'class' => Category::class,
@@ -69,10 +63,7 @@ class PostFormType extends AbstractType
                 'query_builder' => function (CategoryRepository $categoryRepository) {
                     return $categoryRepository->createQueryBuilder('c')
                         ->where('c.status = 0');
-                },
-                'constraints' => [
-                    new NotBlank()
-                ]
+                }
             ])
         ;
     }

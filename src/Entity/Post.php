@@ -71,7 +71,6 @@ class Post
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\NotBlank()
      * @Groups ("ajax:posts")
      * @var string|null
      */

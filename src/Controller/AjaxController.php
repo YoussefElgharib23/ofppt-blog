@@ -174,11 +174,6 @@ class AjaxController extends AbstractController
                 /** @var Post $post */
                 $path = $this->uploaderHelper->asset($post, 'imageFile');
                 $resolvedPath = $this->cacheManager->getBrowserPath(parse_url($path, PHP_URL_PATH), 'thumb');
-                if ($post->getUser()->getImageName()) {
-                    $pathUser = $this->uploaderHelper->asset($post->getUser(), 'imageFile');
-                    $resolvedPathUser = $this->cacheManager->getBrowserPath(parse_url($pathUser, PHP_URL_PATH), 'profile_pic_min');
-                    $post->getUser()->setUserImageCache($resolvedPathUser);
-                }
                 $post->setImageNameCached($resolvedPath);
                 $post->getUser()->setFullName();
                 $returnPosts[] = $post;
