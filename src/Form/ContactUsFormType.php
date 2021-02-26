@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class ContactUsFormType extends AbstractType
 {
@@ -38,9 +39,6 @@ class ContactUsFormType extends AbstractType
                 'required' => true,
                 'attr' => [
                     'placeholder' => 'Your email here'
-                ],
-                'constraints' => [
-                    new NotBlank(),
                 ]
             ])
             ->add('type', ChoiceType::class, [
