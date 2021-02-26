@@ -47,4 +47,13 @@ class ContactUsRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findMessagesForAdmin()
+    {
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.id', 'desc')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

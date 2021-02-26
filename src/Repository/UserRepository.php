@@ -88,4 +88,20 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->leftJoin('u.comments', 'comments')
         ;
     }
+
+    /**
+     * @param User $currentUser
+     * @return array|User[]|null
+     */
+    public function finLatestUser(User $currentUser): ?array
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.status = 1 and u.id != :id')
+            ->setParameter(':id', $currentUser->getId())
+            ->orderBy('u.id', 'desc')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

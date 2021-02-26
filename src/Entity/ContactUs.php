@@ -228,6 +228,11 @@ class ContactUs
         return $this->replyContactUs;
     }
 
+    public function hasReplyContactUs(): bool
+    {
+        return $this->getReplyContactUs() !== null;
+    }
+
     public function setReplyContactUs(ReplyContactUs $replyContactUs): self
     {
         // set the owning side of the relation if necessary

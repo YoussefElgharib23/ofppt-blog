@@ -138,4 +138,16 @@ class PostRepository extends ServiceEntityRepository
             ->getSingleScalarResult()
         ;
     }
+
+    public function finActivePosts()
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p', 'likes')
+            ->innerJoin('p.likes', 'likes')
+            ->where('p.status = 0')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
