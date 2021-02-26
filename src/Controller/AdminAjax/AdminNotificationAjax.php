@@ -36,7 +36,7 @@ class AdminNotificationAjax extends AbstractController
     }
 
     /**
-     * @Route("/admin/ajax/notification/read", methods={"POST"})
+     * @Route("/admin/api/notification/read", methods={"POST"})
      */
     public function markAllRead(): JsonResponse
     {
@@ -54,7 +54,7 @@ class AdminNotificationAjax extends AbstractController
         }
         catch (Exception $ex){
             return $this->json([
-                'error' => 'An error has occurred !'
+                'error' => $ex->getMessage()
             ], 500);
         }
     }

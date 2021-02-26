@@ -28,6 +28,7 @@ import './lib/lazyLoading'
 import './lib/dislikePostAjax'
 import './lib/AjaxRegister'
 import './lib/admin/users/UserSuspensionModals'
+import './lib/Notifications/MarkAllAsRead'
 
 window.axios = axios
 

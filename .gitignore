@@ -23,6 +23,7 @@ yarn-error.log
 /.idea/
 ###> liip/imagine-bundle ###
 /public/media/cache/
+/public/build/
 ###< liip/imagine-bundle ###
 /public/uploads
 /public/images
