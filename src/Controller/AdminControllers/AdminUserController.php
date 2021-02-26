@@ -162,24 +162,17 @@ class AdminUserController extends AbstractController
         $form = $this->createForm(AdminReportFormType::class, $adminUserReport);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            try {
-                $user->addAdminReport($adminUserReport);
-                $this->entityManager->persist($user);
-                $this->entityManager->persist($adminUserReport);
+            $user->addAdminReport($adminUserReport);
+            $this->entityManager->persist($user);
+            $this->entityManager->persist($adminUserReport);
 
-                /**
-                 * You should send an email
-                 */
-                if ($adminUserReport->getNeedToReceive()) {
-                    // Send an email to user by messenger !!!
-                }
-                $this->entityManager->flush();
-            } catch (\Exception $exception) {
-                $this->addFlash('error', 'An error has occurred please contact the admin');
-                return $this->redirectToRoute('app_admin_details_user', [
-                    'id' => $user->getId()
-                ]);
+            /**
+             * You should send an email
+             */
+            if ($adminUserReport->getNeedToReceive()) {
+                // Send an email to user by messenger !!!
             }
+            $this->entityManager->flush();
             $this->addFlash('success', 'The report was added to the user with success !');
 
             return $this->redirectToRoute('app_admin_details_user', [

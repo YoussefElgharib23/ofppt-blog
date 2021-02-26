@@ -61,6 +61,8 @@ class NotificationRepository extends ServiceEntityRepository
     }
 
     /**
+     * Return the notification for the admin
+     *
      * @return Notification[]|null
      */
     public function findAllNotifications(): ?array
@@ -75,40 +77,5 @@ class NotificationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
-    }
-
-    public function liveNotifications(): ?array
-    {
-        return $this->createQueryBuilder('n')
-            ->select('n', 'posts')
-            ->select('n', 'users')
-            ->where('n.deleted_at is null')
-            ->where('users.deleted_at is null')
-            ->where('posts.deleted_at is null')
-            ->where('users.status == 1')
-            ->where('n.seen = 0')
-            ->leftJoin('n.post', 'posts')
-            ->leftJoin('n.user', 'users')
-            ->orderBy('n.id', 'desc')
-            ->setMaxResults(5)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
-    public function liveNotifications_(): ?array
-    {
-        return $this->createQueryBuilder('n')
-            ->select('n', 'posts')
-            ->select('n', 'users')
-            ->where('n.deleted_at is null')
-            ->where('users.deleted_at is null')
-            ->where('posts.deleted_at is null')
-            ->leftJoin('n.post', 'posts')
-            ->leftJoin('n.user', 'users')
-            ->setMaxResults(5)
-            ->getQuery()
-            ->getResult()
-            ;
     }
 }

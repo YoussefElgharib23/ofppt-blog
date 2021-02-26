@@ -2,15 +2,13 @@
 
 namespace App\Controller;
 
-use App\Entity\Notification;
 use App\Repository\NotificationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class NotificationController extends AbstractController
+class NotificationTestController extends AbstractController
 {
-
     /**
      * @var NotificationRepository
      */
@@ -24,10 +22,13 @@ class NotificationController extends AbstractController
     }
 
     /**
-     * @return Notification[]|array|null
+     * @Route("/notification/test")
+     * @return Response
      */
-    public function getNotifications(): ?array
+    public function index(): Response
     {
-        return $this->notificationRepository->findAllNotifications();
+        $notifications = $this->notificationRepository->adminNotifications();
+        dd($notifications);
+        return new Response('Hello');
     }
 }
