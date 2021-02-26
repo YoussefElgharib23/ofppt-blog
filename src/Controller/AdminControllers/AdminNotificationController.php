@@ -43,7 +43,7 @@ class AdminNotificationController extends AbstractController
      */
     public function index(): Response
     {
-        $notifications = $this->notificationRepository->liveNotifications_();
+        $notifications = $this->notificationRepository->findAllNotificationsForAdmin();
         /** @var Notification $notification */
         foreach ($notifications as $notification) {
             $notification->setSeen(true);
