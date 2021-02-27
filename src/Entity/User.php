@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use App\Traits\TimeStampsTrait;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -59,7 +60,7 @@ class User implements UserInterface
     private $lastName;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=255, unique=true, nullable=true)
      */
     private $username;
 
@@ -72,7 +73,7 @@ class User implements UserInterface
      * @ORM\Column(type="boolean", options={"default": true})
      * @var bool
      */
-    private $status;
+    private $status = 1;
 
     /**
      * @ORM\Column(type="json")
@@ -81,7 +82,7 @@ class User implements UserInterface
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     private $password;
 
@@ -148,7 +149,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255, options={"default": "male"})
      */
-    private $gender;
+    private $gender = "male";
 
     /**
      * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="user")
@@ -180,6 +181,11 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity=ReplyContactUs::class, mappedBy="user", orphanRemoval=true)
      */
     private $replyContactUs;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $facebook_id;
 
     public function __construct()
     {
@@ -242,9 +248,9 @@ class User implements UserInterface
     }
 
     /**
-     * @param mixed $username
+     * @param string|null $username
      */
-    public function setUsername($username): void
+    public function setUsername(?string $username): void
     {
         $this->username = $username;
     }
@@ -405,7 +411,7 @@ class User implements UserInterface
         if (null !== $imageFile) {
             // It is required that at least one field changes if you are using doctrine
             // otherwise the event listeners won't be called and the file is lost
-            $this->updated_at = new \DateTimeImmutable();
+            $this->updated_at = new DateTimeImmutable();
         }
     }
 
@@ -559,7 +565,7 @@ class User implements UserInterface
 
     public function delete()
     {
-        $this->setDeletedAt(new \DateTimeImmutable());
+        $this->setDeletedAt(new DateTimeImmutable());
     }
 
     public function recover()
@@ -719,7 +725,7 @@ class User implements UserInterface
      */
     public function setFullName(): User
     {
-        $this->__fullName = $this->fullName(true);
+        $this->__fullName = $this->fullName();
         return $this;
     }
 
@@ -774,5 +780,17 @@ class User implements UserInterface
     public function active()
     {
         $this->setStatus(true);
+    }
+
+    public function getFacebookId(): ?string
+    {
+        return $this->facebook_id;
+    }
+
+    public function setFacebookId(?string $facebook_id): self
+    {
+        $this->facebook_id = $facebook_id;
+
+        return $this;
     }
 }

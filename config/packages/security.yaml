@@ -25,6 +25,8 @@ security:
             guard:
                 authenticators:
                     - App\Security\LoginAppAuthenticator
+                    - App\Security\FacebookSocialLoginAuthenticator
+                entry_point: App\Security\LoginAppAuthenticator
             logout:
                 path: app_logout
                 # where to redirect after logout
