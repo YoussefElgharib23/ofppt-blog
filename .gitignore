@@ -27,4 +27,4 @@ yarn-error.log
 ###< liip/imagine-bundle ###
 /public/uploads
 /public/images
-.env/
+.env.local/
