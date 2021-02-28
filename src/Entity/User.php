@@ -192,6 +192,11 @@ class User implements UserInterface
      */
     private $googleId;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $socialPicture;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -807,6 +812,18 @@ class User implements UserInterface
     public function setGoogleId(?string $googleId): self
     {
         $this->googleId = $googleId;
+
+        return $this;
+    }
+
+    public function getSocialPicture(): ?string
+    {
+        return $this->socialPicture;
+    }
+
+    public function setSocialPicture(?string $socialPicture): self
+    {
+        $this->socialPicture = $socialPicture;
 
         return $this;
     }

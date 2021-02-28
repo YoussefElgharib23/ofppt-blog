@@ -20,6 +20,9 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Vich\UploaderBundle\Naming\Base64Namer;
+use Vich\UploaderBundle\Naming\NamerInterface;
+use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 class FacebookSocialLoginAuthenticator extends SocialAuthenticator
 {
@@ -43,6 +46,10 @@ class FacebookSocialLoginAuthenticator extends SocialAuthenticator
      * @var MessageBusInterface
      */
     private $bus;
+    /**
+     * @var UploaderHelper
+     */
+    private $helper;
 
     public function __construct(
         ClientRegistry $clientRegistry,
@@ -90,11 +97,20 @@ class FacebookSocialLoginAuthenticator extends SocialAuthenticator
 
         if (!$user instanceof User) $user = new User();
         else return $user;
+
+        $imageName = null;
+        if ($facebookUser->getPictureUrl()) {
+            $img_file = file_get_contents($facebookUser->getPictureUrl());
+            $imageName = $fileName = md5(date('Y-m-d H:i:s:u')).'.jpg';
+            file_put_contents("uploads/users/$fileName", $img_file);
+        }
+
         $user->setFirstName($facebookUser->getFirstName());
         $user->setLastName($facebookUser->getLastName());
         $user->setFacebookId($facebookUser->getId());
         $user->setEmail($facebookUser->getEmail());
         $user->setIsVerified(true);
+        $user->setImageName($imageName);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
         $this->bus->dispatch(new Notification($user->getId(), null, "register"));
