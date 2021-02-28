@@ -32,12 +32,12 @@ class User implements UserInterface
 {
     use TimeStampsTrait;
 
-    CONST ROLES = [
+    const ROLES = [
         'Admin' => 'ROLE_ADMIN',
         'User' => 'ROLE_USER'
     ];
 
-    CONST GENDERS = [
+    const GENDERS = [
         'Mr.' => 'male',
         'Mme.' => 'female'
     ];
@@ -192,11 +192,6 @@ class User implements UserInterface
      */
     private $googleId;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $socialPicture;
-
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -345,7 +340,7 @@ class User implements UserInterface
      */
     public function fullName(?bool $showDisplayName = true): string
     {
-        if ( $this->getIsChangedToDisplay() and $showDisplayName and $this->getDisplayName() !== null ) return $this->displayName;
+        if ($this->getIsChangedToDisplay() and $showDisplayName and $this->getDisplayName() !== null) return $this->displayName;
         return $this->getFirstName() . ' ' . $this->getLastName();
     }
 
@@ -674,7 +669,7 @@ class User implements UserInterface
     {
         if ($this->getUserLoginLogs()->count() == 1)
             return $this->getUserLoginLogs()[0];
-        else if ($this->getUserLoginLogs()->count() > 1) 
+        else if ($this->getUserLoginLogs()->count() > 1)
             return $this->getUserLoginLogs()[$this->getUserLoginLogs()->count() - 1];
         return null;
     }
@@ -694,7 +689,7 @@ class User implements UserInterface
     {
         $_retArr = new ArrayCollection();
         foreach ($this->getAdminReports() as $report) {
-            if (!$report->isDeleted()) $_retArr[]  = $report;
+            if (!$report->isDeleted()) $_retArr[] = $report;
         }
         return array_reverse($_retArr->toArray());
     }
@@ -812,18 +807,6 @@ class User implements UserInterface
     public function setGoogleId(?string $googleId): self
     {
         $this->googleId = $googleId;
-
-        return $this;
-    }
-
-    public function getSocialPicture(): ?string
-    {
-        return $this->socialPicture;
-    }
-
-    public function setSocialPicture(?string $socialPicture): self
-    {
-        $this->socialPicture = $socialPicture;
 
         return $this;
     }
