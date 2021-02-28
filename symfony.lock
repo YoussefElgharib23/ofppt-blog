@@ -212,6 +212,9 @@
     "league/oauth2-facebook": {
         "version": "2.0.5"
     },
+    "league/oauth2-google": {
+        "version": "3.0.3"
+    },
     "liip/imagine-bundle": {
         "version": "1.8",
         "recipe": {
