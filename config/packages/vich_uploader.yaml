@@ -34,3 +34,10 @@ vich_uploader:
             delete_on_update: true
             delete_on_remove: true
             namer: Vich\UploaderBundle\Naming\UniqidNamer
+        settings:
+            uri_prefix: /uploads/settings
+            upload_destination: '%kernel.project_dir%/public/uploads/settings'
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true
+            namer: Vich\UploaderBundle\Naming\UniqidNamer

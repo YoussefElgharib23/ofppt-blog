@@ -1,0 +1,57 @@
+{% set in_admin = true %}
+{% extends 'base.html.twig' %}
+
+{% block title APP_NAME ~ " | Settings" %}
+
+{% block body %}
+
+    <div class="nk-content">
+        <div class="container wide-xl">
+            <div class="nk-content-inner">
+                {{ include('partials/_sidebar.html.twig') }}
+                <div class="nk-content-body">
+                    <div class="nk-block-head nk-block-head-sm">
+                        <div class="nk-block-between">
+                            <div class="nk-block-head-content">
+                                <h3 class="nk-block-title page-title">Settings</h3>
+                                <div class="nk-block-des text-soft">
+                                    <p>Edit your {{ APP_NAME }} settings</p>
+                                </div>
+                            </div><!-- .nk-block-head-content -->
+                        </div><!-- .nk-block-between -->
+                    </div><!-- .nk-block-head -->
+                    <div class="nk-block">
+                        <div class="row g-gs">
+                            <div class="col-12">
+                                <div class="card card-bordered card-full">
+                                    <div class="card-inner">
+                                        {# Your form here #}
+                                        {{ form_start(form) }}
+                                        {{ form_row(form.imageFileLogo, {
+                                            'label_attr': {
+                                                'class': 'form-label'
+                                            }
+                                        }) }}
+                                        {{ form_row(form.imageFileHome, {
+                                            'label_attr': {
+                                                'class': 'form-label'
+                                            }
+                                        }) }}
+                                        {{ form_row(form.applicationName, {
+                                            'label_attr': {
+                                                'class': 'form-label'
+                                            }
+                                        }) }}
+                                        <input type="submit" value="Save Changes" class="btn btn-dim btn-primary btn-block">
+                                        {{ form_end(form) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -60,10 +60,10 @@
 {% block body %}
     <div class="container vh-100 w-100 bg-white d-flex flex-column align-items-center justify-content-around mh-100 overflow-auto"
          style="background: inherit">
-        <img src="{{ asset('images/logo.png') }}">
+        <img src="{{ __settings.logoName }}">
         <div class="row align-items-center-lg my-5">
             <div class="col-lg-6 d-flex flex-column align-items-center ">
-                <img src="{{ asset('images/welcome.png') }}" class="d-block-lg" width="500" alt="">
+                <img src="{{ __settings.welcome }}" class="d-block-lg" width="500" alt="">
                 <h1>Welcome to my new website Youssef Blog</h1>
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus facere iste laborum molestias
@@ -76,7 +76,7 @@
                 <a href="{{ path('app_blog') }}" class="btn btn-dark btn-block">Visit it right now !</a>
             </div>
             <div class="col-lg-6 d-flex justify-content-center d-n-lg">
-                <img src="{{ asset('images/welcome.png') }}" alt="">
+                <img src="{{ __settings.welcome }}" alt="">
             </div>
         </div>
         <div class="fa-2x mb-3">

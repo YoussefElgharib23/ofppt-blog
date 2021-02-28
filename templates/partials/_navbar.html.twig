@@ -3,9 +3,7 @@
         <div class="nk-header-wrap">
             <div class="nk-header-brand">
                 <a href="{{ path('app_blog') }}" class="logo-link">
-                    <img class="logo-light logo-img" src="{{ asset('images/logo.png') }}" srcset="{{ asset('images/logo2x.png') }} 2x" alt="logo">
-                    <img class="logo-dark logo-img" src="{{ asset('images/logo.png') }}" srcset="{{ asset('images/logo2x.png')}} 2x"
-                         alt="logo-dark">
+                    <img class="logo-img" src="{{ __settings.logoName }}" alt="">
                 </a>
             </div><!-- .nk-header-brand -->
             <div class="nk-header-menu mobile-menu">
@@ -128,10 +126,6 @@
                                             <div class="user-avatar">
                                                 <img src="{{ vich_uploader_asset(app.user, 'imageFile') | imagine_filter('profile_pic_min') }}" alt="">
                                             </div>
-                                        {% elseif app.user.socialPicture %}
-                                            <div class="user-avatar">
-                                                <img src="{{ app.user.socialPicture }}" alt="">
-                                            </div>
                                         {% else %}
                                             <em class="icon ni ni-user-alt"></em>
                                         {% endif %}
@@ -144,8 +138,6 @@
                                         <div class="user-avatar">
                                             {% if app.user.imageName %}
                                                 <img class="posts-images" data-lazy="{{ vich_uploader_asset(app.user, 'imageFile') | imagine_filter('profile_pic_min') }}" src="" alt="">
-                                            {% elseif app.user.socialPicture %}
-                                                <img src="{{ app.user.socialPicture }}" alt="">
                                             {% else %}
                                                 <span>{{ app.user.firstTowLatterName }}</span>
                                             {% endif %}

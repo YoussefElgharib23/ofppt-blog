@@ -5,8 +5,6 @@ namespace App\Controller;
 use App\Entity\Notification;
 use App\Repository\NotificationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 
 class NotificationController extends AbstractController
 {

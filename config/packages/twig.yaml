@@ -10,3 +10,4 @@ twig:
         __categories: '@App\Controller\CategoryController'
         __notifications: '@App\Controller\NotificationController'
         __security: '@App\Controller\SecurityController'
+        __settings: '@App\Controller\SettingController'
