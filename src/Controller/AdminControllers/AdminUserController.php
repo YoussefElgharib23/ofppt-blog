@@ -154,7 +154,6 @@ class AdminUserController extends AbstractController
     public function getUserDetails(User $user, Request $request): Response
     {
         $this->denyAccessUnlessGranted('view_user', $user);
-        $backRoute = $this->getTargetPath($request->getSession(), 'main');
         /** @var User $currentUser */
         $currentUser = $this->getUser();
         $adminUserReport = new AdminReport();
@@ -182,7 +181,6 @@ class AdminUserController extends AbstractController
 
         return $this->render('admin/users/details.html.twig', [
             'user' => $user,
-            'backRoute' => $backRoute,
             'form' => $form->createView()
         ]);
     }

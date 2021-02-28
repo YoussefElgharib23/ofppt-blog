@@ -192,6 +192,11 @@ class User implements UserInterface
      */
     private $googleId;
 
+    /**
+     * @ORM\Column(type="boolean", options={"defaul": false})
+     */
+    private $isJoinedFromSocialMedia = false;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -807,6 +812,18 @@ class User implements UserInterface
     public function setGoogleId(?string $googleId): self
     {
         $this->googleId = $googleId;
+
+        return $this;
+    }
+
+    public function getIsJoinedFromSocialMedia(): ?bool
+    {
+        return $this->isJoinedFromSocialMedia;
+    }
+
+    public function setIsJoinedFromSocialMedia(bool $isJoinedFromSocialMedia): self
+    {
+        $this->isJoinedFromSocialMedia = $isJoinedFromSocialMedia;
 
         return $this;
     }

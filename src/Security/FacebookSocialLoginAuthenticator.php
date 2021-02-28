@@ -117,6 +117,7 @@ class FacebookSocialLoginAuthenticator extends SocialAuthenticator
         $user->setEmail($facebookUser->getEmail());
         $user->setIsVerified(true);
         $user->setImageName($imageName);
+        $user->setIsJoinedFromSocialMedia(true);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
         $this->bus->dispatch(new Notification($user->getId(), null, "register"));

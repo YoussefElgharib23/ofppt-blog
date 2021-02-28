@@ -36,8 +36,8 @@
                                     </div>
                                 </div>
                                 <div class="nk-block-head-content">
-                                    <a href="{{ backRoute }}" class="btn btn-outline-light bg-white d-none d-sm-inline-flex"><em class="icon ni ni-arrow-left"></em><span>Back</span></a>
-                                    <a href="{{ backRoute }}" class="btn btn-icon btn-outline-light bg-white d-inline-flex d-sm-none"><em class="icon ni ni-arrow-left"></em></a>
+                                    <a href="{{ path('app_admin_index_user') }}" class="btn btn-outline-light bg-white d-none d-sm-inline-flex"><em class="icon ni ni-arrow-left"></em><span>Back</span></a>
+                                    <a href="{{ path('app_admin_index_user') }}" class="btn btn-icon btn-outline-light bg-white d-inline-flex d-sm-none"><em class="icon ni ni-arrow-left"></em></a>
                                 </div>
                             </div>
                         </div><!-- .nk-block-head -->
@@ -189,7 +189,15 @@
                                                 <div class="profile-ud wider">
                                                     <span class="profile-ud-label">Join Method</span>
                                                     <span class="profile-ud-value">
-                                                        {{ user.isCreatedByAdmin ? 'By Admin' : 'Himself' }}
+                                                        {% if user.isJoinedFromSocialMedia %}
+                                                            {% if user.facebookId %}
+                                                                From Facebook
+                                                            {% else %}
+                                                                From Google
+                                                            {% endif %}
+                                                        {% else %}
+                                                            {{ user.isCreatedByAdmin ? 'By Admin' : 'Himself' }}
+                                                        {% endif %}
                                                     </span>
                                                 </div>
                                             </div>
