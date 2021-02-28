@@ -111,7 +111,7 @@
                                                         <div class="label">
                                                             <a href="{{ path('app_show_post', {'id': post.id, 'slug': post.slugify(post.title)}) }}">{{ post.title | u.truncate(40, '...') }}</a>
                                                         </div>
-                                                        <span class="time">{{ post.likes.count }} likes</span>
+                                                        <span class="time">{{ post.getActiveUserLikes.count }} likes</span>
                                                     </div>
                                                 </li>
                                             {% endfor %}

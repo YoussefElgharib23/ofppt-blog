@@ -110,8 +110,8 @@
                                             <div class="data-col">
                                                 <span class="data-label">Email</span>
                                                 <span class="data-value">
-                                                        {{ app.user.email }}
-                                                    </span>
+                                                    {{ app.user.email }}
+                                                </span>
                                             </div>
                                             <div class="data-col data-col-end"><span class="data-more disable"><em
                                                             class="icon ni ni-lock-alt"></em></span></div>
@@ -134,9 +134,6 @@
                         </div><!-- .card -->
                     </div><!-- .nk-block -->
                 </div>
-                {% if 'ROLE_ADMIN' in app.user.roles %}
-                    {{ include('partials/_footer.html.twig') }}
-                {% endif %}
             </div>
         </div>
     </div>

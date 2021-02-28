@@ -72,7 +72,9 @@
             <!-- content @e -->
         </div>
         <!-- main @e -->
-        {{ include('partials/modals/_profile_admin.html.twig') }}
+        {% if app.request.attributes.get('_route') == 'app_admin_index_profile' or app.request.attributes.get('_route') == 'app_client_profile' %}
+            {{ include('partials/modals/_profile_admin.html.twig') }}
+        {% endif %}
     </div>
     <!-- app-root @e -->
     <!-- JavaScript -->

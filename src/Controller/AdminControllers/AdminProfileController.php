@@ -4,10 +4,10 @@ namespace App\Controller\AdminControllers;
 
 use App\Entity\User;
 use App\Form\UserFormType;
+use App\Form\UserProfileAdminFormType;
 use App\Form\UserProfileFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use phpDocumentor\Reflection\Types\This;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/admin/")
+ * @Route("/admin")
  * @IsGranted ("ROLE_ADMIN")
  * Class AdminProfileController
  * @package App\Controller
@@ -37,7 +37,7 @@ class AdminProfileController extends AbstractController
     /**
      * USER ADMIN PROFILE
      *
-     * @Route("profile", name="app_admin_index_profile", methods={"GET", "POST"})
+     * @Route("/profile", name="app_admin_index_profile", methods={"GET", "POST"})
      * @param Request $request
      * @return Response
      */
@@ -45,7 +45,7 @@ class AdminProfileController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $formUpdateProfile = $this->createForm(UserFormType::class, $user);
+        $formUpdateProfile = $this->createForm(UserProfileAdminFormType::class, $user);
         $formUpdateProfilePic = $this->createForm(UserProfileFormType::class, $user);
         $formUpdateProfile->handleRequest($request);
         $formUpdateProfilePic->handleRequest($request);

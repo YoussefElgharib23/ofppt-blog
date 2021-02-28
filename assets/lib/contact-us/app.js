@@ -23,7 +23,10 @@ $(document).ready(() => {
             let url = window.location.origin + '/admin/api/contact-us-message'
             axios.post(url, {id: idMsg})
                 .then(async (response) => {
-                    let message = response.data.message
+                    let message = response.data.message,
+                        deleteLink = response.data.delete
+
+                    $('a#message-delete-link').attr('href', deleteLink)
 
                     // Get the description and the category
                     $('h4.title').html(message.description)

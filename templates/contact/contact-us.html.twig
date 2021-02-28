@@ -25,39 +25,6 @@
                         {% if messages | length > 0 %}
                             <div class="nk-msg nk-msg-boxed">
                                 <div class="nk-msg-aside">
-                                    <div class="nk-msg-nav">
-                                        <ul class="nk-msg-menu">
-                                            <li class="nk-msg-menu-item active">
-                                                <a href="">Active</a>
-                                            </li>
-                                            <li class="nk-msg-menu-item">
-                                                <a href="">Closed</a>
-                                            </li>
-                                            <li class="nk-msg-menu-item">
-                                                <a href="">Stared</a>
-                                            </li>
-                                            <li class="nk-msg-menu-item">
-                                                <a href="">All</a>
-                                            </li>
-                                            <li class="nk-msg-menu-item ml-auto">
-                                                <a href=""
-                                                   class="search-toggle toggle-search"
-                                                   data-target="search">
-                                                    <em class="icon ni ni-search"></em>
-                                                </a>
-                                            </li>
-                                        </ul><!-- .nk-msg-menu -->
-                                        <div class="search-wrap" data-search="search">
-                                            <div class="search-content">
-                                                <a href="#" class="search-back btn btn-icon toggle-search"
-                                                   data-target="search"><em class="icon ni ni-arrow-left"></em></a>
-                                                <input type="text" class="form-control border-transparent form-focus-none"
-                                                       placeholder="Search by user or message">
-                                                <button class="search-submit btn btn-icon"><em
-                                                            class="icon ni ni-search"></em></button>
-                                            </div>
-                                        </div><!-- .search-wrap -->
-                                    </div><!-- .nk-msg-nav -->
                                     <div class="nk-msg-list" data-simplebar="init">
                                         <div class="simplebar-wrapper" style="margin: 0px;">
                                             <div class="simplebar-height-auto-observer-wrapper">
@@ -146,8 +113,9 @@
                                                     <em class="icon ni ni-arrow-left"></em>
                                                 </a>
                                             </div>
-                                            <ul class="nk-msg-actions">
-                                                <li><a href="{{ path('app_admin_delete_contact-us', {'id': messages[index].id}) }}" class="btn btn-dim btn-sm btn-outline-light">
+                                            <ul class="nk-msg-actions">••••••••••
+                                                <li>
+                                                    <a href="{{ path('app_admin_delete_contact-us', {'id': messages[index].id}) }}" class="btn btn-dim btn-sm btn-outline-light" id="message-delete-link">
                                                         <em class="icon ni ni-trash"></em>
                                                         <span>Delete</span>
                                                     </a>

@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 class ContactUsAjaxController extends AbstractController
@@ -25,16 +26,22 @@ class ContactUsAjaxController extends AbstractController
      * @var UploaderHelper
      */
     private $uploaderHelper;
+    /**
+     * @var RouterInterface
+     */
+    private $router;
 
     public function __construct(
         ContactUsRepository $contactUsRepository,
         CacheManager $cacheManager,
-        UploaderHelper $uploaderHelper
+        UploaderHelper $uploaderHelper,
+        RouterInterface $router
     )
     {
         $this->contactUsRepository = $contactUsRepository;
         $this->cacheManager = $cacheManager;
         $this->uploaderHelper = $uploaderHelper;
+        $this->router = $router;
     }
 
     /**
@@ -61,7 +68,11 @@ class ContactUsAjaxController extends AbstractController
         }
         /** @var User $cUser */
         $cUser = $this->getUser();
-        return $this->json(['message' => $contactUs, 'currentUser' => $cUser->firstTowLatterName()], 200, [], ['groups' => 'contact:ajax']);
+
+        $delete_link = $this->router->generate('app_admin_delete_contact-us', [
+            'id' => $contactUs->getId()
+        ]);
+        return $this->json(['message' => $contactUs, 'currentUser' => $cUser->firstTowLatterName(), 'delete' => $delete_link], 200, [], ['groups' => 'contact:ajax']);
     }
 
 }

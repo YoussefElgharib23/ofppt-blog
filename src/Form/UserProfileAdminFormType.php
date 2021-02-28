@@ -3,7 +3,6 @@
 namespace App\Form;
 
 use App\Entity\User;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -13,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class UserFormType extends AbstractType
+class UserProfileAdminFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -37,6 +36,15 @@ class UserFormType extends AbstractType
                 ]
             ])
             ->add('username', null, [
+                'required' => true,
+                'constraints' => [
+                    new NotBlank(),
+                    new Length([
+                        'min' => '2'
+                    ])
+                ]
+            ])
+            ->add('email', EmailType::class, [
                 'required' => true,
                 'constraints' => [
                     new NotBlank(),
