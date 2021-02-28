@@ -20,9 +20,6 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Vich\UploaderBundle\Naming\Base64Namer;
-use Vich\UploaderBundle\Naming\NamerInterface;
-use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 class FacebookSocialLoginAuthenticator extends SocialAuthenticator
 {
@@ -46,10 +43,6 @@ class FacebookSocialLoginAuthenticator extends SocialAuthenticator
      * @var MessageBusInterface
      */
     private $bus;
-    /**
-     * @var UploaderHelper
-     */
-    private $helper;
 
     public function __construct(
         ClientRegistry $clientRegistry,
@@ -66,37 +59,49 @@ class FacebookSocialLoginAuthenticator extends SocialAuthenticator
         $this->bus = $bus;
     }
 
+    /**
+     * @param Request $request
+     * @return bool
+     */
     public function supports(Request $request): bool
     {
         return $request->attributes->get('_route') === 'connect_facebook_check';
     }
 
+    /**
+     * @param Request $request
+     * @return AccessToken
+     */
     public function getCredentials(Request $request): AccessToken
     {
         return $this->fetchAccessToken($this->getFacebookClient());
     }
 
+    /**
+     * @param mixed $credentials
+     * @param UserProviderInterface $userProvider
+     * @return UserInterface|null
+     */
     public function getUser($credentials, UserProviderInterface $userProvider): ?UserInterface
     {
         /** @var FacebookUser $facebookUser */
         $facebookUser = $this->getFacebookClient()
             ->fetchUserFromToken($credentials);
 
-        $user = $existingUser = $this->entityManager->getRepository(User::class)
+        $existingUser = $this->entityManager->getRepository(User::class)
             ->findOneBy(['facebook_id' => $facebookUser->getId()]);
 
-        /** @var User $user */
-        if ($user && !$user->isStatus()) {
-            $this->container->get('session')->getFlashBag()->add('error', 'Your account has been disabled !');
-            return null;
-        }
+        if (!$existingUser)
+            $existingUser = $this->entityManager->getRepository(User::class)
+                ->findOneBy(['email' => $facebookUser->getEmail()]);
 
+        /** @var User $existingUser */
         if ($existingUser) {
+            if (!$existingUser->isStatus() || $existingUser->isDeleted()) {
+                throw new AuthenticationException('Your account has been disabled or deleted !');
+            }
             return $existingUser;
         }
-
-        if (!$user instanceof User) $user = new User();
-        else return $user;
 
         $imageName = null;
         if ($facebookUser->getPictureUrl()) {
@@ -105,6 +110,7 @@ class FacebookSocialLoginAuthenticator extends SocialAuthenticator
             file_put_contents("uploads/users/$fileName", $img_file);
         }
 
+        $user = new User();
         $user->setFirstName($facebookUser->getFirstName());
         $user->setLastName($facebookUser->getLastName());
         $user->setFacebookId($facebookUser->getId());
@@ -117,16 +123,31 @@ class FacebookSocialLoginAuthenticator extends SocialAuthenticator
         return $user;
     }
 
+    /**
+     * @return OAuth2ClientInterface
+     */
     private function getFacebookClient(): OAuth2ClientInterface
     {
         return $this->clientRegistry->getClient('facebook_main');
     }
 
+    /**
+     * @param Request $request
+     * @param AuthenticationException $exception
+     * @return Response
+     */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
     {
-        return new RedirectResponse($this->router->generate('app_blog'));
+        $this->container->get('session')->getFlashBag()->add('error', $exception->getMessage());
+        return new RedirectResponse($this->router->generate('app_login'));
     }
 
+    /**
+     * @param Request $request
+     * @param TokenInterface $token
+     * @param string $providerKey
+     * @return RedirectResponse
+     */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): RedirectResponse
     {
         $targetUrl = $this->router->generate('app_blog');
@@ -134,6 +155,11 @@ class FacebookSocialLoginAuthenticator extends SocialAuthenticator
         return new RedirectResponse($targetUrl);
     }
 
+    /**
+     * @param Request $request
+     * @param AuthenticationException|null $authException
+     * @return RedirectResponse
+     */
     public function start(Request $request, AuthenticationException $authException = null): RedirectResponse
     {
         return new RedirectResponse(

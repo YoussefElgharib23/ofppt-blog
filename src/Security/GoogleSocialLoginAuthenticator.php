@@ -105,12 +105,19 @@ class GoogleSocialLoginAuthenticator extends SocialAuthenticator
         }
 
         /** @var User $user */
-        if ($existingUser && !$existingUser->isStatus() && $existingUser->isDeleted()) {
-            $this->container->get('session')->getFlashBag()->add('error', 'Your account has been disabled !');
-            return null;
+        if ($existingUser) {
+            if (!$existingUser->isStatus() || $existingUser->isDeleted()) {
+                throw new AuthenticationException('Your account has been disabled or deleted !');
+            }
+            return $existingUser;
         }
 
-        if ($existingUser) return $existingUser;
+        $imageName = null;
+        if ($googleUser->getAvatar()) {
+            $img_file = file_get_contents($googleUser->getAvatar());
+            $imageName = $fileName = md5(date('Y-m-d H:i:s:u')).'.jpg';
+            file_put_contents("uploads/users/$fileName", $img_file);
+        }
 
         $user = new User();
         $user->setGoogleId($googleUser->getId());
@@ -118,6 +125,7 @@ class GoogleSocialLoginAuthenticator extends SocialAuthenticator
         $user->setLastName($googleUser->getLastName());
         $user->setEmail($googleUser->getEmail());
         $user->setIsVerified(true);
+        $user->setImageName($imageName);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
         $this->bus->dispatch(new Notification($user->getId(), null, "register"));
@@ -132,6 +140,7 @@ class GoogleSocialLoginAuthenticator extends SocialAuthenticator
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
     {
+        $this->container->get('session')->getFlashBag()->add('error', $exception->getMessage());
         return new RedirectResponse($this->router->generate('app_login'));
     }
 
