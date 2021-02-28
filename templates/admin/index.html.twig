@@ -28,7 +28,7 @@
                                             <div class="card-title-group">
                                                 <div class="card-title">
                                                     <h6 class="title">
-                                                        <span class="mr-2">Latest registred users</span>
+                                                        <span class="mr-2">Latest registered users</span>
                                                     </h6>
                                                 </div>
                                             </div>
@@ -72,7 +72,7 @@
                                                                 <span class="tb-sub badge badge-dot badge-danger">Not Verified</span>
                                                             {% endif %}
                                                         </div>
-                                                        <div class="nk-tb-col">
+                                                        <div class="nk-tb-col" style="word-break: break-all">
                                                             <span class="tb-sub tb-amount">{{ user.email }}</span>
                                                         </div>
                                                         <div class="nk-tb-col nk-tb-col-action">
@@ -88,9 +88,6 @@
                                                     </div>
                                                 {% endfor %}
                                             </div>
-                                        </div>
-                                        <div class="card-inner-sm border-top text-center d-sm-none">
-                                            <a href="#" class="btn btn-link btn-block">See History</a>
                                         </div>
                                     </div><!-- .card -->
                                 </div><!-- .col -->
@@ -119,18 +116,18 @@
                                     </div><!-- .card -->
                                 </div><!-- .col -->
                                 <div class="col-lg-6">
-                                    <div class="card card-bordered h-100" style="max-height: 391px; overflow: auto">
+                                    <div class="card card-bordered h-100">
                                         <div class="card-inner border-bottom">
                                             <div class="card-title-group">
                                                 <div class="card-title">
                                                     <h6 class="title">Support Requests</h6>
                                                 </div>
                                                 <div class="card-tools">
-                                                    <a href="#" class="link">All Tickets</a>
+                                                    <a href="{{ path('app_contact_us') }}" class="link">All Tickets</a>
                                                 </div>
                                             </div>
                                         </div>
-                                        <ul class="nk-support">
+                                        <ul class="nk-support" style="max-height: 391px; overflow: auto">
                                             {% for contact in contactUs %}
                                                 <li class="nk-support-item">
                                                     <div class="user-avatar bg-purple-dim">
