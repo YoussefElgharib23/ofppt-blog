@@ -76,7 +76,7 @@ class SettingController extends AbstractController
     public function getLogoName(): ?string
     {
         $setting = $this->settingRepository->findOneBy(['id' => 1]);
-        return $this->helper->asset($setting, 'imageFileLogo');
+        return $setting ? $this->helper->asset($setting, 'imageFileLogo') : '';
     }
 
     /**
@@ -85,6 +85,6 @@ class SettingController extends AbstractController
     public function getWelcome(): ?string
     {
         $setting = $this->settingRepository->findOneBy(['id' => 1]);
-        return $this->helper->asset($setting, 'imageFileHome');
+        return $setting ?  $this->helper->asset($setting, 'imageFileHome') : '';
     }
 }
