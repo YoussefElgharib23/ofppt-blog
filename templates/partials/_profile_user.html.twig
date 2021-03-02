@@ -44,10 +44,6 @@
                                                     <img data-lazy="{{ vich_uploader_asset(app.user, 'imageFile') | imagine_filter('profile_pic') }}"
                                                          class="posts-images rounded-circle posts-images fade" alt=""
                                                          width="200px" height="200px" id="profile-pic_pre-js" src="">
-                                                {% elseif app.user.socialPicture %}
-                                                    <img data-lazy="{{ app.user.socialPicture }}"
-                                                         class="posts-images rounded-circle posts-images fade" alt=""
-                                                         width="200px" height="200px" id="profile-pic_pre-js" src="">
                                                 {% elseif app.user.imageName is null %}
                                                     <img src="{{ asset('images/no-image.png') }}" width="200px" height="200px" class="fade show rounded-circle" id="preview-image" alt="">
                                                 {% endif %}

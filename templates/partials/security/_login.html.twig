@@ -7,7 +7,7 @@
             </div>
         </div>
     </div>
-    
+
     {% if error is defined and error is not null %}
         <div class="alert alert-danger alert-icon alert-dismissible" role="alert">
             <em class="icon ni ni-alert-circle"></em>
@@ -23,12 +23,12 @@
             <button class="close" data-dismiss="alert"></button>
         </div>
     {% endfor %}
-    
+
     <div class="alert alert-danger alert-icon" id="alert-danger" role="alert" style="display:none;">
         <em class="icon ni ni-alert-circle"></em>
         <span id="message-alert-js"></span>
     </div>
-    
+
     <form method="POST" id="form-login-js" action="{{ path('app_login', {'ignore': false}) }}">
         <div class="form-group">
             <div class="form-label-group">
@@ -41,7 +41,7 @@
         <div class="form-group">
             <div class="form-label-group">
                 <label for="inputPassword">Password</label>
-                <a class="link link-primary link-sm" href="#">Forgot Code?</a>
+                <a class="link link-primary link-sm" href="">Forgot Code?</a>
             </div>
             <div class="form-control-wrap">
                 <a href="#" class="form-icon form-icon-right passcode-switch"
@@ -59,10 +59,10 @@
                 <label class="custom-control-label" for="remember_me">Keep me signed in</label>
             </div>
         </div>
-        
+
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-        
-        <div clasAdminProfileControllers="form-group">
+
+        <div class="form-group">
             <button class="btn btn-lg btn-primary btn-block">Sign in</button>
         </div>
     </form>

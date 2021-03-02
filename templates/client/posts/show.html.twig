@@ -399,7 +399,7 @@
     <script>
         $(document).ready(() => {
             $('img').each((i, ele) => {
-                if (!$(ele).hasClass('w-100') && !$(ele).hasClass('author-user')) {
+                if (!$(ele).hasClass('w-100') && !$(ele).hasClass('author-user') && !$(ele).hasClass('logo-img')) {
                     $(ele).css({'height': '', 'width': ''})
                     $(ele).addClass('w-100')
                 }

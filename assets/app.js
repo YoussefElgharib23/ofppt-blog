@@ -29,6 +29,7 @@ import './lib/dislikePostAjax'
 import './lib/AjaxRegister'
 import './lib/admin/users/UserSuspensionModals'
 import './lib/Notifications/MarkAllAsRead'
+import './lib/users/update-password'
 
 window.axios = axios
 

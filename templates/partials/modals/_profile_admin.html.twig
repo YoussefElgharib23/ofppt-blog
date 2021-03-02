@@ -2,7 +2,9 @@
     <div class="modal fade" tabindex="-1" id="profile-edit" style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
-                <a href="#" class="close" data-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
+                <a href="#" class="close" data-dismiss="modal">
+                    <em class="icon ni ni-cross-sm"></em>
+                </a>
                 <div class="modal-body modal-body-lg">
                     <h5 class="title">Update Profile</h5>
                     {% if errorProfileUpdate is defined %}
@@ -15,6 +17,11 @@
                         <li class="nav-item">
                             <a class="nav-link active" data-toggle="tab" href="#personal">Personal</a>
                         </li>
+                        {% if not app.user.isJoinedFromSocialMedia %}
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#password">Address</a>
+                            </li>
+                        {% endif %}
                     </ul><!-- .nav-tabs -->
                     <div class="tab-content">
                         <div class="tab-pane active" id="personal">
@@ -151,6 +158,38 @@
                             </div>
                             {{ form_end(profileForm) }}
                         </div><!-- .tab-pane -->
+                        {% if not app.user.isJoinedFromSocialMedia %}
+                            <div class="tab-pane" id="password">
+                                <div class="alert alert-fill alert-danger d-none" id="update-password-error-js" role="alert"></div>
+                                <div class="alert alert-fill alert-success d-none" id="update-password-success-js" role="alert"></div>
+                                <form action="#" method="post" id="update-password-form-type">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('update-password') }}">
+                                    <div class="row gy-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="old-password">Old Password</label>
+                                                <input type="password" class="form-control form-control-lg" id="old-password">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="new-password">New Password</label>
+                                                <input type="password" class="form-control form-control-lg" id="new-password">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="confirm-new-password">Confirm Your New Password</label>
+                                                <input type="password" class="form-control form-control-lg" id="confirm-new-password">
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Update password">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        {% endif %}
                     </div><!-- .tab-content -->
                 </div><!-- .modal-body -->
             </div><!-- .modal-content -->
