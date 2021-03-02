@@ -23,4 +23,5 @@ return [
     FM\ElfinderBundle\FMElfinderBundle::class => ['all' => true],
     Enqueue\Bundle\EnqueueBundle::class => ['all' => true],
     KnpU\OAuth2ClientBundle\KnpUOAuth2ClientBundle::class => ['all' => true],
+    SymfonyCasts\Bundle\ResetPassword\SymfonyCastsResetPasswordBundle::class => ['all' => true],
 ];

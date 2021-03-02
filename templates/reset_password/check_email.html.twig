@@ -1,0 +1,30 @@
+{% set notNavbar = true %}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Password Reset Email Sent{% endblock %}
+
+{% block body %}
+    <div class="nk-content ">
+        <div class="nk-block nk-block-middle nk-auth-body">
+            <div class="brand-logo pb-5">
+                <a href="{{ path('app_blog') }}" class="logo-link">
+                    <img class="logo-light logo-img logo-img-lg" src="{{ __settings.logoName }}" srcset="./images/logo2x.png 2x" alt="logo">
+                    <img class="logo-dark logo-img logo-img-lg" src="{{ __settings.logoName }}" alt="logo-dark">
+                </a>
+            </div>
+            <div class="nk-block-head">
+                <div class="nk-block-head-content">
+                    <h4 class="nk-block-title">Thank you for submitting form</h4>
+                    <div class="nk-block-des text-success">
+                        <p>An email has been sent that contains a link that you can click to reset your password.
+                            This link will expire in {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.</p>
+                        <p>If you don't receive an email please check your spam folder or <a href="{{ path('app_forgot_password_request') }}">try again</a>.</p>
+                    </div>
+                    <a href="{{ path('app_blog') }}" class="btn btn-primary btn-block mt-2">Go home</a>
+                </div>
+            </div>
+        </div>
+        {{ include('partials/_footer.html.twig') }}
+    </div>
+{% endblock %}
