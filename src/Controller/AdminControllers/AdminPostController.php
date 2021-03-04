@@ -114,32 +114,25 @@ class AdminPostController extends AbstractController
     {
         $this->denyAccessUnlessGranted('create', (new Post()));
         $form = $categoriesCount = null;
-        try {
-            $categoriesCount = $this->categoryRepository->count([]);
-            /** @var User $user */
-            $user = $this->getUser();
-            $post = new Post();
-            $post->setUser($user);
-            $form = $this->createForm(PostFormType::class, $post);
+        $categoriesCount = $this->categoryRepository->count([]);
+        /** @var User $user */
+        $user = $this->getUser();
+        $post = new Post();
+        $post->setUser($user);
+        $form = $this->createForm(PostFormType::class, $post);
 
-            $form->handleRequest($request);
+        $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                $this->entityManager->persist($post);
-                $this->entityManager->flush();
-                
-                $this->addFlash('success', 'The post was created with success !');
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->entityManager->persist($post);
+            $this->entityManager->flush();
 
-                return $this->redirectToRoute('app_admin_create_post');
-            }
-        }
-        catch (Exception $exception)
-        {
-            $this->addFlash('error', $exception->getMessage());
-            return $this->render('admin/posts/create.html.twig', [
-                'form' => $form->createView(),
-                'categoriesCount' => $categoriesCount
-            ]);
+            $this->addFlash('success', 'The post was created with success !');
+
+            // resolve all caches
+            $producer->sendCommand(Commands::RESOLVE_CACHE, new ResolveCache($this->uploaderHelper->asset($post, 'imageFile'), array('thumb')));
+
+            return $this->redirectToRoute('app_admin_create_post');
         }
 
         return $this->render('admin/posts/create.html.twig', [
