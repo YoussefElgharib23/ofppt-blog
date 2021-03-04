@@ -83,4 +83,17 @@ class CategoryRepository extends ServiceEntityRepository
         ;
     }
 
+
+    public function findCountActivePosts()
+    {
+        return $this->createQueryBuilder('c')
+            ->select('posts', 'c')
+            ->where('posts.status = 0')
+            ->having('count(posts.id) > 0')
+            ->innerJoin('c.posts', 'posts')
+            ->groupBy('posts.id')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

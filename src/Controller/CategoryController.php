@@ -29,7 +29,7 @@ class CategoryController extends AbstractController
      */
     public function getCategories(): ?array
     {
-        return $this->categoryRepository->findBy(['status' => '0']);
+        return $this->categoryRepository->findCountActivePosts();
     }
 
     /**

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title 'Show Post ' ~ post.title ~ " | " ~ parent() %}
+{% block title  post.title | capitalize ~ " | " ~ parent() %}
 
 {% block body %}
     <div class="nk-content ">

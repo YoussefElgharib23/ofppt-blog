@@ -93,6 +93,7 @@ class SettingController extends AbstractController
      */
     public function appName(): string
     {
-        return $this->settingRepository->findOneBy(['id' => 1])->getApplicationName();
+        $setting = $this->settingRepository->findOneBy(['id' => 1]);
+        return  $setting ? $setting->getApplicationName() : 'App Name';
     }
 }
