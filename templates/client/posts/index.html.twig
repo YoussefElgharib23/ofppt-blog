@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title 'Welcome to ' ~ APP_NAME %}
+{% block title 'Welcome to ' ~ parent() %}
 
 {% block body %}
     {{ include('partials/_posts_template.html.twig') }}

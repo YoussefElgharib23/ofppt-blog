@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title 'User Profile | ' ~ APP_NAME %}
+{% block title 'User Profile | ' ~ parent() %}
 
 {% block body %}
     {{ include('partials/_profile_user.html.twig') }}

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title APP_NAME ~ ' | Show Post ' ~ post.title %}
+{% block title 'Show Post ' ~ post.title ~ " | " ~ parent() %}
 
 {% block body %}
     <div class="nk-content ">
@@ -392,6 +392,10 @@
                     $(ele).click((e) => {
                         e.preventDefault()
                     })
+                })
+
+                $(`ul:not([class])`).each((i, ele) => {
+                    $(ele).css('all', 'revert')
                 })
             })
         </script>
