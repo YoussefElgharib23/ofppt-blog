@@ -40,6 +40,7 @@ class CategoryController extends AbstractController
      */
     public function posts(string $slug, Category $category): Response
     {
+        $this->denyAccessUnlessGranted('category_view', $category);
         if ($slug !== $category->slugify($category->getName())) {
             return $this->redirectToRoute('app_posts_category', [
                 'slug' => $category->slugify($category->getName()),

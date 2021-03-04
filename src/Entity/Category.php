@@ -89,18 +89,6 @@ class Category
         return $__posts;
     }
 
-    /**
-     * @return Collection|null
-     */
-    public function getActivePosts(): ?Collection
-    {
-        $__posts = new ArrayCollection();
-        foreach ($this->getPosts() as $post) {
-            if ($post->getStatus() === 0) $__posts->add($post);
-        }
-        return $__posts;
-    }
-
     public function addPost(Post $post): self
     {
         if (!$this->posts->contains($post)) {
@@ -155,6 +143,18 @@ class Category
     {
         $this->slug = $this->slugify($this->name);
         return $this;
+    }
+
+    /**
+     * @return ArrayCollection|Post[]
+     */
+    public function getActivePosts(): ArrayCollection
+    {
+        $list = new ArrayCollection();
+        foreach ($this->getPosts() as $post) {
+            if ($post->isActive()) $list->add($post); 
+        }
+        return $list;
     }
 
 }
