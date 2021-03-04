@@ -47,12 +47,12 @@
         {{ logout_url(key = null) }}
     </span>
     {% endif %}
-{#    <div id="loading-page-home" class="d-flex justify-content-center vh-100 align-items-center fade" style="display: none">#}
-{#        <div class="spinner-border" role="status" style="height: 50px; width: 50px">#}
-{#            <span class="sr-only">Loading...</span>#}
-{#        </div>#}
-{#    </div>#}
-    <div class="nk-app-root w-100 overflow-hidden" id="main-content">
+    <div id="loading-page-home" class="d-flex justify-content-center vh-100 align-items-center fade show">
+        <div class="spinner-border" role="status" style="height: 50px; width: 50px">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <div class="nk-app-root w-100 overflow-hidden fade" id="main-content" style="display: none">
         <!-- main @s -->
         <div class="nk-main">
             <!-- wrap @s -->

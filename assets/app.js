@@ -30,6 +30,7 @@ import './lib/AjaxRegister'
 import './lib/admin/users/UserSuspensionModals'
 import './lib/Notifications/MarkAllAsRead'
 import './lib/users/update-password'
+import './lib/loading'
 
 window.axios = axios
 
