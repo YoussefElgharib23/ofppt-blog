@@ -1,7 +1,9 @@
 {% extends 'base.html.twig' %}
 
+{% block title parent() ~ ' | All Reports' %}
+
 {% block body %}
-    
+
     {% set in_admin = true %}
     <div class="nk-content">
         <div class="container wide-xl">
@@ -53,7 +55,8 @@
                                             <td class="tb-tnx-info">
                                                 <div class="tb-tnx-desc">
                                                     <span class="title">
-                                                        <a href="#" data-toggle="modal" data-target="#commentModal-{{ report.id }}">
+                                                        <a href="#" data-toggle="modal"
+                                                           data-target="#commentModal-{{ report.id }}">
                                                             {{ report.description | u.truncate(50, '...') }}
                                                         </a>
                                                     </span>
@@ -77,7 +80,7 @@
                                                     </span>
                                                 </div>
                                                 <div class="tb-tnx-status">
-                                                    {% if report.user.status and not report.user.isDeleted  %}
+                                                    {% if report.user.status and not report.user.isDeleted %}
                                                         <span class="badge badge-dot badge-warning">Suspended</span>
                                                     {% elseif report.user.isDeleted %}
                                                         <span class="badge badge-dot badge-danger">Deleted</span>
@@ -88,24 +91,33 @@
                                             </td>
                                             <td class="tb-tnx-action">
                                                 <div class="dropdown">
-                                                    <a class="text-soft dropdown-toggle btn btn-icon btn-trigger" data-toggle="dropdown" aria-expanded="false">
+                                                    <a class="text-soft dropdown-toggle btn btn-icon btn-trigger"
+                                                       data-toggle="dropdown" aria-expanded="false">
                                                         <em class="icon ni ni-more-h"></em>
                                                     </a>
-                                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-xs" style="">
+                                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-xs"
+                                                         style="">
                                                         <ul class="link-list-plain" style="width: 200px">
                                                             <li>
-                                                                <a href="#" data-toggle="modal" data-target="#commentModal-{{ report.id }}">View Report</a>
+                                                                <a href="#" data-toggle="modal"
+                                                                   data-target="#commentModal-{{ report.id }}">View
+                                                                    Report</a>
                                                             </li>
                                                             <li>
-                                                                <a href="#" data-target="report-remove-{{ report.id }}" class="report-remove-js">Remove Report</a>
-                                                                <form action="{{ path('app_admin_remove_report', {'id': report.id}) }}" method="post" class="d-n" id="report-remove-{{ report.id }}">
+                                                                <a href="#" data-target="report-remove-{{ report.id }}"
+                                                                   class="report-remove-js">Remove Report</a>
+                                                                <form action="{{ path('app_admin_remove_report', {'id': report.id}) }}"
+                                                                      method="post" class="d-n"
+                                                                      id="report-remove-{{ report.id }}">
                                                                     <input type="hidden" name="_method" value="delete">
-                                                                    <input type="hidden" name="_token" value="{{ csrf_token('report-remove-' ~ report.id) }}">
+                                                                    <input type="hidden" name="_token"
+                                                                           value="{{ csrf_token('report-remove-' ~ report.id) }}">
                                                                 </form>
                                                             </li>
                                                             {% if is_granted('ROLE_SUPER_ADMIN') %}
                                                                 <li>
-                                                                    <a href="{{ path('app_admin_details_user', {'id': report.user.id}) }}">View User</a>
+                                                                    <a href="{{ path('app_admin_details_user', {'id': report.user.id}) }}">View
+                                                                        User</a>
                                                                 </li>
                                                             {% endif %}
                                                         </ul>
@@ -153,15 +165,15 @@
             </div>
         {% endfor %}
     {% endif %}
-    
+
 {% endblock %}
 
 {% block javascripts %}
-    
+
     <script>
         $(document).ready(() => {
             'use-strict'
-            
+
             $('.report-remove-js').each((i, ele) => {
                 $(ele).click((e) => {
                     e.preventDefault()
@@ -186,5 +198,5 @@
             })
         })
     </script>
-    
+
 {% endblock %}

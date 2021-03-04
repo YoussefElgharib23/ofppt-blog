@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title 'Admin-Dashboard | ' ~ APP_NAME  %}
+{% block title parent() ~ ' | Admin Dashboard' %}
 
 {% block body %}
     {% set in_admin = true %}

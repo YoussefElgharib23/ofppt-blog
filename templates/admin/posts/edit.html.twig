@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title APP_NAME ~ ' | Admin - Edit Post' %}
+{% block title parent() ~ ' | Edit Post ' ~ post.title %}
 
 {% block body %}
     {% set in_admin = true %}

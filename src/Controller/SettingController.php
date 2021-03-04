@@ -87,4 +87,12 @@ class SettingController extends AbstractController
         $setting = $this->settingRepository->findOneBy(['id' => 1]);
         return $setting ?  $this->helper->asset($setting, 'imageFileHome') : '';
     }
+
+    /**
+     * @return string
+     */
+    public function appName(): string
+    {
+        return $this->settingRepository->findOneBy(['id' => 1])->getApplicationName();
+    }
 }
