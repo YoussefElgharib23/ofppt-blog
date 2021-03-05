@@ -96,4 +96,13 @@ class SettingController extends AbstractController
         $setting = $this->settingRepository->findOneBy(['id' => 1]);
         return  $setting ? $setting->getApplicationName() : 'App Name';
     }
+
+    /**
+     * @return string|null
+     */
+    public function favIcon(): ?string
+    {
+        $setting = $this->settingRepository->findOneBy(['id' => 1]);
+        return $setting ? $this->helper->asset($setting, 'favIconImageFile') : '';
+    }
 }

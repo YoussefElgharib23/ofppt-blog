@@ -53,6 +53,37 @@ class Setting
     private $imageFileHome;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $Favicon;
+
+    /**
+     * @Vich\UploadableField(mapping="settings", fileNameProperty="Favicon")
+     * @var File|null
+     */
+    private $favIconImageFile;
+
+    /**
+     * @return File|null
+     */
+    public function getFavIconImageFile(): ?File
+    {
+        return $this->favIconImageFile;
+    }
+
+    /**
+     * @param File|null $favIconImageFile
+     * @return void
+     */
+    public function setFavIconImageFile(?File $favIconImageFile): void
+    {
+        $this->favIconImageFile = $favIconImageFile;
+        if (null !== $favIconImageFile) {
+            $this->updateTimeStampable();
+        }
+    }
+
+    /**
      * @param File|UploadedFile|null $imageFile
      */
     public function setImageFileLogo(?File $imageFile = null): void
@@ -123,6 +154,18 @@ class Setting
     public function setApplicationName(string $applicationName): self
     {
         $this->applicationName = $applicationName;
+
+        return $this;
+    }
+
+    public function getFavicon(): ?string
+    {
+        return $this->Favicon;
+    }
+
+    public function setFavicon(?string $Favicon): self
+    {
+        $this->Favicon = $Favicon;
 
         return $this;
     }

@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Setting;
+use Doctrine\DBAL\Types\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,6 +18,9 @@ class SettingsFormType extends AbstractType
                 'required' => false
             ])
             ->add('imageFileHome', FileType::class, [
+                'required' => false
+            ])
+            ->add('favIconImageFile', FileType::class, [
                 'required' => false
             ])
             ->add('applicationName')

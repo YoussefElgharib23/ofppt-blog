@@ -8,12 +8,11 @@
     <meta name="description"
         content="A blog with the latest posts and images, here you can find a lot of interesting posts that may helped you.">
     <!-- Fav Icon  -->
-    <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}">
+    <link rel="shortcut icon" href="{{ __settings.favIcon }}">
     {% block stylesheets %}
         <!-- StyleSheets  -->
         <link rel="stylesheet" href="{{ asset('assets/css/all.css') }}" async>
         {{ encore_entry_link_tags('app') }}
-
     {% endblock %}
     <title>{% block title %}{{ __settings.appName }}{% endblock %}</title>
     <style>
