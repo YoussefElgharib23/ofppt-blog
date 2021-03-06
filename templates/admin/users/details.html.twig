@@ -136,13 +136,15 @@
                                                 <div class="profile-ud wider">
                                                     <span class="profile-ud-label">Is Verified</span>
                                                     <span class="profile-ud-value">
-                                                        {% if user.isVerified %}
+                                                        {% if not user.isVerified and 'ROLE_ADMIN' in user.roles %}
                                                             <span class="text-success">
-                                                                <em class="icon text-success ni ni-check-circle"></em> <span>Verified</span>
+                                                                <em class="icon text-success ni ni-check-circle"></em>
+                                                                <span>Verified</span>
                                                             </span>
-                                                        {% else %}
+                                                        {% else%}
                                                             <span class="text-warning">
-                                                                <em class="icon text-warning ni ni-alert-circle"></em> <span>Not Verified</span>
+                                                                <em class="icon text-warning ni ni-alert-circle"></em>
+                                                                <span>Verified</span>
                                                             </span>
                                                         {% endif %}
                                                     </span>
