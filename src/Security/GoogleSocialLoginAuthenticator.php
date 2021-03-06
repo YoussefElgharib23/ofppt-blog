@@ -3,8 +3,10 @@
 namespace App\Security;
 
 use App\Entity\User;
+use App\Entity\UserLoginLogs;
 use App\Message\Notification;
 use App\Repository\UserRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Client\OAuth2ClientInterface;
@@ -125,7 +127,7 @@ class GoogleSocialLoginAuthenticator extends SocialAuthenticator
         $user->setLastName($googleUser->getLastName());
         $user->setEmail($googleUser->getEmail());
         $user->setIsVerified(true);
-        $user->setImageName($imageName);;
+        $user->setImageName($imageName);
         $user->setIsJoinedFromSocialMedia(true);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
@@ -153,6 +155,11 @@ class GoogleSocialLoginAuthenticator extends SocialAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey): RedirectResponse
     {
+        /** @var User $user */
+        $user = $token->getUser();
+        $this->entityManager->persist(
+            (new UserLoginLogs())->setUser($user)->setLastLogin(new DateTimeImmutable())
+        );
         $targetUrl = $this->router->generate('app_blog');
         return new RedirectResponse($targetUrl);
     }

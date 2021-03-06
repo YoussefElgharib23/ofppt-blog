@@ -52,7 +52,7 @@
                                     <div class="nk-block">
                                         <div class="nk-block-head">
                                             <h5 class="title">Personal Information</h5>
-                                            <p>Basic info, like your name and address, that you use on {{ APP_NAME }}.</p>
+                                            <p>Basic info, like your name and address, that you use on {{ __settings.appName | capitalize }}.</p>
                                         </div><!-- .nk-block-head -->
                                         <div class="profile-ud-list">
                                             <div class="profile-ud-item w-100 d-flex justify-content-center my-2">
@@ -92,7 +92,7 @@
                                                 <div class="profile-ud wider">
                                                     <span class="profile-ud-label">Date of Birth</span>
                                                     <span class="profile-ud-value">
-                                                        {{ user.birthDate | date('d M, Y')}}
+                                                        {{ user.birthDate ? user.birthDate | date('d M, Y') : 'Not set'}}
                                                     </span>
                                                 </div>
                                             </div>
@@ -167,22 +167,6 @@
                                                 <div class="profile-ud wider">
                                                     <span class="profile-ud-label">Reg Method</span>
                                                     <span class="profile-ud-value">Email</span>
-                                                </div>
-                                            </div>
-                                            <div class="profile-ud-item">
-                                                <div class="profile-ud wider">
-                                                    <span class="profile-ud-label">Country</span>
-                                                    <span class="profile-ud-value">
-                                                        {{ user.country ?? '<div class="text-black-50">Not set</div>' }}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="profile-ud-item">
-                                                <div class="profile-ud wider">
-                                                    <span class="profile-ud-label">Nationality</span>
-                                                    <span class="profile-ud-value">
-                                                        {{ user.country ?? '<div class="text-black-50">Not set</div>' }}
-                                                    </span>
                                                 </div>
                                             </div>
                                             <div class="profile-ud-item">
@@ -315,7 +299,7 @@
                                     NioApp.Toast('The report was successfully deleted !', 'info');
                                 }
                             })
-                            .catch((error) => { NioApp.Toast('An error has occurred while the action !', 'error'); })
+                            .catch(() => { NioApp.Toast('An error has occurred while the action !', 'error'); })
                         }
                     })
                 })

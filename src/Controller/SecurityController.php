@@ -6,11 +6,24 @@ use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
 class SecurityController extends AbstractController
 {
+    /**
+     * @var Security
+     */
+    private $security;
+
+    public function __construct(
+        Security $security
+    )
+    {
+        $this->security = $security;
+    }
+
     use TargetPathTrait;
     /**
      * @Route("/login", name="app_login")
@@ -36,11 +49,11 @@ class SecurityController extends AbstractController
      */
     public function logoutSuspendedOrDeletedUser(): ?bool
     {
-        /** @var User $currentUser */
+        /** @var User| null $currentUser */
         $currentUser = $this->getUser();
         if (!$currentUser) return null;
         if (
-            !in_array('ROLE_ADMIN', $currentUser->getRoles())
+            !$this->security->isGranted('ROLE_ADMIN', $currentUser)
             and !$currentUser->isStatus()
         )
         {

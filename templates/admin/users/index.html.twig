@@ -24,9 +24,14 @@
                                            data-target="pageMenu"><em class="icon ni ni-menu-alt-r"></em></a>
                                         <div class="toggle-expand-content" data-content="pageMenu">
                                             <ul class="nk-block-tools g-3">
-                                                <li><a href="#" class="btn btn-white btn-outline-light"><em
-                                                                class="icon ni ni-download-cloud"></em><span>Export</span></a>
+                                                {# Incomming feature
+                                                <li>
+                                                    <a href="#" class="btn btn-white btn-outline-light">
+                                                        <em class="icon ni ni-download-cloud"></em>
+                                                        <span>Export</span>
+                                                    </a>
                                                 </li>
+                                                #}
                                                 <li class="nk-block-tools-opt">
                                                     <div class="drodown">
                                                         <a href="#" class="dropdown-toggle btn btn-icon btn-primary"
@@ -56,7 +61,6 @@
                                                     <div class="form-wrap w-150px">
                                                         <select class="form-select form-select-sm" id="options-select">
                                                             <option value="" selected>Bulk Action</option>
-                                                            <option value="email">Send Email</option>
                                                             <option value="active">Active user</option>
                                                             <option value="suspend">Suspend User</option>
                                                             <option value="delete">Delete User</option>
@@ -116,26 +120,6 @@
                                                                                 </div>
                                                                                 <div class="dropdown-body dropdown-body-rg">
                                                                                     <div class="row gx-6 gy-3">
-                                                                                        <div class="col-6">
-                                                                                            <div class="custom-control custom-control-sm custom-checkbox">
-                                                                                                <input type="checkbox"
-                                                                                                       class="custom-control-input"
-                                                                                                       id="hasBalance">
-                                                                                                <label class="custom-control-label"
-                                                                                                       for="hasBalance">
-                                                                                                    Have Balance</label>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="col-6">
-                                                                                            <div class="custom-control custom-control-sm custom-checkbox">
-                                                                                                <input type="checkbox"
-                                                                                                       class="custom-control-input"
-                                                                                                       id="hasKYC">
-                                                                                                <label class="custom-control-label"
-                                                                                                       for="hasKYC"> KYC
-                                                                                                    Verified</label>
-                                                                                            </div>
-                                                                                        </div>
                                                                                         <div class="col-6">
                                                                                             <div class="form-group">
                                                                                                 <label class="overline-title overline-title-alt">Role</label>

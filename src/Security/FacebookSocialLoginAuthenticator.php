@@ -3,7 +3,9 @@
 namespace App\Security;
 
 use App\Entity\User;
+use App\Entity\UserLoginLogs;
 use App\Message\Notification;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Client\OAuth2ClientInterface;
@@ -149,8 +151,14 @@ class FacebookSocialLoginAuthenticator extends SocialAuthenticator
      * @param string $providerKey
      * @return RedirectResponse
      */
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): RedirectResponse
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey): RedirectResponse
     {
+        /** @var User $user */
+        $user = $token->getUser();
+        $this->entityManager->persist(
+            (new UserLoginLogs())->setUser($user)->setLastLogin(new DateTimeImmutable())
+        );
+        $this->entityManager->flush();
         $targetUrl = $this->router->generate('app_blog');
 
         return new RedirectResponse($targetUrl);
