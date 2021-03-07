@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Mercure</title>
+</head>
+<body>
+    <button id="button">Send to mercure</button>
+
+    <script type="text/javascript">
+        document.getElementById('button').addEventListener('click', function (e) {
+            e.preventDefault()
+            // URL is a built-in JavaScript class to manipulate URLs
+            const eventSource = new EventSource('http://localhost:2019/hub?topic=' + encodeURIComponent('http://localhost:8000/books/1'), {withCredentials: true});
+            eventSource.onmessage = event => {
+                // Will be called every time an update is published by the server
+                console.log(JSON.parse(event.data));
+            }
+
+        })
+    </script>
+</body>
+</html>
