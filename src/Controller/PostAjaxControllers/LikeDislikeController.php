@@ -6,6 +6,7 @@ use App\Entity\Dislike;
 use App\Entity\Like;
 use App\Entity\Post;
 use App\Entity\User;
+use App\Message\Notification;
 use App\Repository\DislikeRepository;
 use App\Repository\LikeRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 
@@ -57,9 +59,10 @@ class LikeDislikeController extends AbstractController
      * @Route("/post/like/{id}", name="app_user_like_post", methods={"POST"}, requirements={"id": "\d+"})
      * @param Request $request
      * @param Post $post
+     * @param MessageBusInterface $bus
      * @return Response
      */
-    public function likePost(Request $request, Post $post): Response
+    public function likePost(Request $request, Post $post, MessageBusInterface $bus): Response
     {
         try {
             /** @var User $user */
@@ -79,6 +82,7 @@ class LikeDislikeController extends AbstractController
                 $likeType = '<1';
             } else {
                 $post->addLike($like);
+                $bus->dispatch(new Notification($user->getId(), $post->getId(), 'like'));
                 $this->entityManager->persist($like);
             }
             if ($isDisliked) {
