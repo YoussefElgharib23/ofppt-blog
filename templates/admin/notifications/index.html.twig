@@ -44,7 +44,11 @@
                                                 <span class="amount">
                                                     {% if notification.type == 'register' %}
                                                         A new user was registered in your blogs
-                                                    {% elseif notification.type == 'comment' %}
+                                                    {% elseif notification.type == 'like' %}
+                                                        <a href="{{ path('app_admin_details_user', {'id': notification.user.id}) }}" class="link">
+                                                        {{ notification.user.fullName }}
+                                                        </a> has liked the post {{ notification.post.title | u.truncate(20, '...') }}
+                                                    {% else %}
                                                         <a href="{{ path('app_admin_details_user', {'id': notification.user.id}) }}" class="link">
                                                         {{ notification.user.fullName }}
                                                         </a> has commented to your post {{ notification.post.title | u.truncate(20, '...') }}
@@ -69,7 +73,7 @@
                                                     <ul class="link-list-plain">
                                                         {% if notification.type == 'register' %}
                                                             <a href="{{ path('app_admin_details_user', {'id': notification.user.id}) }}" class="text-primary">View User</a>
-                                                        {% elseif notification.type == 'comment' %}
+                                                        {% elseif notification.type == 'comment' or notification.type == 'like' %}
                                                             <a href="{{ path('app_show_post', {'id': notification.post.id, 'slug': notification.post.slugify(notification.post.title)}) }}" class="text-primary">View Post</a>
                                                         {% endif %}
                                                         <li>
@@ -118,7 +122,6 @@
         $(document).ready(() => {
             $('a.rm-notification-js').each((i, ele) => {
                 $(ele).click((e) => {
-                    'use-strict',
                     e.preventDefault()
                     
                     let notificationId = $(ele).parent().find('span.id-notification-js').text().trim(),

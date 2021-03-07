@@ -91,4 +91,22 @@ class NotificationRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    /**
+     * @param int $id
+     * @return Notification[]|array|null
+     */
+    public function findLikeNotificationByUser(int $id): ?array
+    {
+        return $this->createQueryBuilder('n')
+            ->select('n.id')
+            ->select('n', 'user')
+            ->where('user.id = :id')
+            ->andWhere('n.type = :type')
+            ->setParameters(['id' => $id, 'type' => 'like'])
+            ->innerJoin('n.user', 'user')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

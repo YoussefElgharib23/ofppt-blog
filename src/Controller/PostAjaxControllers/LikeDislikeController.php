@@ -6,9 +6,11 @@ use App\Entity\Dislike;
 use App\Entity\Like;
 use App\Entity\Post;
 use App\Entity\User;
+use App\Helper\DeleteAssociationEntity;
 use App\Message\Notification;
 use App\Repository\DislikeRepository;
 use App\Repository\LikeRepository;
+use App\Repository\NotificationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -37,22 +39,29 @@ class LikeDislikeController extends AbstractController
      * @var DislikeRepository
      */
     private $dislikeRepository;
+    /**
+     * @var NotificationRepository
+     */
+    private $notificationRepository;
 
     /**
      * LikeDislikeController constructor.
      * @param EntityManagerInterface $entityManager
      * @param LikeRepository $likeRepository
      * @param DislikeRepository $dislikeRepository
+     * @param NotificationRepository $notificationRepository
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         LikeRepository $likeRepository,
-        DislikeRepository $dislikeRepository
+        DislikeRepository $dislikeRepository,
+        NotificationRepository $notificationRepository
     )
     {
         $this->entityManager = $entityManager;
         $this->likeRepository = $likeRepository;
         $this->dislikeRepository = $dislikeRepository;
+        $this->notificationRepository = $notificationRepository;
     }
 
     /**
@@ -89,6 +98,8 @@ class LikeDislikeController extends AbstractController
                 $dislike = $this->dislikeRepository->findOneBy(['user' => $user, 'post' => $post]);
                 $post->removeDislike($dislike);
                 $this->entityManager->remove($dislike);
+                $notifications = $this->notificationRepository->findLikeNotificationByUser($user->getId());
+                DeleteAssociationEntity::deleteAssociation();
             }
             $this->entityManager->flush();
         } catch (InvalidCsrfTokenException $exception) {

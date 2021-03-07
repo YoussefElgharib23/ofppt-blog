@@ -4,8 +4,11 @@ namespace App\Helper;
 
 class DeleteAssociationEntity
 {
-
-    public static function deleteAssociation($array) {
+    /**
+     * @param $array
+     */
+    public static function deleteAssociation($array): void
+    {
         foreach ($array as $item) {
             if (is_array($item)) {
                 foreach ($item as $value) {
@@ -18,7 +21,12 @@ class DeleteAssociationEntity
         }
     }
 
-    public static function restoreAssociation($array) {
+    /**
+     * @param $array
+     * @return void
+     */
+    public static function restoreAssociation($array): void
+    {
         foreach ($array as $item) {
             if (is_array($item)) {
                 foreach ($item as $value) {
