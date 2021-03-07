@@ -131,7 +131,7 @@ class AdminPostController extends AbstractController
 
             // resolve all caches
             $producer->sendCommand(Commands::RESOLVE_CACHE, new ResolveCache($this->uploaderHelper->asset($post, 'imageFile'), array('thumb')));
-
+            
             return $this->redirectToRoute('app_admin_create_post');
         }
 
