@@ -73,7 +73,7 @@
                                                                 {% elseif notif.type == "emailConfirm" %}
                                                                     {{ notif.user.fullName(false) }} has confirmed his email address
                                                                 {% elseif notif.type == 'like' %}
-                                                                    {{ notif.user.fullName(false) }} liked post {{ notif.post.title | u.truncate(10, '...') }}
+                                                                    {{ notif.post.activeUserLikes.count }} on post {{ notif.post.title | u.truncate(10, '...') }}
                                                                 {% else %}
                                                                     {{ notif.user.fullName(false) }} commented on post {{ notif.post.title | u.truncate(10, '...') }}
                                                                 {% endif %}
