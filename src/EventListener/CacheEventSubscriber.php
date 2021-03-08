@@ -4,14 +4,18 @@ namespace App\EventListener;
 
 use App\Entity\Post;
 use App\Entity\User;
-use App\Repository\PostRepository;
 use Doctrine\Common\EventSubscriber;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
+/**
+ * Class CacheEventSubscriber
+ * @package App\EventListener
+ */
 class CacheEventSubscriber implements EventSubscriber
 {
     /**
@@ -24,6 +28,11 @@ class CacheEventSubscriber implements EventSubscriber
      */
     private $helper;
 
+    /**
+     * CacheEventSubscriber constructor.
+     * @param CacheManager $cacheManager
+     * @param UploaderHelper $helper
+     */
     public function __construct(
         CacheManager $cacheManager,
         UploaderHelper $helper
@@ -33,17 +42,23 @@ class CacheEventSubscriber implements EventSubscriber
         $this->helper = $helper;
     }
 
+    /**
+     * @return string[]
+     */
     public function getSubscribedEvents(): array
     {
         return [
             'preRemove',
-            'preUpdate'
+            'preUpdate',
+            'postUpdate'
         ];
     }
 
+    /**
+     * @param LifecycleEventArgs $args
+     */
     public function preRemove(LifecycleEventArgs $args)
     {
-        /** @var Post|mixed $entity */
         $entity = $args->getEntity();
         if (!$entity instanceof Post && !$entity instanceof User) {
             return;
@@ -51,17 +66,26 @@ class CacheEventSubscriber implements EventSubscriber
         $this->cacheManager->remove($this->helper->asset($entity, 'imageFile'));
     }
 
+    /**
+     * @param PreUpdateEventArgs $args
+     */
     public function preUpdate(PreUpdateEventArgs $args)
     {
-        /** @var Post|mixed $entity */
+        dd($args);
         $entity = $args->getEntity();
         if (!$entity instanceof Post && !$entity instanceof User) {
             return;
         }
 
         if ($entity->getImageFile() instanceof UploadedFile) {
+            /* dd($entity);
             $this->cacheManager->remove($this->helper->asset($entity, 'imageFile'));
+            */
         }
     }
 
+    public function postUpdate(LifecycleEventArgs $args)
+    {
+        dd($args->getEntity());
+    }
 }

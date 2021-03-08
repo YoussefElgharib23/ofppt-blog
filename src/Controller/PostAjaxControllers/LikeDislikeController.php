@@ -91,7 +91,6 @@ class LikeDislikeController extends AbstractController
                 $likeType = '<1';
             } else {
                 $post->addLike($like);
-                $bus->dispatch(new Notification($user->getId(), $post->getId(), 'like'));
                 $this->entityManager->persist($like);
             }
             if ($isDisliked) {
@@ -99,7 +98,6 @@ class LikeDislikeController extends AbstractController
                 $post->removeDislike($dislike);
                 $this->entityManager->remove($dislike);
                 $notifications = $this->notificationRepository->findLikeNotificationByUser($user->getId());
-                DeleteAssociationEntity::deleteAssociation();
             }
             $this->entityManager->flush();
         } catch (InvalidCsrfTokenException $exception) {

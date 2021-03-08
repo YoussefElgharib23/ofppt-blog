@@ -10,16 +10,10 @@ use App\Repository\CategoryRepository;
 use App\Repository\PostRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use Enqueue\Client\ProducerInterface;
-use Exception;
 use Knp\Component\Pager\PaginatorInterface;
-use Liip\ImagineBundle\Async\Commands;
-use Liip\ImagineBundle\Async\ResolveCache;
-use Liip\ImagineBundle\Async\Topics;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -110,10 +104,9 @@ class AdminPostController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function createPost(Request $request, ProducerInterface $producer): Response
+    public function createPost(Request $request): Response
     {
         $this->denyAccessUnlessGranted('create', (new Post()));
-        $form = $categoriesCount = null;
         $categoriesCount = $this->categoryRepository->count([]);
         /** @var User $user */
         $user = $this->getUser();
@@ -128,9 +121,6 @@ class AdminPostController extends AbstractController
             $this->entityManager->flush();
 
             $this->addFlash('success', 'The post was created with success !');
-
-            // resolve all caches
-            $producer->sendCommand(Commands::RESOLVE_CACHE, new ResolveCache($this->uploaderHelper->asset($post, 'imageFile'), array('thumb')));
             
             return $this->redirectToRoute('app_admin_create_post');
         }
@@ -157,10 +147,8 @@ class AdminPostController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->entityManager->persist($post);
-            $resolvedPath = $this->cacheManager->getBrowserPath(parse_url($this->uploaderHelper->asset($post, 'imageFile'), PHP_URL_PATH), 'thumb');
-            $post->setImageNameCached($resolvedPath);
-            $this->entityManager->persist($post);
+//            $resolvedPath = $this->cacheManager->getBrowserPath(parse_url($this->uploaderHelper->asset($post, 'imageFile'), PHP_URL_PATH), 'thumb');
+//            $post->setImageNameCached($resolvedPath);
             $this->entityManager->flush();
 
             $this->addFlash('success', 'The post was updated with success !');

@@ -51,7 +51,6 @@ $('button#button-load-more-js').on('click', (e) => {
                     <!-- end new section -->
                     </div>
                 `)
-
                 lazyLoadImages()
             })
 

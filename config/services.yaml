@@ -30,9 +30,9 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-    App\EventListener\CacheEventSubscriber:
-        tags:
-            - { name: doctrine.event_subscriber }
+    # App\EventListener\CacheEventSubscriber:
+    #     tags:
+    #        - { name: doctrine.event_subscriber }
 
     app_logoutlistener:
         class: App\EventListener\LogoutEventListener

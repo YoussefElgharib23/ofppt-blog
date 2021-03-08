@@ -6,6 +6,9 @@ use App\Entity\Post;
 use App\Entity\User;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
+use Enqueue\Client\ProducerInterface;
+use Liip\ImagineBundle\Async\Commands;
+use Liip\ImagineBundle\Async\ResolveCache;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -160,9 +163,10 @@ class AjaxController extends AbstractController
     /**
      * @Route ("/load_more", methods={"POST"})
      * @param Request $request
+     * @param ProducerInterface $producer
      * @return JsonResponse
      */
-    public function loadMorePosts(Request $request): JsonResponse
+    public function loadMorePosts(Request $request, ProducerInterface $producer): JsonResponse
     {
         $request->headers->set('Access-Control-Allow-Origin', '*');
         try {
@@ -173,7 +177,7 @@ class AjaxController extends AbstractController
             foreach ($posts as $post) {
                 /** @var Post $post */
                 $path = $this->uploaderHelper->asset($post, 'imageFile');
-                $resolvedPath = $this->cacheManager->getBrowserPath(parse_url($path, PHP_URL_PATH), 'thumb');
+                $resolvedPath = $this->cacheManager->getBrowserPath($path, 'thumb');
                 $post->setImageNameCached($resolvedPath);
                 $post->getUser()->setFullName();
                 $returnPosts[] = $post;

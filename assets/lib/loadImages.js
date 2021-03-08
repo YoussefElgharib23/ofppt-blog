@@ -4,7 +4,7 @@ imagesLoaded.makeJQueryPlugin($)
 
 export default function loadImages()
 {
-    $('body').imagesLoaded().progress(async function (instance, image) {
+    $('body').imagesLoaded().progress(function (instance, image) {
         let img = $(image.img)
         $(img).parent().find('.load-overlay').addClass('show')
         if ( image.isLoaded ) {

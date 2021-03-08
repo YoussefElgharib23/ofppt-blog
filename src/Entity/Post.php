@@ -71,7 +71,7 @@ class Post
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-cyqiqekip@mailinator.com     * @Groups ("ajax:posts")
+     * @Groups ("ajax:posts")
      * @var string|null
      */
     private $imageName;

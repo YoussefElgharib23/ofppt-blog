@@ -5,12 +5,15 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserFormType;
 use App\Form\UserProfileFormType;
+use App\Helper\CacheImage;
 use Doctrine\ORM\EntityManagerInterface;
+use Enqueue\Client\ProducerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 class ClientController extends AbstractController
 {
@@ -19,12 +22,24 @@ class ClientController extends AbstractController
      * @var EntityManagerInterface
      */
     private $entityManager;
+    /**
+     * @var UploaderHelper
+     */
+    private $helper;
+    /**
+     * @var ProducerInterface
+     */
+    private $producer;
 
     public function __construct(
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        UploaderHelper $helper,
+        ProducerInterface $producer
     )
     {
         $this->entityManager = $entityManager;
+        $this->helper = $helper;
+        $this->producer = $producer;
     }
 
     /**
@@ -46,6 +61,8 @@ class ClientController extends AbstractController
                 $this->entityManager->flush();
 
                 $this->addFlash('success', 'Your profile was successfully updated !');
+
+                CacheImage::LiipBackgroundCacheImage($user, $this->helper, $this->producer);
                 return $this->redirectToRoute('app_client_profile');
             }
             catch (Exception $exception) {

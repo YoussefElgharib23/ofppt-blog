@@ -4,9 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Post;
-use App\Entity\ReplyComment;
 use App\Entity\User;
 use App\Form\CommentFormType;
+use App\Message\Notification;
 use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -137,7 +137,7 @@ class PostController extends AbstractController
                 $user->addComment($comment);
 
                 if (!$this->isGranted('ROLE_ADMIN')) {
-                    $bus->dispatch(new \App\Message\Notification($user->getId(), $post->getId(), 'comment'));
+                    $bus->dispatch(new Notification($user->getId(), $post->getId(), 'comment'));
                 }
                 $this->addFlash('success', 'Your comment was successfully posted !');
 
