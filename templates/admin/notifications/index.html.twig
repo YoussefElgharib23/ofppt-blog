@@ -44,10 +44,6 @@
                                                 <span class="amount">
                                                     {% if notification.type == 'register' %}
                                                         A new user was registered in your blogs
-                                                    {% elseif notification.type == 'like' %}
-                                                        <a href="{{ path('app_admin_details_user', {'id': notification.user.id}) }}" class="link">
-                                                        {{ notification.user.fullName }}
-                                                        </a> has liked the post {{ notification.post.title | u.truncate(20, '...') }}
                                                     {% else %}
                                                         <a href="{{ path('app_admin_details_user', {'id': notification.user.id}) }}" class="link">
                                                         {{ notification.user.fullName }}
