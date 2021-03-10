@@ -91,7 +91,7 @@
                                                 </div>
                                                 <div class="row" id="recent-posts">
                                                     {% for post in posts | exceptTheLatestPost %}
-                                                        <div class="col-lg-3 col-md-4 col-sm-6 d-flex flex-column justify-content-between mb-2" data-toggle="tooltip"
+                                                        <div class="col-lg-3 col-md-4 col-6 d-flex flex-column justify-content-between mb-2" data-toggle="tooltip"
                                                              data-placement="top" title="{{ post.minDescription }}">
                                                             <section>
                                                                 <div class="image-container mw-100 rounded-lg overflow-hidden position-relative" style="min-height: 161.7px;">
@@ -110,7 +110,7 @@
                                                                 <div class="mt-2">
                                                                     <a class="btn-link"
                                                                        href="{{ path('app_show_post', {'id': post.id, 'slug': post.slugify(post.title)}) }}">
-                                                                        <h6 class="font-25 m-0 text-wrap">{{ post.title | u.truncate(40, '...') }}</h6>
+                                                                        <h6 class="m-0 text-wrap">{{ post.title | u.truncate(40, '...') }}</h6>
                                                                     </a>
                                                                     <div>
                                                                         <span class="badge badge-primary">{{ post.category.name }}</span>
