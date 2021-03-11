@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="{{ app.request.locale }}">
-
 <head>
     <meta charset="UTF-8">
     <meta name="description" content="youssef blog">
@@ -13,6 +12,7 @@
     <link rel="shortcut icon" href="{{ __settings.favIcon }}">
     {% block stylesheets %}
         <!-- StyleSheets  -->
+        <link rel="stylesheet" href="{{ preload(asset('assets/css/dashlite.css'), { as: 'style', nopush: true }) }}">
         <link rel="stylesheet" href="{{ preload('assets/css/all.css', { as: 'style', nopush: true }) }}">
         {{ encore_entry_link_tags('app') }}
     {% endblock %}
