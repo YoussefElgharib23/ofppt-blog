@@ -10,7 +10,6 @@ use App\Repository\UserRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
-use Enqueue\Client\ProducerInterface;
 use Faker\Factory;
 use Liip\ImagineBundle\Async\Commands;
 use Liip\ImagineBundle\Async\ResolveCache;
@@ -45,10 +44,6 @@ class AppBlogFixtures extends Fixture implements FixtureGroupInterface
      * @var UserRepository
      */
     private $userRepository;
-    /**
-     * @var ProducerInterface
-     */
-    private $producer;
 
     /**
      * AppBlogFixtures constructor.
@@ -58,7 +53,6 @@ class AppBlogFixtures extends Fixture implements FixtureGroupInterface
      * @param CacheManager $cacheManager
      * @param UploaderHelper $uploaderHelper
      * @param UserRepository $userRepository
-     * @param ProducerInterface $producer
      */
     public function __construct(
         UserPasswordEncoderInterface $encoder,
@@ -66,8 +60,7 @@ class AppBlogFixtures extends Fixture implements FixtureGroupInterface
         ContainerInterface $container,
         CacheManager $cacheManager,
         UploaderHelper $uploaderHelper,
-        UserRepository $userRepository,
-        ProducerInterface $producer
+        UserRepository $userRepository
     )
     {
         $this->encoder = $encoder;
@@ -76,7 +69,6 @@ class AppBlogFixtures extends Fixture implements FixtureGroupInterface
         $this->cacheManager = $cacheManager;
         $this->uploaderHelper = $uploaderHelper;
         $this->userRepository = $userRepository;
-        $this->producer = $producer;
     }
 
     public function load(ObjectManager $manager)
@@ -112,9 +104,6 @@ class AppBlogFixtures extends Fixture implements FixtureGroupInterface
                 ->setUser($user)
                 ->setImageName($image)
             ;
-
-            $this->producer->sendCommand(Commands::RESOLVE_CACHE, new ResolveCache($this->uploaderHelper->asset($post, 'imageFile'), array('thumb')));
-
 
             $manager->persist($post);
         }

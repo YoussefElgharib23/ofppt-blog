@@ -9,7 +9,7 @@ liip_imagine:
                 web_root: "%kernel.project_dir%/public"
                 cache_prefix: "media/cache"
     cache: profile_photos
-    enqueue: true
+    # enqueue: true
     filter_sets :
         thumb:
             quality: 75
