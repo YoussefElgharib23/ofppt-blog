@@ -54,7 +54,7 @@ class AdminCommand extends Command
         }
 
         $__user = new User();
-        $__user->setFirstName('Admin')->setLastName('Admin')->setEmail('admin@admin.com')->setPassword($this->encoder->encodePassword($__user, 'admin1234'));
+        $__user->setFirstName('Admin')->setLastName('Admin')->setEmail('admin@admin.com')->setPassword($this->encoder->encodePassword($__user, 'admin1234'))->setRoles(['ROLE_ADMIN']);
 
         $this->entityManagerInterface->persist($__user);
         $this->entityManagerInterface->flush();
