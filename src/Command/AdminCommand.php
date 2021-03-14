@@ -53,11 +53,10 @@ class AdminCommand extends Command
             return Command::FAILURE;
         }
 
-        $user = new User();
-        $user->setEmail('admin@admin.com')->setUsername('AdminAdmin');
-        $user->setPassword($this->encoder->encodePassword($user, 'admin1234'));
+        $__user = new User();
+        $__user->setFirstName('Admin')->setLastName('Admin')->setEmail('admin@admin.com')->setPassword($this->encoder->encodePassword($__user, 'admin1234'));
 
-        $this->entityManagerInterface->persist($user);
+        $this->entityManagerInterface->persist($__user);
         $this->entityManagerInterface->flush();
 
         $io->success('Your admin user was created with success !');

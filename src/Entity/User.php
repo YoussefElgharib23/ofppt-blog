@@ -224,9 +224,10 @@ class User implements UserInterface
     /**
      * @param mixed $firstName
      */
-    public function setFirstName($firstName): void
+    public function setFirstName($firstName): self
     {
         $this->firstName = $firstName;
+        return $this;
     }
 
     /**
@@ -240,9 +241,10 @@ class User implements UserInterface
     /**
      * @param mixed $lastName
      */
-    public function setLastName($lastName): void
+    public function setLastName($lastName): self
     {
         $this->lastName = $lastName;
+        return $this;
     }
 
     public function getEmail(): ?string
