@@ -42,4 +42,4 @@ $ symfony server:start
 ```
 
 That's all !
-Enjoy conding
+Enjoy conding Hello
