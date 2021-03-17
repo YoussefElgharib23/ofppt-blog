@@ -5,9 +5,7 @@ namespace App\Controller\AdminControllers;
 use App\Entity\User;
 use App\Form\UserProfileAdminFormType;
 use App\Form\UserProfileFormType;
-use App\Helper\CacheImage;
 use Doctrine\ORM\EntityManagerInterface;
-use Enqueue\Client\ProducerInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,10 +31,6 @@ class AdminProfileController extends AbstractController
      */
     private $helper;
     /**
-     * @var ProducerInterface
-     */
-    private $producer;
-    /**
      * @var CacheManager
      */
     private $cacheManager;
@@ -44,13 +38,11 @@ class AdminProfileController extends AbstractController
     public function __construct(
         EntityManagerInterface $entityManager,
         UploaderHelper $helper,
-        ProducerInterface $producer,
         CacheManager $cacheManager
     )
     {
         $this->entityManager = $entityManager;
         $this->helper = $helper;
-        $this->producer = $producer;
         $this->cacheManager = $cacheManager;
     }
 

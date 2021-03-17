@@ -26,20 +26,14 @@ class ClientController extends AbstractController
      * @var UploaderHelper
      */
     private $helper;
-    /**
-     * @var ProducerInterface
-     */
-    private $producer;
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        UploaderHelper $helper,
-        ProducerInterface $producer
+        UploaderHelper $helper
     )
     {
         $this->entityManager = $entityManager;
         $this->helper = $helper;
-        $this->producer = $producer;
     }
 
     /**

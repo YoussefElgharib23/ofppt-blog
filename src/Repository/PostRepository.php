@@ -141,12 +141,11 @@ class PostRepository extends ServiceEntityRepository
 
     public function finActivePosts()
     {
-        return $this->createQueryBuilder('p')
+        return $this->defaultQueryBuilder()
             ->select('p', 'likes')
             ->innerJoin('p.likes', 'likes')
             ->where('p.status = 0')
             ->orderBy('p.id', 'desc')
-            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
