@@ -13,8 +13,6 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
@@ -223,6 +221,7 @@ class User implements UserInterface
 
     /**
      * @param mixed $firstName
+     * @return User
      */
     public function setFirstName($firstName): self
     {
@@ -240,6 +239,7 @@ class User implements UserInterface
 
     /**
      * @param mixed $lastName
+     * @return User
      */
     public function setLastName($lastName): self
     {
@@ -261,10 +261,12 @@ class User implements UserInterface
 
     /**
      * @param string|null $username
+     * @return User
      */
-    public function setUsername(?string $username): void
+    public function setUsername(?string $username): self
     {
         $this->username = $username;
+        return $this;
     }
 
     /**

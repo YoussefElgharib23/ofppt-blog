@@ -13,7 +13,7 @@
     {% block stylesheets %}
         <!-- StyleSheets  -->
         <link rel="stylesheet" href="{{ preload(asset('assets/css/dashlite.css'), { as: 'style', nopush: true }) }}">
-        <link rel="stylesheet" href="{{ preload('assets/css/all.css', { as: 'style', nopush: true }) }}">
+        <link rel="stylesheet" href="{{ preload(asset('assets/css/all.css'), { as: 'style', nopush: true }) }}">
         {{ encore_entry_link_tags('app') }}
     {% endblock %}
     <title>{% block title %}{{ __settings.appName }}{% endblock %}</title>
