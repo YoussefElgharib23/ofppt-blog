@@ -15,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
+use function filter_var;
 
 /**
  * @Route ("/api")
@@ -65,6 +66,8 @@ class AjaxController extends AbstractController
      * TO VERIFY THE EMAIL AND USERNAME IN THE DB.
      *
      * @Route("/verify_credentials", name="app_ajax_verify_at_register", methods={"POST"})
+     * @param Request $request
+     * @return JsonResponse
      */
     public function verifyAtRegister(Request $request): JsonResponse
     {
@@ -73,32 +76,32 @@ class AjaxController extends AbstractController
 
         try {
             if (!$data['username'] && !$data['email']) {
-                throw new \Exception('Missed fields ! Please try to reload your browser');
+                throw new Exception('Missed fields ! Please try to reload your browser');
             }
             $username = $data['username'];
             $email = strtolower(trim($data['email']));
 
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                throw new \Exception('The email format is not valid !');
+                throw new Exception('The email format is not valid !');
             }
 
             $user = $this->userRepository->findOneBy(['username' => $username]);
             if ($user) {
-                throw new \Exception('It seems that the username is taken by another user !');
+                throw new Exception('It seems that the username is taken by another user !');
             }
 
             $user = $this->userRepository->findOneBy(['email' => $email]);
             if ($user) {
-                throw new \Exception('The email is taken by another user !');
+                throw new Exception('The email is taken by another user !');
             }
 
             return $this->json([
                 'message' => 'Success',
-            ], 200);
-        } catch (\Exception $exception) {
+            ]);
+        } catch (Exception $exception) {
             return $this->json([
                 'error' => $exception->getMessage(),
-            ], 200);
+            ]);
         }
     }
 
@@ -106,6 +109,8 @@ class AjaxController extends AbstractController
      * VERIFY THE EMAIL IF THE USER EXISTS.
      *
      * @Route ("/verify_credentials_login", name="app_ajax_verify_at_login", methods={"POST"})
+     * @param Request $request
+     * @return JsonResponse
      */
     public function verifyAtLogin(Request $request): JsonResponse
     {
@@ -115,7 +120,7 @@ class AjaxController extends AbstractController
             $data = json_decode($request->getContent(), true);
 
             if (!array_key_exists('password', $data) || !array_key_exists('credentials', $data)) {
-                throw new \Exception('Missing fields !');
+                throw new Exception('Missing fields !');
             }
 
             $credentials = $data['credentials'];
@@ -124,7 +129,7 @@ class AjaxController extends AbstractController
             $founded = true;
             $user = null;
             if (null === $user) {
-                if (\filter_var($credentials, FILTER_VALIDATE_EMAIL)) {
+                if (filter_var($credentials, FILTER_VALIDATE_EMAIL)) {
                     $user = $this->userRepository->findOneBy(['email' => $credentials]);
                 } else {
                     $user = $this->userRepository->findOneBy(['username' => $credentials]);
@@ -146,21 +151,19 @@ class AjaxController extends AbstractController
             if (!$user->isStatus()) {
                 throw new CustomUserMessageAuthenticationException('Your account is suspended or deactivated ! Check your mail box to know more');
             }
-        } catch (CustomUserMessageAuthenticationException $exception) {
+        } catch (CustomUserMessageAuthenticationException | Exception $exception) {
             return $this->json([
                 'error' => $exception->getMessage(),
-            ], 200);
-        } catch (\Exception $exception) {
-            return $this->json([
-                'error' => $exception->getMessage(),
-            ], 200);
+            ]);
         }
 
-        return $this->json(['message' => 'success'], 200);
+        return $this->json(['message' => 'success']);
     }
 
     /**
      * @Route ("/load_more", methods={"POST"})
+     * @param Request $request
+     * @return JsonResponse
      */
     public function loadMorePosts(Request $request): JsonResponse
     {
@@ -185,7 +188,7 @@ class AjaxController extends AbstractController
                 'posts' => $returnPosts,
                 'morePosts' => $morePosts,
             ], 200, [], ['groups' => 'ajax:posts']);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             return $this->json([
                 'error' => $exception->getMessage(),
             ]);

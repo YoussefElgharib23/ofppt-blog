@@ -5,9 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserFormType;
 use App\Form\UserProfileFormType;
-use App\Helper\CacheImage;
 use Doctrine\ORM\EntityManagerInterface;
-use Enqueue\Client\ProducerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -56,7 +54,7 @@ class ClientController extends AbstractController
 
                 $this->addFlash('success', 'Your profile was successfully updated !');
 
-                CacheImage::LiipBackgroundCacheImage($user, $this->helper, $this->producer);
+//                CacheImage::LiipBackgroundCacheImage($user, $this->helper, $this->producer);
                 return $this->redirectToRoute('app_client_profile');
             }
             catch (Exception $exception) {

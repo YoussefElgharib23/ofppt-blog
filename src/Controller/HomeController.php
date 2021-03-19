@@ -51,15 +51,6 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route ("/admin", name="app_admin_home", methods={"GET"})
-     * @return Response
-     */
-    public function adminHome(): Response
-    {
-        return $this->render('home/index.html.twig');
-    }
-
-    /**
      * @Route("/terms_of_coniditions", name="app_terms_conditions", methods={"GET"})
      * @return Response
      */
@@ -139,11 +130,10 @@ class HomeController extends AbstractController
     /**
      *
      * @Route ("/contact-us/{id}/delete", name="app_admin_delete_contact-us", methods={"GET"}, requirements={"id": "\d+"})
-     * @param Request $request
      * @param ContactUs $contactUs
      * @return RedirectResponse
      */
-    public function deleteContactUs(Request $request, ContactUs $contactUs): RedirectResponse
+    public function deleteContactUs(ContactUs $contactUs): RedirectResponse
     {
         $this->denyAccessUnlessGranted('delete', $contactUs);
         $this->entityManager->remove($contactUs);

@@ -50,7 +50,7 @@ class AdminNotificationAjax extends AbstractController
             $this->entityManager->flush();
             return $this->json([
                 'message' => 'success'
-            ], 200);
+            ]);
         }
         catch (Exception $ex){
             return $this->json([

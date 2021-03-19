@@ -51,6 +51,6 @@ class AdminReportAjaxController extends AbstractController
         $this->entityManager->flush();
         return $this->json([
             'message' => 'success'
-        ], 200);
+        ]);
     }
 }

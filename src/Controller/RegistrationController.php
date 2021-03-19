@@ -4,13 +4,10 @@ namespace App\Controller;
 
 use App\Message\LoginTrack;
 use App\Entity\User;
-use App\Entity\Notification;
-use App\Message\SendNewEmail;
+use App\Message\Notification;
 use App\Security\EmailVerifier;
 use App\Form\RegistrationFormType;
-use Symfony\Component\Mime\Address;
 use App\Security\LoginAppAuthenticator;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -38,7 +35,7 @@ class RegistrationController extends AbstractController
      * @param MessageBusInterface $bus
      * @return Response
      */
-    public function register(
+    public function register (
         Request $request,
         UserPasswordEncoderInterface $passwordEncoder,
         GuardAuthenticatorHandler $guardHandler,
@@ -49,7 +46,7 @@ class RegistrationController extends AbstractController
         if ( $this->getUser() ) {
             /** @var User $user */
             $user = $this->getUser();
-            $routeName = in_array('ROLE_ADMIN', $user->getRoles()) === true ? 'app_admin_home' : 'app_admin_home';
+            $routeName = in_array('ROLE_ADMIN', $user->getRoles()) === true ? 'app_admin_home' : 'app_home';
             return $this->redirectToRoute($routeName);
         }
         $user = new User();
@@ -79,7 +76,7 @@ class RegistrationController extends AbstractController
 //                    ->subject('Please Confirm your Email')
 //                    ->htmlTemplate('registration/confirmation_email.html.twig')
 //            );
-            $bus->dispatch(new \App\Message\Notification($user->getId(), null, 'register'));
+            $bus->dispatch(new Notification($user->getId(), null, 'register'));
             $bus->dispatch(new LoginTrack($user->getId()));
             $this->addFlash('success', 'Please check your mail box to confirm your email address');
             // do anything else you need here, like send an email
@@ -117,8 +114,9 @@ class RegistrationController extends AbstractController
 
 
         $this->addFlash('success', 'Your email address has been verified.');
-        $bus->dispatch(new \App\Message\Notification($this->getUser()->getId(), null, 'emailConfirm'));
-
+        /** @var User $user */
+        $user = $this->getUser();
+        $bus->dispatch(new Notification($user->getId(), null, 'emailConfirm'));
         return $this->redirectToRoute('app_home');
     }
 }

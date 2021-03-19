@@ -6,8 +6,6 @@ use App\Entity\Dislike;
 use App\Entity\Like;
 use App\Entity\Post;
 use App\Entity\User;
-use App\Helper\DeleteAssociationEntity;
-use App\Message\Notification;
 use App\Repository\DislikeRepository;
 use App\Repository\LikeRepository;
 use App\Repository\NotificationRepository;

@@ -168,9 +168,9 @@ class AdminUserController extends AbstractController
             /**
              * You should send an email
              */
-            if ($adminUserReport->getNeedToReceive()) {
+            /* if ($adminUserReport->getNeedToReceive()) {
                 // Send an email to user by messenger !!!
-            }
+            }*/
             $this->entityManager->flush();
             $this->addFlash('success', 'The report was added to the user with success !');
 
