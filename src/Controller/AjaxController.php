@@ -11,7 +11,6 @@ use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
@@ -166,7 +165,6 @@ class AjaxController extends AbstractController
     public function loadMorePosts(Request $request): JsonResponse
     {
         $request->headers->set('Access-Control-Allow-Origin', '*');
-
         try {
             $data = json_decode($request->getContent(), true);
             $id = $data['latestPost'];
@@ -186,7 +184,7 @@ class AjaxController extends AbstractController
             return $this->json([
                 'posts' => $returnPosts,
                 'morePosts' => $morePosts,
-            ], RESPONSE::HTTP_OK, [], ['groups' => 'ajax:posts']);
+            ], 200, [], ['groups' => 'ajax:posts']);
         } catch (\Exception $exception) {
             return $this->json([
                 'error' => $exception->getMessage(),

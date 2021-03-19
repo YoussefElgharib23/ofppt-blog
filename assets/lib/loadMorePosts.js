@@ -1,8 +1,9 @@
 import axios from "axios";
-import loadImages from "./loadImages";
 import lazyLoadImages from "./lazyLoading";
 import slugify from "slugify";
-const truncateString = str => str.trim().length <= 20 ?  str : str.trim().substring(0, 20) + "...";
+
+const truncateString = str => str.trim().length <= 20 ? str : str.trim().substring(0, 20) + "...";
+
 $('button#button-load-more-js').on('click', (e) => {
     e.preventDefault()
 
@@ -11,7 +12,7 @@ $('button#button-load-more-js').on('click', (e) => {
     $(button).attr('disabled', 'disabled')
     $(button).html(`<div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>`)
 
-    let url = window.location.origin + '/api/load_more'
+    let url = '/api/load_more'
 
     axios.post(url, {
         latestPost: latestIdPost
@@ -24,7 +25,10 @@ $('button#button-load-more-js').on('click', (e) => {
                     <!-- start new section -->
                         <section>
                             <div class="image-container mw-100 rounded-lg overflow-hidden position-relative" style="min-height: 118px;">
-                                <a href="${window.location.origin + '/' + slugify(post.title, { lower: true, remove: /[*+~.()'"!:@]/g }) + '-' + post.id}"
+                                <a href="${window.location.origin + '/' + slugify(post.title, {
+                    lower: true,
+                    remove: /[*+~.()'"!:@]/g
+                }) + '-' + post.id}"
                                    class="posts-images-link">
                                     <div class="load-overlay fade">
                                         <div class="spinner-border" role="status">
@@ -39,7 +43,10 @@ $('button#button-load-more-js').on('click', (e) => {
                             </div>
                             <div class="mt-2">
                                 <a class="btn-link"
-                                   href="${window.location.origin + '/' + slugify(post.title, { lower: true, remove: /[*+~.()'"!:@]/g }) + '-' + post.id}">
+                                   href="${window.location.origin + '/' + slugify(post.title, {
+                                        lower: true,
+                                        remove: /[*+~.()'"!:@]/g
+                                    }) + '-' + post.id}">
                                     <h6 class="m-0 text-wrap">${truncateString(post.title)}</h6>
                                 </a>
                                 <div>
@@ -56,7 +63,6 @@ $('button#button-load-more-js').on('click', (e) => {
 
             // latest post id
             $('span#post-id').data('latest-id', response.data.posts[response.data.posts.length - 1].id)
-
             if (!morePosts) $('div#div-button-display').remove()
         })
         .catch((error) => {
@@ -66,5 +72,4 @@ $('button#button-load-more-js').on('click', (e) => {
             $(button).attr('disabled', false)
             $(button).html('Load more<em class="icon ni ni-chevron-down"></em>')
         })
-
 })
