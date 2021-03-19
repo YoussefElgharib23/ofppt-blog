@@ -6,6 +6,7 @@ use App\Entity\Comment;
 use App\Repository\CommentRepository;
 use App\Repository\NotificationRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,10 +56,17 @@ class AdminCommentController extends AbstractController
 
     /**
      * @Route("/admin/comments", name="app_admin_index_comments", methods={"GET"})
+     * @param Request $request
+     * @param PaginatorInterface $paginator
+     * @return Response
      */
-    public function index(): Response
+    public function index(Request $request, PaginatorInterface $paginator): Response
     {
-        $comments = $this->commentRepository->findAllTheComments();
+        $comments = $paginator->paginate(
+            $this->commentRepository->findCommentForAdmin(),
+            $request->get('page', 1),
+            10
+        );
         return $this->render('admin/comments/index.html.twig', compact('comments'));
     }
 

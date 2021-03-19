@@ -51,7 +51,7 @@ class CommentRepository extends ServiceEntityRepository
     /**
      * @return Comment[]|null
      */
-    public function findAllTheComments(): ?array
+    public function findCommentForAdmin(): ?array
     {
         return $this->createQueryBuilder('c')
             ->select('c', 'user')

@@ -190,17 +190,17 @@
                                                                                 <div class="row w-100" style="width: 765px!important;">
                                                                                     {% if comment.user.imageName %}
                                                                                         <img src="{{ vich_uploader_asset(comment.user, 'imageFile') | imagine_filter('profile_pic_min') }}"
-                                                                                             class="img-fluid rounded-circle comment__auth d-n-lg"
+                                                                                             class="d-n-lg img-fluid rounded-circle comment__auth d-n-lg"
                                                                                              alt="">
                                                                                     {% else %}
-                                                                                        <div class="user-avatar" style="margin-right: 10px">
+                                                                                        <div class="d-n-lg user-avatar" style="margin-right: 10px">
                                                                                             {{ comment.user.firstTowLatterName }}
                                                                                         </div>
                                                                                     {% endif %}
                                                                                     <div class="col comment-container pt-1 rounded-lg"
                                                                                          style="border-radius: 20px !important;">
                                                                                         <div class="d-flex align-items-end">
-                                                                                            <span class="author badge badge-light mt-1">{{ comment.user.fullName }} commented:</span>
+                                                                                            <span class="author badge badge-light mt-1">{{ comment.user.fullName }}: </span>
                                                                                             {% if 'ROLE_ADMIN' in comment.user.roles %}
                                                                                                 <span class="badge badge-danger ml-1">Admin</span>
                                                                                             {% endif %}

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title parent() ~ ' | All Comments'  %}
+{% block title parent() ~ ' | All Comments' %}
 
 {% block body %}
     {% set in_admin = true %}
@@ -27,8 +27,10 @@
                                                     <div class="form-icon form-icon-right">
                                                         <em class="icon ni ni-search"></em>
                                                     </div>
-                                                    <input class="form-control form-control-md form-control-outlined" id="comment-search" type="text">
-                                                    <label class="form-label-outlined" for="comment-search">Search For Comment</label>
+                                                    <input class="form-control form-control-md form-control-outlined"
+                                                           id="comment-search" type="text">
+                                                    <label class="form-label-outlined" for="comment-search">Search For
+                                                        Comment</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -37,8 +39,10 @@
                                                 <div class="form-control-wrap">
                                                     <select id="select-status" data-target="#selected-value">
                                                         <option value="all" class="option-select-status">All</option>
-                                                        <option value="posted" class="option-select-status">Posted</option>
-                                                        <option value="deleted" class="option-select-status">Deleted</option>
+                                                        <option value="posted" class="option-select-status">Posted
+                                                        </option>
+                                                        <option value="deleted" class="option-select-status">Deleted
+                                                        </option>
                                                     </select>
                                                     <input type="hidden" id="selected-value" value="all">
                                                 </div>
@@ -73,7 +77,8 @@
                                     </thead>
                                     <tbody>
                                     {% for comment in comments %}
-                                        <tr class="tb-tnx-item item-comment" data-content="{{ comment.comment }}" data-status="{{ comment.isDeleted ? 'deleted' : 'posted' }}">
+                                        <tr class="tb-tnx-item item-comment" data-content="{{ comment.comment }}"
+                                            data-status="{{ comment.isDeleted ? 'deleted' : 'posted' }}">
                                             <td class="tb-tnx-id">
                                                 <a href="#">
                                                     <span>{{ comment.id }}</span>
@@ -112,11 +117,16 @@
                                             </td>
                                             <td class="tb-tnx-action">
                                                 <div class="dropdown">
-                                                    <a class="text-soft dropdown-toggle btn btn-icon btn-trigger" data-toggle="dropdown" aria-expanded="false"><em class="icon ni ni-more-h"></em></a>
-                                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-xs" style="">
+                                                    <a class="text-soft dropdown-toggle btn btn-icon btn-trigger"
+                                                       data-toggle="dropdown" aria-expanded="false"><em
+                                                                class="icon ni ni-more-h"></em></a>
+                                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-xs"
+                                                         style="">
                                                         <ul class="link-list-plain">
                                                             <li>
-                                                                <a href="#" data-toggle="modal" data-target="#commentModal-{{ comment.id }}">View Comment</a>
+                                                                <a href="#" data-toggle="modal"
+                                                                   data-target="#commentModal-{{ comment.id }}">View
+                                                                    Comment</a>
                                                             </li>
                                                             {% if comment.isDeleted %}
                                                                 <li>
@@ -125,18 +135,29 @@
                                                                     </a>
                                                                 </li>
                                                                 <li>
-                                                                    <a href="#" class="comment-delete-js" data-target="form-remove-comment-{{ comment.id }}">Delete Permanently</a>
-                                                                    <form action="{{ path('app_admin_delete_comment', {'id': comment.id}) }}" method="post" id="form-remove-comment-{{ comment.id }}">
-                                                                        <input type="hidden" name="_token" value="{{ csrf_token('delete-comment-' ~ comment.id) }}">
-                                                                        <input type="hidden" name="_method" value="delete">
+                                                                    <a href="#" class="comment-delete-js"
+                                                                       data-target="form-remove-comment-{{ comment.id }}">Delete
+                                                                        Permanently</a>
+                                                                    <form action="{{ path('app_admin_delete_comment', {'id': comment.id}) }}"
+                                                                          method="post"
+                                                                          id="form-remove-comment-{{ comment.id }}">
+                                                                        <input type="hidden" name="_token"
+                                                                               value="{{ csrf_token('delete-comment-' ~ comment.id) }}">
+                                                                        <input type="hidden" name="_method"
+                                                                               value="delete">
                                                                     </form>
                                                                 </li>
                                                             {% else %}
                                                                 <li>
-                                                                    <a href="#" class="comment-delete-js" data-target="form-remove-comment-{{ comment.id }}">Remove</a>
-                                                                    <form action="{{ path('app_admin_remove_comment', {'id': comment.id}) }}" id="form-remove-comment-{{ comment.id }}" method="post">
-                                                                        <input type="hidden" name="_token" value="{{ csrf_token('delete-comment-' ~ comment.id) }}">
-                                                                        <input type="hidden" name="_method" value="delete">
+                                                                    <a href="#" class="comment-delete-js"
+                                                                       data-target="form-remove-comment-{{ comment.id }}">Remove</a>
+                                                                    <form action="{{ path('app_admin_remove_comment', {'id': comment.id}) }}"
+                                                                          id="form-remove-comment-{{ comment.id }}"
+                                                                          method="post">
+                                                                        <input type="hidden" name="_token"
+                                                                               value="{{ csrf_token('delete-comment-' ~ comment.id) }}">
+                                                                        <input type="hidden" name="_method"
+                                                                               value="delete">
                                                                     </form>
                                                                 </li>
                                                             {% endif %}
@@ -149,6 +170,9 @@
                                     </tbody>
                                 </table>
                             </div><!-- .card-preview -->
+                            <div class="py-4">
+                                {{ knp_pagination_render(comments) }}
+                            </div>
                         {% else %}
                             <div class="h-100px d-flex align-items-center text-black-50 flex-column">
                                 <em class="icon ni ni-comments fa-2x"></em>
@@ -172,13 +196,16 @@
                             <em class="icon ni ni-cross"></em>
                         </a>
                         <div class="modal-header">
-                            <h5 class="modal-title">Commented on <a href="{{ path('app_show_post', {'id': comment.post.id, 'slug': comment.post.slugify(comment.post.title)}) }}">{{ comment.post.title }}</a></h5>
+                            <h5 class="modal-title">Commented on <a
+                                        href="{{ path('app_show_post', {'id': comment.post.id, 'slug': comment.post.slugify(comment.post.title)}) }}">{{ comment.post.title }}</a>
+                            </h5>
                         </div>
                         <div class="modal-body">
                             <p id="modal-p-comment">{{ comment.comment }}</p>
                         </div>
                         <div class="modal-footer bg-light">
-                            <span class="sub-text">Commented by <a href="{{ path('app_admin_details_user', {'id': comment.user.id}) }}">{{ comment.user.fullName }}</a></span>
+                            <span class="sub-text">Commented by <a
+                                        href="{{ path('app_admin_details_user', {'id': comment.user.id}) }}">{{ comment.user.fullName }}</a></span>
                         </div>
                     </div>
                 </div>
@@ -188,17 +215,17 @@
 {% endblock %}
 
 {% block javascripts %}
-    
+
     <script>
         const clearedString = str => str.trim().toLowerCase()
-        
+
         $(document).ready(() => {
             const showToast = () => {
                 if ($('.item-comment').length === $('.item-comment.d-n').length) {
                     NioApp.Toast('No Comments !', 'error')
                 }
             }
-            
+
             let $select = $('select'),
                 $items = $('.item-comment'),
                 status = 'all',
@@ -208,21 +235,19 @@
 
             const searchElementByValue = (e) => {
                 searchedValue = clearedString(e.target.value)
-                
+
                 $items.each((i, ele) => {
                     $(ele).addClass('d-n')
-                    
+
                     if (status === 'all') {
                         if (searchedValue !== '') {
                             if (clearedString($(ele).data('content')).indexOf(searchedValue) > -1) {
                                 $(ele).removeClass('d-n')
                             }
-                        }
-                        else {
+                        } else {
                             $(ele).removeClass('d-n')
                         }
-                    }
-                    else {
+                    } else {
                         if (searchedValue !== '') {
                             if (
                                 clearedString($(ele).data('content')).indexOf(searchedValue) > -1
@@ -230,8 +255,7 @@
                             ) {
                                 $(ele).removeClass('d-n')
                             }
-                        }
-                        else if (clearedString($(ele).data('status')) === status) {
+                        } else if (clearedString($(ele).data('status')) === status) {
                             $(ele).removeClass('d-n')
                         }
                     }
@@ -239,31 +263,28 @@
 
                 showToast()
             }
-            
+
             const searchElementByStatus = (e) => {
                 status = clearedString(e.params.data.text)
-                
+
                 $items.each((i, ele) => {
-                    
+
                     $(ele).addClass('d-n')
-                    
+
                     if (searchedValue === '') {
                         if (status !== 'all') {
                             if (status === clearedString($(ele).data('status'))) {
                                 $(ele).removeClass('d-n')
                             }
-                        }
-                        else {
+                        } else {
                             $(ele).removeClass('d-n')
                         }
-                    }
-                    else {
+                    } else {
                         if (status !== 'all' && clearedString($(ele).data('content')).indexOf(searchedValue) > -1) {
                             if (status === clearedString($(ele).data('status'))) {
                                 $(ele).removeClass('d-n')
                             }
-                        }
-                        else if (clearedString($(ele).data('content')).indexOf(searchedValue) > -1) {
+                        } else if (clearedString($(ele).data('content')).indexOf(searchedValue) > -1) {
                             $(ele).removeClass('d-n')
                         }
                     }
@@ -271,10 +292,10 @@
 
                 showToast()
             }
-            
+
             $select.on('select2:select', searchElementByStatus)
             $('#comment-search').keyup(searchElementByValue)
-            
+
             $('.comment-delete-js').click(function (e) {
 
                 e.preventDefault();
@@ -294,5 +315,5 @@
             })
         })
     </script>
-    
+
 {% endblock %}

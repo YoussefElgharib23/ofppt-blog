@@ -146,7 +146,7 @@ class AdminUserController extends AbstractController
     }
 
     /**
-     * @Route("/user/details/{id}", name="app_admin_details_user", methods={"GET", "POST"}, requirements={"id": "\d+"})
+     * @Route("/user/{id}/detail", name="app_admin_details_user", methods={"GET", "POST"}, requirements={"id": "\d+"})
      * @param User $user
      * @param Request $request
      * @return Response

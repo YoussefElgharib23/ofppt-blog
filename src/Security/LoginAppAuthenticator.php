@@ -142,7 +142,7 @@ class LoginAppAuthenticator extends AbstractFormLoginAuthenticator implements Pa
 
         /** @var User $user */
         $user = $token->getUser();
-        if ( in_array('ROLE_ADMIN', $user->getRoles()) ) return new RedirectResponse($this->urlGenerator->generate('app_admin_home'));
+        if ( in_array('ROLE_ADMIN', $user->getRoles()) ) return new RedirectResponse($this->urlGenerator->generate('app_admin_index'));
         return new RedirectResponse($this->urlGenerator->generate('app_blog'));
     }
 
