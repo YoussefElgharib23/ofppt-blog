@@ -21,14 +21,14 @@ $('button#button-load-more-js').on('click', (e) => {
             let morePosts = response.data.morePosts
             response.data.posts.map((post) => {
                 $('div#recent-posts').append(`
-                    <div class="col-lg-3 col-md-4 col-6 d-flex flex-column justify-content-between mb-2" data-toggle="tooltip" data-placement="top" title="${post.minDescription}">
+                    <div class="col-lg-3 col-md-4 col-sm-6 d-flex flex-column justify-content-between mb-2" data-toggle="tooltip" data-placement="top" title="${post.minDescription}">
                     <!-- start new section -->
                         <section>
                             <div class="image-container mw-100 rounded-lg overflow-hidden position-relative" style="min-height: 118px;">
                                 <a href="${window.location.origin + '/' + slugify(post.title, {
-                    lower: true,
-                    remove: /[*+~.()'"!:@]/g
-                }) + '-' + post.id}"
+                                        lower: true,
+                                        remove: /[*+~.()'"!:@]/g
+                                    }) + '-' + post.id}"
                                    class="posts-images-link">
                                     <div class="load-overlay fade">
                                         <div class="spinner-border" role="status">

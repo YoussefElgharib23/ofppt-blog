@@ -3,6 +3,8 @@
         "@symfony/stimulus-bridge": "^1.1.0",
         "@symfony/webpack-encore": "^0.32.0",
         "core-js": "^3.0.0",
+        "react": "^17.0.1",
+        "react-dom": "^17.0.1",
         "regenerator-runtime": "^0.13.2",
         "sass-loader": "10.0.5",
         "stimulus": "^2.0.0",
