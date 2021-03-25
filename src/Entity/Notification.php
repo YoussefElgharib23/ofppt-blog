@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=NotificationRepository::class)
+ * @ORM\Entity(repositoryClass=App\Repository\NotificationRepository::class)
  * @ORM\Table(name="notifications")
  * @ORM\HasLifecycleCallbacks()
  */
