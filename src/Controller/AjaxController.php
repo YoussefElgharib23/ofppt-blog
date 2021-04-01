@@ -168,24 +168,17 @@ class AjaxController extends AbstractController
      */
     public function loadMorePosts(Request $request): \Symfony\Component\HttpFoundation\Response
     {
-        $request->headers->set('Access-Control-Allow-Origin', '*');
         try {
-            $data = json_decode($request->getContent(), true);
-            $id = $data['latestPost'];
+            $id = $request->request->get('latestPost');
             $posts = $this->postRepository->findInfPost($id);
-            $returnPosts = [];
-            foreach ($posts as $post) {
-                /** @var Post $post */
-                $path = $this->uploaderHelper->asset($post, 'imageFile');
-                $resolvedPath = $this->cacheManager->getBrowserPath($path, 'thumb');
-                $post->setImageNameCached($resolvedPath);
-                $post->getUser()->setFullName();
-                $returnPosts[] = $post;
-            }
 
             $morePosts = count($this->postRepository->findInfPost($posts[count($posts) - 1]->getId())) > 0;
+            return new Response($this->renderView('api/loadMorePost.html.twig', [
+                'morePosts' => $posts,
+
+            ]));
             return $this->json([
-                'posts' => $returnPosts,
+                'posts' => $posts,
                 'morePosts' => $morePosts,
             ], 200, [], ['groups' => 'ajax:posts']);
         } catch (Exception $exception) {
@@ -193,5 +186,17 @@ class AjaxController extends AbstractController
                 'error' => $exception->getMessage(),
             ]);
         }
+    }
+
+
+    /**
+     * @Route("/more-posts",name="check_more_posts")
+     */
+    public function morePosts(Request $request) {
+        $id = $request->request->get('latestPost');
+        $posts = $this->postRepository->findInfPost($id);
+        
+        $morePosts = count($this->postRepository->findInfPost($posts[count($posts) - 1]->getId())) > 0;
+        return $this->json(['morePosts' => $morePosts]);
     }
 }
