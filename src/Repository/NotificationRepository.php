@@ -7,8 +7,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Notification|null find($id, $lockMode = null, $lockVersion = null)
- * @method Notification|null findOneBy(array $criteria, array $orderBy = null)
+ * @method null|Notification find($id, $lockMode = null, $lockVersion = null)
+ * @method null|Notification findOneBy(array $criteria, array $orderBy = null)
  * @method Notification[]    findAll()
  * @method Notification[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
@@ -49,7 +49,7 @@ class NotificationRepository extends ServiceEntityRepository
     */
 
     /**
-     * @return Notification[]|null
+     * @return null|Notification[]
      */
     public function findNotSeenNotifications(): ?array
     {
@@ -61,7 +61,7 @@ class NotificationRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Notification[]|null
+     * @return null|Notification[]
      */
     public function findAllNotifications(): ?array
     {
@@ -93,8 +93,7 @@ class NotificationRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param int $id
-     * @return Notification[]|array|null
+     * @return null|array|Notification[]
      */
     public function findLikeNotificationByUser(int $id): ?array
     {
