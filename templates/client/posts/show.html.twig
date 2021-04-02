@@ -64,8 +64,7 @@
                                                         <a class="badge btn-dim btn-outline-secondary"
                                                            href="{{ path('app_posts_category', {'slug': post.category.slug(post.category.name)}) }}">{{ post.category.name }}</a>
                                                     </span>
-                                                        <span
-                                                                class="badge badge-dot badge-danger">{{ post.formattedCreatedAt }}</span>
+                                                        <span class="badge badge-dot badge-danger">{{ post.createdAt | date('d M, Y') }}</span>
                                                     </small>
                                                 </h3>
                                                 <div class="my-1 d-flex align-items-center">
@@ -290,8 +289,7 @@
                                                                class="btn btn-dim btn-outline-secondary p-0 pl-1 pr-1">
                                                                 {{ relatedPost.category.name }}
                                                             </a>
-                                                            <span
-                                                                    class="badge badge-dot badge-danger">{{ relatedPost.formattedCreatedAt }}</span>
+                                                            <span class="badge badge-dot badge-danger">{{ relatedPost.createdAt | date('d M, Y') }}</span>
                                                         </small>
                                                     </h5>
                                                 </article>

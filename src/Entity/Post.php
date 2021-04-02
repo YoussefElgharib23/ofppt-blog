@@ -57,12 +57,6 @@ class Post
     private $category;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups ("ajax:posts")
-     */
-    private $formattedCreatedAt;
-
-    /**
      * @Vich\UploadableField(mapping="posts", fileNameProperty="imageName")
      * @Assert\Image(mimeTypes="image/jpeg")
      * @var File|null

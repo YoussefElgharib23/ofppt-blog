@@ -23,7 +23,7 @@
                                             <span class="badge badge-primary">
                                                 {{ latestPost.category.name }}
                                             </span>
-                                            <span class="badge badge-dot badge-secondary">{{ latestPost.formattedCreatedAt }}</span>
+                                            <span class="badge badge-dot badge-secondary">{{ latestPost.createdAt | date('d M, Y') }}</span>
                                         </p>
                                     </div>
                                 </div><!-- .nk-block-head-content -->
@@ -68,7 +68,7 @@
                                                                        title="Browse category posts">
                                                                         {{ latestPost.category.name }}
                                                                     </a>
-                                                                    <span class="badge badge-dot badge-secondary">{{ latestPost.formattedCreatedAt }}</span>
+                                                                    <span class="badge badge-dot badge-secondary">{{ latestPost.createdAt | date('d M, Y') }}</span>
                                                                 </small>
                                                             </div>
                                                             <p style="font-size: 16px; font-weight: 400">
