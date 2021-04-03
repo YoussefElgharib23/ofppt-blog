@@ -15,8 +15,7 @@ $('button#button-load-more-js').on('click', (e) => {
     let url = '/api/load_more'
 
     $.ajax(
-        '/api/load_more',
-        {
+        '/api/load_more', {
             type: 'POST',
             data: {
                 latestPost: latestIdPost
@@ -29,8 +28,7 @@ $('button#button-load-more-js').on('click', (e) => {
 
                 // need to another ajax call to get the Moreposts
                 $.ajax(
-                    '/api/more-posts',
-                    {
+                    '/api/more-posts', {
                         type: 'POST',
                         data: {
                             latestPost: latestIdPost
