@@ -135,6 +135,7 @@ class LoginAppAuthenticator extends AbstractFormLoginAuthenticator implements Pa
         $this->entityManager->persist(
             (new UserLoginLogs())->setUser($user)->setLastLogin(new \DateTimeImmutable())
         );
+        
         $this->entityManager->flush();
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             return new RedirectResponse($targetPath);
