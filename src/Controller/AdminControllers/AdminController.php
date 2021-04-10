@@ -9,13 +9,13 @@ use App\Repository\PostRepository;
 use App\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/admin")
  * Class AdminController
- * @package App\Controller
  * @IsGranted("ROLE_ADMIN")
  */
 class AdminController extends AbstractController
@@ -42,7 +42,6 @@ class AdminController extends AbstractController
 
     /**
      * @Route ("", name="app_admin_index", methods={"GET"})
-     * @return Response
      */
     public function index(): Response
     {
@@ -56,6 +55,7 @@ class AdminController extends AbstractController
         });
 
         $contactUs = $this->contactUsRepository->findMessagesForAdmin();
+
         return $this->render('admin/index.html.twig', compact('latestUsers', 'posts', 'contactUs'));
     }
 }

@@ -54,7 +54,6 @@ class ClientController extends AbstractController
 
                 $this->addFlash('success', 'Your profile was successfully updated !');
 
-//                CacheImage::LiipBackgroundCacheImage($user, $this->helper, $this->producer);
                 return $this->redirectToRoute('app_client_profile');
             }
             catch (Exception $exception) {

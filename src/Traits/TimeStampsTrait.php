@@ -4,14 +4,13 @@ namespace App\Traits;
 
 use Symfony\Component\Serializer\Annotation\Groups;
 
-Trait TimeStampsTrait
+trait TimeStampsTrait
 {
     /**
      * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      * @Groups ("ajax:posts")
      */
     private $created_at;
-
 
     /**
      * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
@@ -77,7 +76,9 @@ Trait TimeStampsTrait
      */
     public function updateTimeStampable()
     {
-        if (null === $this->getCreatedAt()) $this->setCreatedAt(new \DateTimeImmutable());
+        if (null === $this->getCreatedAt()) {
+            $this->setCreatedAt(new \DateTimeImmutable());
+        }
 
         $this->setUpdatedAt(new \DateTimeImmutable());
     }
@@ -94,6 +95,6 @@ Trait TimeStampsTrait
 
     public function isDeleted(): bool
     {
-        return $this->getDeletedAt() != null;
+        return null != $this->getDeletedAt();
     }
 }
