@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Entity\UserLoginLogs;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -49,13 +50,18 @@ class LoginAppAuthenticator extends AbstractFormLoginAuthenticator implements Pa
      * @var UserRepository
      */
     private $userRepository;
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         UrlGeneratorInterface $urlGenerator,
         CsrfTokenManagerInterface $csrfTokenManager,
         UserPasswordEncoderInterface $passwordEncoder,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        ContainerInterface $container
     )
     {
         $this->entityManager = $entityManager;
@@ -63,6 +69,7 @@ class LoginAppAuthenticator extends AbstractFormLoginAuthenticator implements Pa
         $this->csrfTokenManager = $csrfTokenManager;
         $this->passwordEncoder = $passwordEncoder;
         $this->userRepository = $userRepository;
+        $this->container = $container;
     }
 
     public function supports(Request $request): bool
@@ -130,6 +137,7 @@ class LoginAppAuthenticator extends AbstractFormLoginAuthenticator implements Pa
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey): RedirectResponse
     {
+        $this->container->get('session')->getFlashBag()->add('success', 'Welcome back !');
         /** @var User $user */
         $user = $token->getUser();
         $this->entityManager->persist(

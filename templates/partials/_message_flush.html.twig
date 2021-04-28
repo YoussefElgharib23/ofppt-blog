@@ -1,6 +1,6 @@
 <script>
     {% for message in app.flashes('success') %}
-        NioApp.Toast('{{ message }}', 'info');
+        NioApp.Toast('{{ message }}', 'success');
     {% endfor %}
     {% for message in app.flashes('error') %}
         NioApp.Toast('{{ message }}', 'error');
