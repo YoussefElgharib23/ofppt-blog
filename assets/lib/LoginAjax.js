@@ -29,6 +29,7 @@ $('form#form-login-js').on('submit', (e) => {
     .then((response) => {
         let results = response.data
         if ( results.error ) {
+
             showErrorMessage(results.error)
             toggleButtonSubmit(button)
         }
@@ -36,8 +37,7 @@ $('form#form-login-js').on('submit', (e) => {
             e.target.submit()
         }
     })
-    .catch((error) => {
-        let message = error.message;
+    .catch(() => {
         showErrorMessage('An error has occurred please try again !')
         toggleButtonSubmit(button)
     })
@@ -56,21 +56,15 @@ function toggleButtonSubmit(btn, action = 'on') {
 }
 
 function showErrorMessage(message) {
-    if ( message !== '' ) {
-        let alertDiv = $('#alert-danger')
-        removeMessageError()
-
-        setTimeout(() => {
-            alertDiv.slideToggle()
-            alertDiv.find('span#message-alert-js').text(message)
-        }, 700)
-    }
-}
-
-function removeMessageError() {
-    let alertDiv = $('#alert-danger')
-    if ( alertDiv.css('display') !== 'none' ) {
-        alertDiv.slideToggle()
-        alertDiv.find('span#message-alert-js').text('')
-    }
+    toastr.clear();
+    NioApp.Toast(message, 'error');
+    // if ( message !== '' ) {
+    //     let alertDiv = $('#alert-danger')
+    //     removeMessageError()
+    //
+    //     setTimeout(() => {
+    //         alertDiv.slideToggle()
+    //         alertDiv.find('span#message-alert-js').text(message)
+    //     }, 700)
+    // }
 }
