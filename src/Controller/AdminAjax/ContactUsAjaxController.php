@@ -36,8 +36,7 @@ class ContactUsAjaxController extends AbstractController
         CacheManager $cacheManager,
         UploaderHelper $uploaderHelper,
         RouterInterface $router
-    )
-    {
+    ) {
         $this->contactUsRepository = $contactUsRepository;
         $this->cacheManager = $cacheManager;
         $this->uploaderHelper = $uploaderHelper;
@@ -46,8 +45,6 @@ class ContactUsAjaxController extends AbstractController
 
     /**
      * @Route("/admin/api/contact-us-message", methods={"POST"})
-     * @param Request $request
-     * @return JsonResponse
      */
     public function getContactMessage(Request $request): JsonResponse
     {
@@ -55,7 +52,7 @@ class ContactUsAjaxController extends AbstractController
         $id = $data['id'];
         $contactUs = $this->contactUsRepository->findOneBy(['id' => $id]);
         $contactUs->setFormattedCreatedAt();
-        if ($contactUs->getImageName() != null) {
+        if (null != $contactUs->getImageName()) {
             $path = $this->uploaderHelper->asset($contactUs, 'imageFile');
             $resolvedPath = $this->cacheManager->getBrowserPath(parse_url($path, PHP_URL_PATH), 'thumb');
             $contactUs->setImgTargetPath($resolvedPath);
@@ -70,9 +67,9 @@ class ContactUsAjaxController extends AbstractController
         $cUser = $this->getUser();
 
         $delete_link = $this->router->generate('app_admin_delete_contact-us', [
-            'id' => $contactUs->getId()
+            'id' => $contactUs->getId(),
         ]);
+
         return $this->json(['message' => $contactUs, 'currentUser' => $cUser->firstTowLatterName(), 'delete' => $delete_link], 200, [], ['groups' => 'contact:ajax']);
     }
-
 }

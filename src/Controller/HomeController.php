@@ -34,8 +34,7 @@ class HomeController extends AbstractController
         PostRepository $postRepository,
         EntityManagerInterface $entityManager,
         ContactUsRepository $contactUsRepository
-    )
-    {
+    ) {
         $this->postRepository = $postRepository;
         $this->entityManager = $entityManager;
         $this->contactUsRepository = $contactUsRepository;
@@ -46,13 +45,15 @@ class HomeController extends AbstractController
      */
     public function welcome(): Response
     {
-        if ($this->getUser()) return $this->redirectToRoute('app_blog');
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_blog');
+        }
+
         return $this->render('welcome/index.html.twig');
     }
 
     /**
      * @Route("/terms_of_coniditions", name="app_terms_conditions", methods={"GET"})
-     * @return Response
      */
     public function termsAndPolicy(): Response
     {
@@ -61,8 +62,6 @@ class HomeController extends AbstractController
 
     /**
      * @Route("/contact-us", name="app_contact_us", methods={"GET", "POST"})
-     * @param Request $request
-     * @return Response
      */
     public function contactUs(Request $request): Response
     {
@@ -87,21 +86,20 @@ class HomeController extends AbstractController
             }
 
             return $this->render('contact/user/contact-us.html.twig', [
-                'form' => $form->createView()
+                'form' => $form->createView(),
             ]);
         }
         $messages = $this->contactUsRepository->findBy([], ['id' => 'desc']);
         if ($request->isMethod('POST')) {
             $reply = $request->request->get('reply');
-            if (trim($reply) === '') {
+            if ('' === trim($reply)) {
                 $this->addFlash('error', 'Reply cannot be null');
-            }
-            else {
+            } else {
                 /** @var User $cu */
                 $cu = $this->getUser();
                 $reply = (new ReplyContactUs())->setUser($cu);
 
-                for ($i = 0; $i < count($messages); $i++) {
+                for ($i = 0; $i < count($messages); ++$i) {
                     if ($messages[$i]->getId() === intval($request->request->get('_msg-id'))) {
                         $this->get('session')->set('msg-id', $i);
 
@@ -123,15 +121,12 @@ class HomeController extends AbstractController
         }
 
         return $this->render('contact/contact-us.html.twig', [
-            'messages' => $messages
+            'messages' => $messages,
         ]);
     }
 
     /**
-     *
      * @Route ("/contact-us/{id}/delete", name="app_admin_delete_contact-us", methods={"GET"}, requirements={"id": "\d+"})
-     * @param ContactUs $contactUs
-     * @return RedirectResponse
      */
     public function deleteContactUs(ContactUs $contactUs): RedirectResponse
     {
@@ -140,6 +135,7 @@ class HomeController extends AbstractController
         $this->entityManager->flush();
 
         $this->addFlash('success', 'The message was successfully deleted !');
+
         return $this->redirectToRoute('app_contact_us');
     }
 }

@@ -3,6 +3,13 @@
 {% block title parent() ~ ' | Messages' %}
 
 {% block body %}
+    <style>
+
+    .nk-msg-body.profile-shown {
+        padding: 0;
+    }
+
+    </style>
     <div class="nk-content">
         <div class="container wide-xl">
             <div class="nk-content-inner">
@@ -115,7 +122,7 @@
                                                     <em class="icon ni ni-arrow-left"></em>
                                                 </a>
                                             </div>
-                                            <ul class="nk-msg-actions">••••••••••
+                                            <ul class="nk-msg-actions">
                                                 <li>
                                                     <a href="{{ path('app_admin_delete_contact-us', {'id': messages[index].id}) }}" class="btn btn-dim btn-sm btn-outline-light" id="message-delete-link">
                                                         <em class="icon ni ni-trash"></em>
@@ -294,26 +301,16 @@
                             </div>
                         {% endif %}
                     </div>
-                    <!-- footer @s -->
-                    <div class="nk-footer">
-                        <div class="container wide-xl">
-                            <div class="nk-footer-wrap g-2">
-                                <div class="nk-footer-copyright"> © 2020 DashLite. Template by <a href="#">Softnio</a>
-                                </div>
-                                <div class="nk-footer-links">
-                                    <ul class="nav nav-sm">
-                                        <li class="nav-item"><a class="nav-link" href="#">Terms</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="#">Privacy</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- footer @e -->
                 </div>
             </div>
         </div>
     </div>
     <span id="reply-csrf" class="d-n">{{ csrf_token('reply') }}</span>
     {{ app.session.clear }}
+
+    <script defer async>
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log(document.querySelector('.nk-msg-body').classList.remove('profile-shown'))
+        })
+    </script>
 {% endblock %}
